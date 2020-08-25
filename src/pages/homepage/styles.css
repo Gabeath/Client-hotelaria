@@ -1,0 +1,241 @@
+#page-home {
+    width: 100vw;
+    height: 100vh;
+}
+
+#page-home #conteudo {
+    margin: 0 5%;
+}
+
+main {
+    display: flex;
+}
+.vertical-menu {
+    width: 100%;
+  }
+  
+  .vertical-menu a {
+    background-color: var(--cor-texto-base);
+    color: white; 
+    display: block; 
+    padding: 12px;
+    text-decoration: none; 
+  }
+  
+  .vertical-menu a:hover {
+    background-color: var(--cor-segundaria); 
+  }
+  
+  
+.reserva {
+    display: flex;
+    flex-direction: column;
+    margin: 1.6rem auto 0 auto;
+}
+
+#conteudo h1{
+    font: 700 2.4rem Montserrat;
+    color: var(--cor-texto-base);
+    padding-bottom: 8px;
+}
+
+.reserva #reserva-form{
+    width: 50vw;
+    background-color: var(--cor-de-fundo);
+    color: var(--cor-texto-base);
+    font: 400 1.4rem Roboto;
+    line-height: 3.2rem;
+    
+    border: solid gray;
+    border-width: 1px;
+    border-radius: 4px;
+
+    padding: 1.6rem;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 1.6rem;
+    grid-template-areas: 
+      "adulto crianca"
+      "date-in date-out"
+      "submit submit";
+}
+#adulto {
+    grid-area: adulto;
+}
+#crianca {
+    grid-area: crianca;
+}
+#date-in {
+    grid-area: date-in;
+}
+#date-out {
+    grid-area: date-out;
+}
+#submit {
+    grid-area: submit;
+}
+
+.reserva .input-bloco {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reserva .input-bloco input {
+    width: 15vw;
+    border-bottom:  var( --cor-primaria);
+    border-radius: 3px;
+    border-width: 2px;
+}
+.reserva .input-bloco input:hover {
+    border-bottom:  solid var( --cor-primaria);
+}
+.reserva #reserva-form button {
+    background-color: var( --cor-primaria);
+    color: var(--cor-de-fundo);
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+}
+
+.reserva #reserva-form button:hover {
+    background-color: var( --cor-primaria-escura);
+    
+}
+
+.quartos {
+    width: 50%;
+}
+.quartos-board {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    grid-gap: 2.6rem;
+    
+}
+.quartos-board  img {
+    width: 40vw;
+    
+}
+.quartos-board figure  figcaption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var( --cor-primaria);
+    color: var(--cor-de-fundo);
+    font: 700 1.6rem Roboto;
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem;
+    transition: 700ms;
+    
+}
+
+.quartos-board figure:hover{
+    -webkit-box-shadow: 0px 3px 16px 1px rgba(130,144,187,1);
+    -moz-box-shadow: 0px 3px 16px 1px rgba(130,144,187,1);
+    box-shadow: 0px 3px 16px 1px rgba(130,144,187,1);
+}
+
+.mapa img {
+    width: 82vw;
+}
+
+.localizacao h2 {
+    font: 500 1.5rem Roboto;
+    padding-bottom: 8px 0;
+    color: var(--cor-texto-base)
+}
+
+footer {
+    background-color: var(--cor-texto-base);
+    color: var(--cor-de-fundo);
+    font-family:Montserrat;
+    display: flex;
+
+    margin: 0;
+    padding: 5px;
+
+    line-height: 4.2rem;
+    flex-wrap: wrap;
+    
+}
+footer .conteudo{
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    height: 50vh;
+    width: 100%;
+    margin: 0 auto;
+    
+    
+}
+footer .conteudo  img {
+    width: 70%;
+}
+footer .conteudo .contato section {
+    
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    font-size: small;
+    
+}
+
+.reserva,
+.quartos,
+.localizacao
+{
+    margin-bottom: 4.6rem;
+}
+
+@media (max-width: 700px) {
+    .reserva .input-bloco input {
+        width: 10vw;
+         }
+}
+@media (max-width: 500px) {
+    .reserva .input-bloco {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 420px) {
+
+    footer .conteudo {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        font-size: 50%;
+        margin: 0 auto; 
+    }
+     footer .conteudo  img {
+        width: 30%;
+        margin: 30px;
+    } 
+    footer .conteudo .contato section {
+        justify-content: space-between;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        font-size: 50%;
+        margin: 0 auto; 
+    }
+
+}
+@media (min-width: 700px) {
+
+    footer .conteudo {
+        max-width: 1100px;
+    }
+
+}
