@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import Cabecalho from '../../components/cabecalho';
 import './styles.css';
@@ -10,8 +10,21 @@ import luxoDuplo from '../../assets/images/room_example.jpg';
 import mapa from '../../assets/images/map_example.jpg';
 import logoImg from '../../assets/images/Logo.png'
 
+import {useHistory} from 'react-router-dom';
 
 function HomePage() {
+    const [adultos, setAdultos] = useState(1)
+    const [criancas, setCriancas] = useState(0)
+    const [check_in, setCheckIn] = useState('')
+    const [check_out, setCheckOut] = useState('')
+
+    const history = useHistory()
+    const enviarReserva = () => {
+
+        history.push({pathname:'/confirmarreserva',
+        state: {adultos, criancas, check_in, check_out}})
+    }
+
     return (
         <div id="page-home">
             <Cabecalho />
@@ -25,24 +38,24 @@ function HomePage() {
                         <form id="reserva-form">
                             <div className="input-bloco">
                                 <label htmlFor="adulto">Adultos</label>
-                                <input type="number" id="adulto" name="adulto" min="1" max="3" />
+                                <input type="number" id="adulto" name="adulto" min="1" max="3" value={adultos} onChange={(e) => {setAdultos(e.target.value)} }/>
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="crianca">Crianças</label>
-                                <input type="number" id="crianca" name="crianca" min="1" max="3" />
+                                <input type="number" id="crianca" name="crianca" min="0" max="3"value={criancas} onChange={(e) => {setCriancas(e.target.value)} }/>
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="date-in">Check-in</label>
-                                <input type="date" id="date-in" />
+                                <input type="date" id="date-in"  value={check_in} onChange={(e) => {setCheckIn(e.target.value)} }/>
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="date-out">Check-out</label>
-                                <input type="date" id="date-out" />
+                                <input type="date" id="date-out"  value={check_out} onChange={(e) => {setCheckOut(e.target.value)} }/>
                             </div>
-                            <button id="submit" type="submit">RESERVAR</button>
+                            <button id="submit" type="button" onClick={enviarReserva}>RESERVAR</button>
                         </form>
                     </div>
 
