@@ -1,0 +1,44 @@
+:root {
+    font-size: 60%;
+
+    --cor-de-fundo: #E6F4F1;
+    --cor-primaria: #4A86E8;
+    --cor-primaria-escura: #2C87E2;
+    --cor-segundaria: #8290BB;
+    --cor-texto-base: #424656;
+    --cor-texto-em-primario: #fff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body, #root {
+    height: 100vh;
+    overflow-x: hidden;
+}
+/* 
+#root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+body,
+input,
+button {
+    font: 500 1.6rem Roboto;
+}
+
+.container {
+    width: 90vw;
+    max-width: 700px;
+}
+
+@media (min-width: 700px) {
+    :root {
+        font-size: 62.5%;
+    }
+}

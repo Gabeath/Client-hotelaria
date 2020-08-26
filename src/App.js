@@ -1,15 +1,11 @@
 import React from 'react';
+import Routes from './routes';
+import './assets/styles/global.css';
 import './App.css';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import ConfirmarReserva from './pages/ConfirmarReserva.js';
 
 function App() {
   return (
-    <BrowserRouter>
-        <Switch>
-            <Route path = '/confirmarreserva' component = {ConfirmarReserva} exact/>
-        </Switch>
-    </BrowserRouter>
+    <Routes />
   );
 }
 

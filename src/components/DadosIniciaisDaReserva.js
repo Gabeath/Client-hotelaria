@@ -1,5 +1,5 @@
 import React from 'react';
-import iconeCalendario from '../images/iconeCalendario.png';
+import iconeCalendario from '../assets/images/iconeCalendario.png';
 
 function DadosIniciaisDaReserva () {
     return (
