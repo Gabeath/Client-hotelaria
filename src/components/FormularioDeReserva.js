@@ -3,16 +3,17 @@ import requisicao from '../functions/requisicao';
 
 function FormularioDeReserva () {
 
-    function confirmarReserva () {
-        var cpfNumPassaporte = document.getElementById("cpfNumPassaporte");
+    const confirmarReserva = () => {
+        var cpfNumPassaporte = document.getElementById("cpfNumPassaporte").value;
         var cpf = null;
         var numPassaporte = null;
 
-        if (cpfNumPassaporte.length() === 11 && !isNaN(cpfNumPassaporte)) {
+        if (cpfNumPassaporte.length === 11 && !isNaN(cpfNumPassaporte)) {
             cpf = cpfNumPassaporte; /* Falta verificar se o CPF é válido */
+            console.log("CPF válido");
         }
         else {
-            if (cpfNumPassaporte.length() === 8 && isNaN(cpfNumPassaporte[0]) && isNaN(cpfNumPassaporte[1]) && !isNaN(cpfNumPassaporte.substring(2, 8))) {
+            if (cpfNumPassaporte.length === 8 && isNaN(cpfNumPassaporte[0]) && isNaN(cpfNumPassaporte[1]) && !isNaN(cpfNumPassaporte.substring(2, 8))) {
                 numPassaporte = cpfNumPassaporte; /* Falta verificar se o número de passaporte é válido */
             }
             else {
@@ -21,25 +22,40 @@ function FormularioDeReserva () {
             }
         }
 
-        var dados = {
-            nome: document.getElementById("nome"),
+        /*var dados = {
+            nome: document.getElementById("nome").value,
             cpf: cpf,
             numPassaporte: numPassaporte,
-            cep: document.getElementById("cep"),
-            logradouro: document.getElementById("logradouro"),
-            numero: document.getElementById("numero"),
-            complemento: document.getElementById("complemento"),
-            cidade: document.getElementById("cidade"),
-            estado: document.getElementById("estado"),
-            telefone: document.getElementById("telefone"),
-            quant_adultos: null,
-            quant_criancas: null,
-            data_inicio: null,
-            data_fim: null,
-            tipoDeQuarto: document.getElementById("tipoDeQuarto"),
-        }
+            cep: document.getElementById("cep").value,
+            logradouro: document.getElementById("logradouro").value,
+            numero: document.getElementById("numero").value,
+            complemento: document.getElementById("complemento").value,
+            cidade: document.getElementById("cidade").value,
+            estado: document.getElementById("estado").value,
+            telefone: document.getElementById("telefone").value,
+            quant_adultos: 2,
+            quant_criancas: 1,
+            data_inicio: new Date(),
+            data_fim: new Date(),
+            tipoDeQuarto: document.getElementById("tipoDeQuarto").value,
+        }*/
         
-        requisicao.Post("cadastroDeReserva", dados);
+        requisicao.post("cadastroDeReserva", 'nome=' + document.getElementById("nome").value +
+                                              '&cpf=' + cpf +
+                                              '&numPassaporte=' + numPassaporte +
+                                              '&cep=' + document.getElementById("cep").value +
+                                              '&logradouro=' + document.getElementById("logradouro").value +
+                                              '&numero=' + document.getElementById("numero").value +
+                                              '&complemento=' + document.getElementById("complemento").value +
+                                              '&cidade=' + document.getElementById("cidade").value +
+                                              '&estado=' + document.getElementById("estado").value +
+                                              '&telefone=' + document.getElementById("telefone").value +
+                                              '&quantAdultos=' + /*document.getElementById("quantAdultos").value*/2 +
+                                              '&quantCriancas=' + /*document.getElementById("quantCriancas").value*/1 +
+                                              '&dataInicio=' + /*document.getElementById("dataInicio").value*/new Date() +
+                                              '&dataFim=' + /*document.getElementById("dataFim").value*/new Date() +
+                                              '&tipoDeQuarto=' + document.getElementById("tipoDeQuarto").value
+                                              ).then(res=>console.log(res)).catch(erro=>console.log(erro));
     }
 
     return (
@@ -50,10 +66,10 @@ function FormularioDeReserva () {
 
                 <label>Tipo do quarto:</label>
                 <select id = "tipoDeQuarto" required>
-                    <option value = "StandardCasal">Standard casal</option>
-                    <option value = "StandardDuplo">Standard duplo</option>
-                    <option value = "LuxoCasal">Luxo casal</option>
-                    <option value = "LuxoDuplo">Luxo duplo</option>
+                    <option value = "Standard casal">Standard casal</option>
+                    <option value = "Standard duplo">Standard duplo</option>
+                    <option value = "Luxo casal">Luxo casal</option>
+                    <option value = "Luxo duplo">Luxo duplo</option>
                 </select>
 
                 <label>CPF ou número de passaporte:</label> {/*Implementar máscara do input depois*/}
@@ -81,7 +97,7 @@ function FormularioDeReserva () {
                 <label>Telefone:</label>
                 <input id = "telefone" type = "text" required></input> {/*Implementar máscara do input depois*/}
 
-                <button type = "submit" onClick = {confirmarReserva()}>Confirmar reserva</button>
+                <button type = "button" onClick = {() => confirmarReserva()}>Confirmar reserva</button>
             </form>
         </div>
     );

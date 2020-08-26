@@ -7,7 +7,7 @@ const requisicao = {
     * @param rota rota em que será feita a requisição
     * @param headers o cabeçalho da requisição. Parâmetro opcional
     */
-    Get: async (rota, headers = {}) =>{
+    get: async (rota, headers = {}) =>{
         const req = await fetch(URL + rota, {
             headers
         } )
@@ -19,7 +19,7 @@ const requisicao = {
     * @param rota rota em que será feita a requisição
     * @param dados os dados que serão enviados a requisição
     */
-    Post: async(rota, dados) =>{
+    post: async(rota, dados) =>{
         const requisicao = await fetch(URL + rota, {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'}, // this line is important, if this content-type is not set it wont work
