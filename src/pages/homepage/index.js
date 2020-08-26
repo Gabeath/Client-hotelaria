@@ -30,7 +30,7 @@ function HomePage() {
 
                             <div className="input-bloco">
                                 <label htmlFor="crianca">Crianças</label>
-                                <input type="number" id="crianca" name="crianca" min="1" max="3" />
+                                <input type="number" id="crianca" name="crianca" min="0" max="2" />
                             </div>
 
                             <div className="input-bloco">

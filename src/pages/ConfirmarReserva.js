@@ -7,7 +7,6 @@ function ConfirmarReserva () {
     return (
         <div>
             <Cabecalho />
-            <p>Testando Página de ConfirmarReserva</p>
             <CaixaDeFormularioDeReserva />
             <Rodape />
         </div>
