@@ -8,8 +8,8 @@ function CaixaDeFormularioDeReserva () {
             <p>
                 Confirmar Reserva
             </p>
-            <DadosIniciaisDaReserva/>
-            <FormularioDeReserva/>
+            <DadosIniciaisDaReserva />
+            <FormularioDeReserva />
         </div>
     );
 }

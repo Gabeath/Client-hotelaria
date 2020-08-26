@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Cabecalho from '../../components/cabecalho';
+import Rodape from '../../components/Rodape';
 import './styles.css';
 
 import standardCasal from '../../assets/images/room_example.jpg';
@@ -8,7 +9,6 @@ import standardDuplo from '../../assets/images/room_example.jpg';
 import luxoCasal from '../../assets/images/room_example.jpg';
 import luxoDuplo from '../../assets/images/room_example.jpg';
 import mapa from '../../assets/images/map_example.jpg';
-import logoImg from '../../assets/images/Logo.png'
 
 
 function HomePage() {
@@ -90,28 +90,7 @@ function HomePage() {
                 </section>
 
             </main>
-            <footer >
-
-                <div className="conteudo">
-
-                    <section className="contato">
-                        <div id="slogan"><h2>Somos um hotel focados em proporcionar a melhor experiência para os nossos clientes</h2></div>
-                        <section>
-                            <h3>Rua XYZ, 684, Jardim America</h3>
-                            <span class="material-icons">phone</span>
-                            <h3>(19) 7070 - 7070</h3>
-                            <span class="material-icons">email</span>
-                            <h3>xyz_hotel.com</h3>
-                        </section>
-
-                    </section>
-
-
-                    <div className="logo">
-                        <img src={logoImg} alt="Logo Hotel XYZ" />
-                    </div>
-                </div>
-            </footer>
+            <Rodape />
         </div>
     )
 }
