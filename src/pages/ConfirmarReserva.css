@@ -1,0 +1,129 @@
+.formulario-de-reserva{
+    width: 80vw;
+    background-color: var(--cor-de-fundo);
+    color: var(--cor-texto-base);
+    font: 400 1.4rem Roboto;
+    line-height: 3.2rem;
+    display: block;
+    
+    border: solid gray;
+    border-width: 1px;
+    border-radius: 4px;
+
+    padding: 1.6rem;
+    margin: 0 auto 1.6rem auto;
+
+    /*display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+    grid-gap: 1.6rem;
+    grid-template-areas: 
+    "nome"
+    "tipoDeQuarto"
+    "cpfNumPassaporte"
+    "cep botaobuscar"
+    "logradouro"
+    "numero complemento"
+    "cidade estado"
+    "telefone"
+    "botaoconfirmar";*/
+}
+
+.reserva {
+    display: flex;
+    flex-direction: column;
+    margin: 1.6rem auto 0 auto;
+    align-items: center;
+}
+
+#nome {
+    grid-area: nome;
+}
+
+#tipoDeQuarto {
+    grid-area: tipoDeQuarto;
+}
+
+#cpfNumPassaporte {
+    grid-area: cpfNumPassaporte;
+}
+
+#cep {
+    grid-area: cep;
+}
+
+#logradouro {
+    grid-area: logradouro;
+}
+
+#numero {
+    grid-area: numero;
+}
+
+#complemento {
+    grid-area: complemento;
+}
+
+#cidade {
+    grid-area: cidade;
+}
+
+#estado {
+    grid-area: estado;
+}
+
+#telefone {
+    grid-area: telefone;
+}
+
+#botaoconfirmar {
+    grid-area: botaoconfirmar;
+    background-color: var( --cor-primaria);
+    color: var(--cor-de-fundo);
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+    width: 50%;
+    display: block;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+#botaobuscar {
+    grid-area: botaobuscar;
+}
+
+#divinterna {
+    align-items: center;
+    justify-content: space-around;
+    padding: 0.6rem;
+    max-width: 100%;
+}
+
+#divinterna * {
+    margin: 0.6rem;
+}
+
+label {
+    width: 10%;
+    display: inline-block;
+    text-align: right;
+}
+
+.inputdivisivel {
+    width: 30%;
+}
+
+input {
+    width: 85%;
+}
+
+select {
+    width: 40%;
+}
+
+p {
+    font-size: 1.6em;
+}
