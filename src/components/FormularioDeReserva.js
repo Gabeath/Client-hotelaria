@@ -60,7 +60,7 @@ function FormularioDeReserva () {
     }
 
     return (
-        <div >
+        <div>
             <form>
                 <div id = "divinterna">
                     <label htmlFor = "nome">Nome completo:</label>
