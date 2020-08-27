@@ -43,7 +43,7 @@ function HomePage() {
 
                             <div className="input-bloco">
                                 <label htmlFor="crianca">Crianças</label>
-                                <input type="number" id="crianca" name="crianca" min="0" max="3"value={criancas} onChange={(e) => {setCriancas(e.target.value)} }/>
+                                <input type="number" id="crianca" name="crianca" min="0" max="2" value={criancas} onChange={(e) => {setCriancas(e.target.value)} }/>
                             </div>
 
                             <div className="input-bloco">
@@ -62,7 +62,7 @@ function HomePage() {
                     <div className="quartos">
                         <h1 id="quartos">Quartos</h1>
 
-                        <sectioin className="quartos-board">
+                        <section className="quartos-board">
                             <figure id="standardCasal">
                                 <img src={standardCasal} alt="Quarto tipo Standard Casal" />
                                 <figcaption>Standard Casal</figcaption>
@@ -79,7 +79,7 @@ function HomePage() {
                                 <img src={luxoDuplo} alt="Quarto tipo Luxo Duplo" />
                                 <figcaption>Luxo Duplo</figcaption>
                             </figure>
-                        </sectioin>
+                        </section>
                     </div>
 
                     <div className="localizacao">

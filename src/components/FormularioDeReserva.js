@@ -1,17 +1,39 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import requisicao from '../functions/requisicao';
-import '../pages/ConfirmarReserva.css'
+import '../pages/ConfirmarReserva.css';
+import { useHistory } from 'react-router-dom';
 
-function FormularioDeReserva () {
+function FormularioDeReserva (props) {
+    var dadosIniciaisDaReserva = {
+        adultos: null,
+        criancas: null,
+        check_in: null,
+        check_out: null
+    };
+
+    const history = useHistory();
+
+    useEffect(() => {
+        if (props.props.props.history.location.state !== undefined) {
+            dadosIniciaisDaReserva = props.props.props.history.location.state;
+        }
+    },);
 
     const confirmarReserva = () => {
+        if (document.getElementById("nome").value === "" || document.getElementById("cpfNumPassaporte").value === "" ||
+            document.getElementById("cep").value === "" || document.getElementById("logradouro").value === "" ||
+            document.getElementById("numero").value === "" || document.getElementById("cidade").value === "" ||
+            document.getElementById("estado").value === "" || document.getElementById("telefone").value === "") {
+                alert("Preencha todos os campos obrigatórios, sinalizados com *");
+                return;
+        }
+
         var cpfNumPassaporte = document.getElementById("cpfNumPassaporte").value;
         var cpf = null;
         var numPassaporte = null;
 
         if (cpfNumPassaporte.length === 11 && !isNaN(cpfNumPassaporte)) {
             cpf = cpfNumPassaporte; /* Falta verificar se o CPF é válido */
-            console.log("CPF válido");
         }
         else {
             if (cpfNumPassaporte.length === 8 && isNaN(cpfNumPassaporte[0]) && isNaN(cpfNumPassaporte[1]) && !isNaN(cpfNumPassaporte.substring(2, 8))) {
@@ -51,24 +73,32 @@ function FormularioDeReserva () {
                                               '&cidade=' + document.getElementById("cidade").value +
                                               '&estado=' + document.getElementById("estado").value +
                                               '&telefone=' + document.getElementById("telefone").value +
-                                              '&quantAdultos=' + /*document.getElementById("quantAdultos").value*/2 +
-                                              '&quantCriancas=' + /*document.getElementById("quantCriancas").value*/1 +
-                                              '&dataInicio=' + /*document.getElementById("dataInicio").value*/new Date() +
-                                              '&dataFim=' + /*document.getElementById("dataFim").value*/new Date() +
+                                              '&quantAdultos=' + dadosIniciaisDaReserva.adultos +
+                                              '&quantCriancas=' + dadosIniciaisDaReserva.criancas +
+                                              '&dataInicio=' + dadosIniciaisDaReserva.check_in +
+                                              '&dataFim=' + dadosIniciaisDaReserva.check_out +
                                               '&tipoDeQuarto=' + document.getElementById("tipoDeQuarto").value
-                                              ).then(res=>console.log(res)).catch(erro=>console.log(erro));
+                                              ).then(res => {
+                                                if (res.status === "Sucesso")
+                                                    alert("Reserva realizada com sucesso! O ID da reserva é: " + res.dados.id);
+                                                else
+                                                    alert("A reserva não pôde ser realizada!\nErro: " + JSON.stringify(res/*.dados.errors[0].message*/));
+                                                history.push('/');
+                                              }).catch(erro => {
+                                                console.log(erro);
+                                              });
     }
 
     return (
         <div>
             <form>
                 <div id = "divinterna">
-                    <label htmlFor = "nome">Nome completo:</label>
+                    <label htmlFor = "nome">Nome completo*:</label>
                     <input id = "nome" type = "text" required></input>
                 </div>
 
                 <div id = "divinterna">
-                    <label htmlFor = "tipoDeQuarto">Tipo do quarto:</label>
+                    <label htmlFor = "tipoDeQuarto">Tipo do quarto*:</label>
                     <select id = "tipoDeQuarto" required>
                         <option value = "Standard casal">Standard casal</option>
                         <option value = "Standard duplo">Standard duplo</option>
@@ -78,23 +108,23 @@ function FormularioDeReserva () {
                 </div>
 
                 <div id = "divinterna">
-                    <label htmlFor = "cpfNumPassaporte">CPF/Passaporte:</label> {/*Implementar máscara do input depois*/}
+                    <label htmlFor = "cpfNumPassaporte">CPF/Passaporte*:</label> {/*Implementar máscara do input depois*/}
                     <input id = "cpfNumPassaporte" className = "inputdivisivel" type = "text" required></input>
                 </div>
 
                 <div id = "divinterna">
-                    <label htmlFor = "cep">CEP:</label> {/*Implementar máscara do input depois*/}
+                    <label htmlFor = "cep">CEP*:</label> {/*Implementar máscara do input depois*/}
                     <input id = "cep" className = "inputdivisivel" type = "text" maxLength = "9" required></input>
                     {/*<button id = "botaobuscar">Buscar CEP</button>*/} {/*Implementar funcionalidade do botão depois*/}
                 </div>
 
                 <div id = "divinterna">
-                    <label htmlFor = "logradouro">Endereço:</label>
+                    <label htmlFor = "logradouro">Endereço*:</label>
                     <input id = "logradouro" type = "text" required></input>
                 </div>
 
                 <div id = "divinterna">
-                    <label htmlFor = "numero">Número:</label>
+                    <label htmlFor = "numero">Número*:</label>
                     <input id = "numero" className = "inputdivisivel" type = "text" required></input>
                 
                     <label htmlFor = "complemento">Complemento:</label>
@@ -102,15 +132,15 @@ function FormularioDeReserva () {
                 </div>
 
                 <div id = "divinterna">
-                    <label htmlFor = "cidade">Cidade:</label>
+                    <label htmlFor = "cidade">Cidade*:</label>
                     <input id = "cidade" className = "inputdivisivel" type = "text" required></input>
 
-                    <label htmlFor = "estado">Estado:</label>
+                    <label htmlFor = "estado">Estado*:</label>
                     <input id = "estado" className = "inputdivisivel" type = "text" maxLength = "2" required></input>
                 </div>
 
                 <div id = "divinterna">
-                    <label htmlFor = "telefone">Telefone:</label>
+                    <label htmlFor = "telefone">Telefone*:</label>
                     <input id = "telefone" className = "inputdivisivel" type = "text" required></input> {/*Implementar máscara do input depois*/}
                 </div>
 
