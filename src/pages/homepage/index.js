@@ -12,6 +12,26 @@ import logoImg from '../../assets/images/Logo.png'
 
 import {useHistory} from 'react-router-dom';
 
+
+const getDia = () => {
+    let date = new Date()
+    let dia = date.getDate()
+    let mes = date.getMonth() + 1
+    let ano = date.getFullYear()
+
+    if(dia < 10){
+        dia = '0' + dia
+    }
+    if(mes < 10){
+        mes='0'+mes
+    }
+    date = ano + '-' + mes + '-' + dia
+    console.log(date)
+    return date
+    
+};
+
+
 function HomePage() {
     const [adultos, setAdultos] = useState(1)
     const [criancas, setCriancas] = useState(0)
@@ -21,9 +41,24 @@ function HomePage() {
     const history = useHistory()
     const enviarReserva = () => {
 
-        history.push({pathname:'/confirmarreserva',
-        state: {adultos, criancas, check_in, check_out}})
+        if(check_out < check_in){
+            alert("Selecione uma data valida. Data de check-out não pode ser inferior da data de check-in")
+        }
+        else if (check_in === '' || check_out === '' || adultos === '' || criancas === '') {
+            alert("Verifique se todos os dados estão preenchidos corretamente para fazer a reserva.")
+        }
+        else if((adultos < 1 || adultos > 3) || (criancas < 0 || criancas > 2 )){
+            alert("É necessario ter no minímo um adulto e capacidade maxíma por quarto é de 3 hóspedes")
+        }
+        else if((adultos + criancas) > 3){
+            alert("Capacidade maxíma por quarto é de 3 hóspedes")
+        }
+        else{
+            history.push({pathname:'/confirmarreserva',
+            state: {adultos, criancas, check_in, check_out}})
+        }       
     }
+
 
     return (
         <div id="page-home">
@@ -48,12 +83,12 @@ function HomePage() {
 
                             <div className="input-bloco">
                                 <label htmlFor="date-in">Check-in</label>
-                                <input type="date" id="date-in"  value={check_in} onChange={(e) => {setCheckIn(e.target.value)} }/>
+                                <input type="date" id="date-in"  value={check_in} onChange={(e) => {setCheckIn(e.target.value)}} min={getDia()}/>
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="date-out">Check-out</label>
-                                <input type="date" id="date-out"  value={check_out} onChange={(e) => {setCheckOut(e.target.value)} }/>
+                                <input type="date" id="date-out"  value={check_out} onChange={(e) => {setCheckOut(e.target.value)} } min={getDia()}/>
                             </div>
                             <button id="submit" type="button" onClick={enviarReserva}>RESERVAR</button>
                         </form>
