@@ -1,11 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import Cabecalho from '../components/cabecalho/index';
+import Rodape from '../components/Rodape';
 import CaixaDeFormularioDeReserva from '../components/CaixaDeFormularioDeReserva';
+import { useHistory } from 'react-router-dom';
 
-function ConfirmarReserva () {
+
+function ConfirmarReserva (props) {
+    
+    const history = useHistory();
+
+    useEffect(() => {
+        if (props.history.location.state === undefined) 
+            history.push('/');
+    }, []);
+
     return (
-        <div id = "teste">
-            <p>Testando Página de ConfirmarReserva</p>
-            <CaixaDeFormularioDeReserva />
+        <div>
+            <Cabecalho />
+            <CaixaDeFormularioDeReserva props = {props} />
+            <Rodape />
         </div>
     );
 }
