@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import Cabecalho from '../../components/cabecalho';
 import './styles.css';
@@ -10,8 +10,7 @@ import luxoDuplo from '../../assets/images/room_example.jpg';
 import mapa from '../../assets/images/map_example.jpg';
 import logoImg from '../../assets/images/Logo.png'
 
-import {useHistory} from 'react-router-dom';
-
+import { useHistory } from 'react-router-dom';
 
 const getDia = () => {
     let date = new Date()
@@ -19,18 +18,16 @@ const getDia = () => {
     let mes = date.getMonth() + 1
     let ano = date.getFullYear()
 
-    if(dia < 10){
+    if (dia < 10) {
         dia = '0' + dia
     }
-    if(mes < 10){
-        mes='0'+mes
+    if (mes < 10) {
+        mes = '0' + mes
     }
     date = ano + '-' + mes + '-' + dia
-    console.log(date)
     return date
-    
-};
 
+};
 
 function HomePage() {
     const [adultos, setAdultos] = useState(1)
@@ -41,22 +38,24 @@ function HomePage() {
     const history = useHistory()
     const enviarReserva = () => {
 
-        if(check_out < check_in){
+        if (check_out < check_in) {
             alert("Selecione uma data valida. Data de check-out não pode ser inferior da data de check-in")
         }
         else if (check_in === '' || check_out === '' || adultos === '' || criancas === '') {
             alert("Verifique se todos os dados estão preenchidos corretamente para fazer a reserva.")
         }
-        else if((adultos < 1 || adultos > 3) || (criancas < 0 || criancas > 2 )){
+        else if ((adultos < 1 || adultos > 3) || (criancas < 0 || criancas > 2)) {
             alert("É necessario ter no minímo um adulto e capacidade maxíma por quarto é de 3 hóspedes")
         }
-        else if((adultos + criancas) > 3){
+        else if ((adultos + criancas) > 3) {
             alert("Capacidade maxíma por quarto é de 3 hóspedes")
         }
-        else{
-            history.push({pathname:'/confirmarreserva',
-            state: {adultos, criancas, check_in, check_out}})
-        }       
+        else {
+            history.push({
+                pathname: '/confirmarreserva',
+                state: { adultos, criancas, check_in, check_out }
+            })
+        }
     }
 
 
@@ -65,7 +64,7 @@ function HomePage() {
             <Cabecalho />
 
             <main id="conteudo">
-                
+
                 <section>
                     <div className="reserva">
                         <h1 id="reserva">Efetuar reserva</h1>
@@ -73,22 +72,22 @@ function HomePage() {
                         <form id="reserva-form">
                             <div className="input-bloco">
                                 <label htmlFor="adulto">Adultos</label>
-                                <input type="number" id="adulto" name="adulto" min="1" max="3" value={adultos} onChange={(e) => {setAdultos(e.target.value)} }/>
+                                <input type="number" id="adulto" name="adulto" min="1" max="3" value={adultos} onChange={(e) => { setAdultos(e.target.value) }} />
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="crianca">Crianças</label>
-                                <input type="number" id="crianca" name="crianca" min="0" max="2" value={criancas} onChange={(e) => {setCriancas(e.target.value)} }/>
+                                <input type="number" id="crianca" name="crianca" min="0" max="2" value={criancas} onChange={(e) => { setCriancas(e.target.value) }} />
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="date-in">Check-in</label>
-                                <input type="date" id="date-in"  value={check_in} onChange={(e) => {setCheckIn(e.target.value)}} min={getDia()}/>
+                                <input type="date" id="date-in" value={check_in} onChange={(e) => { setCheckIn(e.target.value) }} min={getDia()} />
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="date-out">Check-out</label>
-                                <input type="date" id="date-out"  value={check_out} onChange={(e) => {setCheckOut(e.target.value)} } min={getDia()}/>
+                                <input type="date" id="date-out" value={check_out} onChange={(e) => { setCheckOut(e.target.value) }} min={getDia()} />
                             </div>
                             <button id="submit" type="button" onClick={enviarReserva}>RESERVAR</button>
                         </form>
