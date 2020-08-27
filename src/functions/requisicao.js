@@ -1,4 +1,4 @@
-const URL = 'http://localhost:3001/';
+const URL = 'https://api-xyz-hotelaria.herokuapp.com/';
 
 const requisicao = {
 
