@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import requisicao from '../functions/requisicao';
 import '../pages/ConfirmarReserva.css';
 import { useHistory } from 'react-router-dom';
@@ -11,6 +11,7 @@ function FormularioDeReserva(props) {
         check_out: null
     };
 
+    const [cepValue, setCep] = useState('')
     const history = useHistory();
 
     useEffect(() => {
@@ -18,6 +19,54 @@ function FormularioDeReserva(props) {
             dadosIniciaisDaReserva = props.props.props.history.location.state;
         }
     });
+
+    function handleChange(event) {
+        setCep(event)
+    }
+
+    function limpa_formulário_cep() {
+        //Limpa valores do formulário de cep.
+        document.getElementById('logradouro').value = ("");
+        document.getElementById('cidade').value = ("");
+        document.getElementById('estado').value = ("");
+    }
+
+    const pesquisacep = () => {
+        let valor = cepValue;
+        // Nova variável "cep" somente com dígitos.
+        var cep = valor.replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep !== "") {
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if (validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                document.getElementById('logradouro').value = "...";
+                document.getElementById('cidade').value = "...";
+                document.getElementById('estado').value = "...";
+
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then((res) => res.json())
+                    .then((data) => {
+                        document.getElementById('logradouro').value = data.logradouro;
+                        document.getElementById('cidade').value = data.localidade;
+                        document.getElementById('estado').value = data.uf;
+
+                        if (data.logradouro === undefined || data.localidade === undefined || data.uf === undefined) {
+                            limpa_formulário_cep();
+                        }
+                    })
+                setCep(cep)
+            }
+            else {
+                alert("Formato de CEP inválido.");
+            }
+        }
+    };
 
     const confirmarReserva = () => {
         if (document.getElementById("nome").value === "" || document.getElementById("cpfNumPassaporte").value === "" ||
@@ -37,10 +86,9 @@ function FormularioDeReserva(props) {
             var Resto;
             Soma = 0;
             var i;
-            console.log(cpfNumPassaporte)
             if (cpfNumPassaporte === "00000000000") {
                 alert("Digite um número de CPF válido")
-                return false;
+                return;
             }
 
             for (i = 1; i <= 9; i++) Soma = Soma + parseInt(cpfNumPassaporte.substring(i - 1, i)) * (11 - i);
@@ -49,7 +97,7 @@ function FormularioDeReserva(props) {
             if ((Resto === 10) || (Resto === 11)) Resto = 0;
             if (Resto !== parseInt(cpfNumPassaporte.substring(9, 10))) {
                 alert("Digite um número de CPF válido")
-                return false;
+                return;
             }
 
             Soma = 0;
@@ -59,7 +107,7 @@ function FormularioDeReserva(props) {
             if ((Resto === 10) || (Resto === 11)) Resto = 0;
             if (Resto !== parseInt(cpfNumPassaporte.substring(10, 11))) {
                 alert("Digite um número de CPF válido")
-                return false;
+                return;
             }
             cpf = cpfNumPassaporte;
         }
@@ -142,8 +190,7 @@ function FormularioDeReserva(props) {
 
                 <div id="divinterna">
                     <label htmlFor="cep">CEP*:</label> {/*Implementar máscara do input depois*/}
-                    <input id="cep" className="inputdivisivel" type="text" maxLength="9" required></input>
-                    {/*<button id = "botaobuscar">Buscar CEP</button>*/} {/*Implementar funcionalidade do botão depois*/}
+                    <input id="cep" className="inputdivisivel" type="text" maxLength="9" value={cepValue} onChange={(e) => { handleChange(e.target.value) }} onBlur={() => pesquisacep()} required></input>
                 </div>
 
                 <div id="divinterna">
