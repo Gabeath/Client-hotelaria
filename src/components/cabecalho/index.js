@@ -11,7 +11,7 @@ function Cabecalho() {
         <header className="cabecalho">
             <div className="conteudo">
                 <div className="logo">
-                    <Link href="#"><img src={logoImg} alt="Logo Hotel XYZ" /></Link>
+                    <Link to = "/"><img src={logoImg} alt="Logo Hotel XYZ" /></Link>
                 </div>
                 <section className="contato">
                     <PhoneIcon  fontSize="large"/>

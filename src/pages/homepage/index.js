@@ -45,10 +45,10 @@ function HomePage() {
             alert("Verifique se todos os dados estão preenchidos corretamente para fazer a reserva.")
         }
         else if ((adultos < 1 || adultos > 3) || (criancas < 0 || criancas > 2)) {
-            alert("É necessario ter no minímo um adulto e capacidade maxíma por quarto é de 3 hóspedes")
+            alert("É necessario ter no minímo um adulto e capacidade máxima por quarto é de 3 hóspedes")
         }
         else if ((adultos + criancas) > 3) {
-            alert("Capacidade maxíma por quarto é de 3 hóspedes")
+            alert("Capacidade máxima por quarto é de 3 hóspedes")
         }
         else {
             history.push({
@@ -129,7 +129,7 @@ function HomePage() {
                     </div>
                 </section>
                 <section>
-                    <div class="vertical-menu">
+                    <div className="vertical-menu">
                         <a href="#reserva">Reserva</a>
                         <a href="#quartos">Quartos</a>
                         <a href="#localizacao">Localização</a>
@@ -145,9 +145,9 @@ function HomePage() {
                         <div id="slogan"><h2>Somos um hotel focados em proporcionar a melhor experiência para os nossos clientes</h2></div>
                         <section>
                             <h3>Rua XYZ, 684, Jardim America</h3>
-                            <span class="material-icons">phone</span>
+                            <span className="material-icons">phone</span>
                             <h3>(19) 7070 - 7070</h3>
-                            <span class="material-icons">email</span>
+                            <span className="material-icons">email</span>
                             <h3>xyz_hotel.com</h3>
                         </section>
 
