@@ -39,16 +39,16 @@ function HomePage() {
     const enviarReserva = () => {
 
         if (check_out < check_in) {
-            alert("Selecione uma data valida. Data de check-out não pode ser inferior da data de check-in")
+            alert("Selecione uma data válida. A data de check-out não pode ser inferior à data de check-in.")
         }
-        else if (check_in === '' || check_out === '' || adultos === '' || criancas === '') {
+        else if (check_in === '' || check_out === '' || adultos === '' || isNaN(adultos) || criancas === '' || isNaN(criancas)) {
             alert("Verifique se todos os dados estão preenchidos corretamente para fazer a reserva.")
         }
         else if ((adultos < 1 || adultos > 3) || (criancas < 0 || criancas > 2)) {
-            alert("É necessario ter no minímo um adulto e capacidade máxima por quarto é de 3 hóspedes")
+            alert("É necessario ter no mínimo um adulto e a capacidade máxima por quarto é de 3 hóspedes")
         }
         else if ((adultos + criancas) > 3) {
-            alert("Capacidade máxima por quarto é de 3 hóspedes")
+            alert("A capacidade máxima por quarto é de 3 hóspedes")
         }
         else {
             history.push({
@@ -72,12 +72,12 @@ function HomePage() {
                         <form id="reserva-form">
                             <div className="input-bloco">
                                 <label htmlFor="adulto">Adultos</label>
-                                <input type="number" id="adulto" name="adulto" min="1" max="3" value={adultos} onChange={(e) => { setAdultos(e.target.value) }} />
+                                <input type="number" id="adulto" name="adulto" min="1" max="3" value={adultos} onChange={(e) => { setAdultos(parseInt(e.target.value)) }} />
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="crianca">Crianças</label>
-                                <input type="number" id="crianca" name="crianca" min="0" max="2" value={criancas} onChange={(e) => { setCriancas(e.target.value) }} />
+                                <input type="number" id="crianca" name="crianca" min="0" max="2" value={criancas} onChange={(e) => { setCriancas(parseInt(e.target.value)) }} />
                             </div>
 
                             <div className="input-bloco">
