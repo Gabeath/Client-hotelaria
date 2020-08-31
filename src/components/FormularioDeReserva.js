@@ -155,11 +155,13 @@ function FormularioDeReserva(props) {
             '&dataFim=' + dadosIniciaisDaReserva.check_out +
             '&tipoDeQuarto=' + document.getElementById("tipoDeQuarto").value
         ).then(res => {
-            if (res.status === "Sucesso")
+            if (res.status === "Sucesso"){
                 alert("Reserva realizada com sucesso! O ID da reserva é: " + res.dados.id);
+                history.push('/');
+            }
             else
-                alert("A reserva não pôde ser realizada!\nErro: " + JSON.stringify(res/*.dados.errors[0].message*/));
-            history.push('/');
+                alert("A reserva não pôde ser realizada!\nErro: " + res.dados);
+            
         }).catch(erro => {
             console.log(erro);
         });
