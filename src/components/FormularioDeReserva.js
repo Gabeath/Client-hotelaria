@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import requisicao from '../functions/requisicao';
 import '../pages/ConfirmarReserva.css';
+import './Carregando.css';
 import { useHistory } from 'react-router-dom';
 
 function FormularioDeReserva(props) {
@@ -68,11 +69,25 @@ function FormularioDeReserva(props) {
         }
     };
 
+    const carregando = (verdadeiro) => {
+        if (verdadeiro) {
+            document.getElementById("botaoconfirmar").className = "nada";
+            document.getElementById("carregando").className = "carregando";
+        }
+        else {
+            document.getElementById("botaoconfirmar").className = "";
+            document.getElementById("carregando").className = "nada";
+        }
+    }
+
     const confirmarReserva = () => {
+        carregando(true);
+
         if (document.getElementById("nome").value === "" || document.getElementById("cpfNumPassaporte").value === "" ||
             document.getElementById("cep").value === "" || document.getElementById("logradouro").value === "" ||
             document.getElementById("numero").value === "" || document.getElementById("cidade").value === "" ||
             document.getElementById("estado").value === "" || document.getElementById("telefone").value === "") {
+            carregando(false);
             alert("Preencha todos os campos obrigatórios, sinalizados com *");
             return;
         }
@@ -87,6 +102,7 @@ function FormularioDeReserva(props) {
             Soma = 0;
             var i;
             if (cpfNumPassaporte === "00000000000") {
+                carregando(false);
                 alert("Digite um número de CPF válido")
                 return;
             }
@@ -96,6 +112,7 @@ function FormularioDeReserva(props) {
 
             if ((Resto === 10) || (Resto === 11)) Resto = 0;
             if (Resto !== parseInt(cpfNumPassaporte.substring(9, 10))) {
+                carregando(false);
                 alert("Digite um número de CPF válido")
                 return;
             }
@@ -106,6 +123,7 @@ function FormularioDeReserva(props) {
 
             if ((Resto === 10) || (Resto === 11)) Resto = 0;
             if (Resto !== parseInt(cpfNumPassaporte.substring(10, 11))) {
+                carregando(false);
                 alert("Digite um número de CPF válido")
                 return;
             }
@@ -116,6 +134,7 @@ function FormularioDeReserva(props) {
                 numPassaporte = cpfNumPassaporte; /* Falta verificar se o número de passaporte é válido */
             }
             else {
+                carregando(false);
                 alert("Digite um CPF ou número de passaporte válido");
                 return;
             }
@@ -155,12 +174,15 @@ function FormularioDeReserva(props) {
             '&dataFim=' + dadosIniciaisDaReserva.check_out +
             '&tipoDeQuarto=' + document.getElementById("tipoDeQuarto").value
         ).then(res => {
-            if (res.status === "Sucesso")
+            carregando(false);
+            if (res.status === "Sucesso") {
                 alert("Reserva realizada com sucesso! O ID da reserva é: " + res.dados.id);
+                history.push('/');
+            }
             else
-                alert("A reserva não pôde ser realizada!\nErro: " + JSON.stringify(res/*.dados.errors[0].message*/));
-            history.push('/');
+                alert("A reserva não pôde ser realizada!\nErro: " + res.dados);
         }).catch(erro => {
+            carregando(false);
             console.log(erro);
         });
     }
@@ -219,7 +241,8 @@ function FormularioDeReserva(props) {
                     <input id="telefone" className="inputdivisivel" type="text" required></input> {/*Implementar máscara do input depois*/}
                 </div>
 
-                <button id="botaoconfirmar" type="button" onClick={() => confirmarReserva()}>Confirmar reserva</button>
+                <div id="carregando" className ="nada"></div>
+                <button id="botaoconfirmar" className="" type="button" onClick={() => confirmarReserva()}>Confirmar reserva</button>
             </form>
         </div>
     );
