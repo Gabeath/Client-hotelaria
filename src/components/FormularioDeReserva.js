@@ -13,6 +13,7 @@ function FormularioDeReserva(props) {
     };
 
     const [cepValue, setCep] = useState('')
+    const [cpfPassaporte, setCPF_Passaporte] = useState('')
     const history = useHistory();
 
     useEffect(() => {
@@ -21,8 +22,13 @@ function FormularioDeReserva(props) {
         }
     });
 
-    function handleChange(event) {
-        setCep(event)
+    function handleChange(event, id) {
+        if (id === "cep") {
+            setCep(event)
+        }
+        if (id === "cpfNumPassaporte") {
+            setCPF_Passaporte(event)
+        }
     }
 
     function limpa_formulário_cep() {
@@ -61,6 +67,7 @@ function FormularioDeReserva(props) {
                             limpa_formulário_cep();
                         }
                     })
+                cep = mascaraCep(cep)
                 setCep(cep)
             }
             else {
@@ -80,6 +87,27 @@ function FormularioDeReserva(props) {
         }
     }
 
+    function formatarCpfNumPassaporte() {
+        let campoTexto = cpfPassaporte
+        if (campoTexto.length === 11) {
+            campoTexto = mascaraCpf(campoTexto);
+            setCPF_Passaporte(campoTexto)
+        }
+    }
+
+    function mascaraCpf(valor) {
+        return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "\$1.\$2.\$3\-\$4");
+    }
+
+    function mascaraCep(valor) {
+        return valor.replace(/(\d{5})(\d{3})/g, "\$1\-\$2");
+    }
+
+    function retirarFormatacao(campoTexto) {
+        campoTexto = campoTexto.replace(/(\.|\/|\-)/g, "");
+        return campoTexto
+    }
+
     const confirmarReserva = () => {
         carregando(true);
 
@@ -92,7 +120,8 @@ function FormularioDeReserva(props) {
             return;
         }
 
-        var cpfNumPassaporte = document.getElementById("cpfNumPassaporte").value;
+        var cpfNumPassaporte = cpfPassaporte;
+        cpfNumPassaporte = retirarFormatacao(cpfNumPassaporte)
         var cpf = null;
         var numPassaporte = null;
 
@@ -140,28 +169,13 @@ function FormularioDeReserva(props) {
             }
         }
 
-        /*var dados = {
-            nome: document.getElementById("nome").value,
-            cpf: cpf,
-            numPassaporte: numPassaporte,
-            cep: document.getElementById("cep").value,
-            logradouro: document.getElementById("logradouro").value,
-            numero: document.getElementById("numero").value,
-            complemento: document.getElementById("complemento").value,
-            cidade: document.getElementById("cidade").value,
-            estado: document.getElementById("estado").value,
-            telefone: document.getElementById("telefone").value,
-            quant_adultos: 2,
-            quant_criancas: 1,
-            data_inicio: new Date(),
-            data_fim: new Date(),
-            tipoDeQuarto: document.getElementById("tipoDeQuarto").value,
-        }*/
+        let cep = cepValue
+        cep = retirarFormatacao(cep)
 
         requisicao.post("cadastroDeReserva", 'nome=' + document.getElementById("nome").value +
             '&cpf=' + cpf +
             '&numPassaporte=' + numPassaporte +
-            '&cep=' + document.getElementById("cep").value +
+            '&cep=' + cep +
             '&logradouro=' + document.getElementById("logradouro").value +
             '&numero=' + document.getElementById("numero").value +
             '&complemento=' + document.getElementById("complemento").value +
@@ -206,13 +220,13 @@ function FormularioDeReserva(props) {
                 </div>
 
                 <div id="divinterna">
-                    <label htmlFor="cpfNumPassaporte">CPF/Passaporte*:</label> {/*Implementar máscara do input depois*/}
-                    <input id="cpfNumPassaporte" className="inputdivisivel" type="text" required></input>
+                    <label htmlFor="cpfNumPassaporte">CPF/Passaporte*:</label>
+                    <input id="cpfNumPassaporte" className="inputdivisivel" type="text" maxLength="14" value={cpfPassaporte} onChange={(e) => { handleChange(e.target.value, "cpfNumPassaporte") }} onBlur={() => formatarCpfNumPassaporte()} required></input>
                 </div>
 
                 <div id="divinterna">
-                    <label htmlFor="cep">CEP*:</label> {/*Implementar máscara do input depois*/}
-                    <input id="cep" className="inputdivisivel" type="text" maxLength="9" value={cepValue} onChange={(e) => { handleChange(e.target.value) }} onBlur={() => pesquisacep()} required></input>
+                    <label htmlFor="cep">CEP*:</label>
+                    <input id="cep" className="inputdivisivel" type="text" maxLength="9" value={cepValue} onChange={(e) => { handleChange(e.target.value, "cep") }} onBlur={() => pesquisacep()} required></input>
                 </div>
 
                 <div id="divinterna">
@@ -241,7 +255,7 @@ function FormularioDeReserva(props) {
                     <input id="telefone" className="inputdivisivel" type="text" required></input> {/*Implementar máscara do input depois*/}
                 </div>
 
-                <div id="carregando" className ="nada"></div>
+                <div id="carregando" className="nada"></div>
                 <button id="botaoconfirmar" className="" type="button" onClick={() => confirmarReserva()}>Confirmar reserva</button>
             </form>
         </div>
