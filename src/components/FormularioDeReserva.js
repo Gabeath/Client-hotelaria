@@ -190,7 +190,8 @@ function FormularioDeReserva(props) {
         ).then(res => {
             carregando(false);
             if (res.status === "Sucesso") {
-                alert("Reserva realizada com sucesso! O ID da reserva é: " + res.dados.id);
+                console.log(res.dados);
+                alert("Reserva realizada com sucesso!\nO ID da reserva é: " + res.dados.id + "\nA senha da reserva é: " + res.dados.senha);
                 history.push('/');
             }
             else
