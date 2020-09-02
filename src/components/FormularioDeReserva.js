@@ -3,6 +3,7 @@ import requisicao from '../functions/requisicao';
 import '../pages/ConfirmarReserva.css';
 import './Carregando.css';
 import { useHistory } from 'react-router-dom';
+import InputMask from "react-input-mask";
 
 function FormularioDeReserva(props) {
     var dadosIniciaisDaReserva = {
@@ -61,9 +62,6 @@ function FormularioDeReserva(props) {
         if (id === "cep") {
             setCep(event)
         }
-        if (id === "cpfNumPassaporte") {
-            setCPF_Passaporte(event)
-        }
     }
 
     function limpa_formulário_cep() {
@@ -121,18 +119,6 @@ function FormularioDeReserva(props) {
         }
     }
 
-    function formatarCpfNumPassaporte() {
-        let campoTexto = cpfPassaporte
-        if (campoTexto.length === 11) {
-            campoTexto = mascaraCpf(campoTexto);
-            setCPF_Passaporte(campoTexto)
-        }
-    }
-
-    function mascaraCpf(valor) {
-        return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "\$1.\$2.\$3\-\$4");
-    }
-
     function mascaraCep(valor) {
         return valor.replace(/(\d{5})(\d{3})/g, "\$1\-\$2");
     }
@@ -147,7 +133,7 @@ function FormularioDeReserva(props) {
 
         let digito = parseInt(e.key)
         
-        if(!digito)
+        if(!digito && e.key != "0")
             return
         
         let tel = document.getElementById("telefone")
@@ -180,10 +166,27 @@ function FormularioDeReserva(props) {
         
     }
 
+    const trocarParaCPF = () => {
+        document.getElementById("cpf").disabled = false;
+        document.getElementById("numPassaporte").disabled = true;
+        document.getElementById("numPassaporte").value = "";
+        document.getElementById("labelCPF").innerHTML = "CPF*:";
+        document.getElementById("labelPassaporte").innerHTML = "Passaporte:";
+    }
+
+    const trocarParaPassaporte = () => {
+        document.getElementById("cpf").disabled = true;
+        document.getElementById("numPassaporte").disabled = false;
+        document.getElementById("cpf").value = "";
+        document.getElementById("labelCPF").innerHTML = "CPF:";
+        document.getElementById("labelPassaporte").innerHTML = "Passaporte*:";
+    }
+
     const confirmarReserva = () => {
         carregando(true);
 
-        if (document.getElementById("nome").value === "" || document.getElementById("cpfNumPassaporte").value === "" ||
+        if (document.getElementById("nome").value === "" || 
+            (document.getElementById("cpf").value === "" && document.getElementById("numPassaporte").value === "") ||
             document.getElementById("cep").value === "" || document.getElementById("logradouro").value === "" ||
             document.getElementById("numero").value === "" || cidadeSelecionada === "" ||
             ufSelecionada === "" || document.getElementById("telefone").value === "") {
@@ -192,6 +195,20 @@ function FormularioDeReserva(props) {
             return;
         }
 
+        if (document.getElementById("botaoCPF").checked === false && document.getElementById("botaoNumPassaporte").checked === false) {
+            carregando(false);
+            alert("Selecione se deseja utilizar o CPF ou o número de passaporte");
+            return;
+        }
+
+        let regexNome = /^.{2,} (.{2,})+$/;
+        let nome = document.getElementById("nome").value.toString();
+
+        if (!regexNome.test(nome)) {
+            carregando(false);
+            alert("Preencha o seu nome completo");
+            return;
+        }
 
         let regexTelefone = /^\(\d{2}\)\d{4,5}-\d{4}$/
         let telefone = document.getElementById("telefone").value.toString()
@@ -212,68 +229,85 @@ function FormularioDeReserva(props) {
             return
         }
 
-        var cpfNumPassaporte = cpfPassaporte;
-        cpfNumPassaporte = retirarFormatacao(cpfNumPassaporte)
         var cpf = null;
         var numPassaporte = null;
 
-        if (cpfNumPassaporte.length === 11 && !isNaN(cpfNumPassaporte)) {
-            var Soma;
-            var Resto;
-            Soma = 0;
-            var i;
-            if (cpfNumPassaporte === "00000000000") {
-                carregando(false);
-                alert("Digite um número de CPF válido")
-                return;
-            }
-
-            for (i = 1; i <= 9; i++) Soma = Soma + parseInt(cpfNumPassaporte.substring(i - 1, i)) * (11 - i);
-            Resto = (Soma * 10) % 11;
-
-            if ((Resto === 10) || (Resto === 11)) Resto = 0;
-            if (Resto !== parseInt(cpfNumPassaporte.substring(9, 10))) {
-                carregando(false);
-                alert("Digite um número de CPF válido")
-                return;
-            }
-
-            Soma = 0;
-            for (i = 1; i <= 10; i++) Soma = Soma + parseInt(cpfNumPassaporte.substring(i - 1, i)) * (12 - i);
-            Resto = (Soma * 10) % 11;
-
-            if ((Resto === 10) || (Resto === 11)) Resto = 0;
-            if (Resto !== parseInt(cpfNumPassaporte.substring(10, 11))) {
-                carregando(false);
-                alert("Digite um número de CPF válido")
-                return;
-            }
-            cpf = cpfNumPassaporte;
-        }
-        else {
-            if (cpfNumPassaporte.length === 8 && isNaN(cpfNumPassaporte[0]) && isNaN(cpfNumPassaporte[1]) && !isNaN(cpfNumPassaporte.substring(2, 8))) {
-                numPassaporte = cpfNumPassaporte; /* Falta verificar se o número de passaporte é válido */
+        if (document.getElementById("botaoCPF").checked === true) {
+            cpf = retirarFormatacao(document.getElementById("cpf").value);
+            if (cpf.length === 11 && !isNaN(cpf)) {
+                var Soma;
+                var Resto;
+                Soma = 0;
+                var i;
+                if (cpf === "00000000000") {
+                    carregando(false);
+                    alert("Digite um número de CPF válido")
+                    return;
+                }
+    
+                for (i = 1; i <= 9; i++) Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+                Resto = (Soma * 10) % 11;
+    
+                if ((Resto === 10) || (Resto === 11)) Resto = 0;
+                if (Resto !== parseInt(cpf.substring(9, 10))) {
+                    carregando(false);
+                    alert("Digite um número de CPF válido")
+                    return;
+                }
+    
+                Soma = 0;
+                for (i = 1; i <= 10; i++) Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+                Resto = (Soma * 10) % 11;
+    
+                if ((Resto === 10) || (Resto === 11)) Resto = 0;
+                if (Resto !== parseInt(cpf.substring(10, 11))) {
+                    carregando(false);
+                    alert("Digite um número de CPF válido")
+                    return;
+                }
             }
             else {
                 carregando(false);
                 alert("Digite um CPF ou número de passaporte válido");
                 return;
             }
+
+        }
+        else {
+            numPassaporte = document.getElementById("numPassaporte").value;
+            if (numPassaporte.length === 8 && isNaN(numPassaporte[0]) && isNaN(numPassaporte[1]) && !isNaN(numPassaporte.substring(2, 8))) {
+                /* Falta verificar se o número de passaporte é válido */
+            }
+            else {
+                carregando(false);
+                alert("Digite um número de passaporte válido");
+                return;
+            }
         }
 
-        let cep = cepValue
-        cep = retirarFormatacao(cep)
+        let cep = cepValue;
+        cep = retirarFormatacao(cep);
+
+        let regexLogradouroQuantidade = /^.{2,} (.{2,})+$/;
+        let regexLogradouroTamanho = /^.{4,100}$/;
+        let logradouro = document.getElementById("logradouro").value.toString();
+
+        if (!regexLogradouroQuantidade.test(logradouro) || !regexLogradouroTamanho.test(logradouro)) {
+            carregando(false);
+            alert("Verifique seu endereço");
+            return;
+        }
 
         requisicao.post("cadastroDeReserva", 'nome=' + document.getElementById("nome").value +
             '&cpf=' + cpf +
             '&numPassaporte=' + numPassaporte +
             '&cep=' + cep +
-            '&logradouro=' + document.getElementById("logradouro").value +
+            '&logradouro=' + logradouro +
             '&numero=' + document.getElementById("numero").value +
             '&complemento=' + document.getElementById("complemento").value +
             '&cidade=' + document.getElementById("cidade").value +
             '&estado=' + document.getElementById("estado").value +
-            '&telefone=' + document.getElementById("telefone").value +
+            '&telefone=' + telefone +
             '&quantAdultos=' + dadosIniciaisDaReserva.adultos +
             '&quantCriancas=' + dadosIniciaisDaReserva.criancas +
             '&dataInicio=' + dadosIniciaisDaReserva.check_in +
@@ -313,23 +347,33 @@ function FormularioDeReserva(props) {
                 </div>
 
                 <div id="divinterna">
-                    <label htmlFor="cpfNumPassaporte">CPF/Passaporte*:</label>
-                    <input id="cpfNumPassaporte" className="inputdivisivel" type="text" maxLength="14" value={cpfPassaporte} onChange={(e) => { handleChange(e.target.value, "cpfNumPassaporte") }} onBlur={() => formatarCpfNumPassaporte()} required></input>
+                    <label class="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
+                </div>
+
+                <div id="divinterna">
+                    <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => {trocarParaCPF()}}></input>
+                    <label id="labelCPF" htmlFor="cpf" class="cpfNumPassaporte">CPF:</label>
+                    <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99"></InputMask>
+                </div>
+                <div id="divinterna">
+                    <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" class="cpfNumPassaporte" onChange={(e) => {trocarParaPassaporte()}}></input>
+                    <label id="labelPassaporte" htmlFor="numPassaporte" class="cpfNumPassaporte">Passaporte:</label>
+                    <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999"></InputMask>
                 </div>
 
                 <div id="divinterna">
                     <label htmlFor="cep">CEP*:</label>
-                    <input id="cep" className="inputdivisivel" type="text" maxLength="9" value={cepValue} onChange={(e) => { handleChange(e.target.value, "cep") }} onBlur={() => pesquisacep()} required></input>
+                    <InputMask id="cep" className="inputdivisivel" type="text" mask="99999-999" value={cepValue} onChange={(e) => { handleChange(e.target.value, "cep") }} onBlur={() => pesquisacep()} required></InputMask>
                 </div>
 
                 <div id="divinterna">
                     <label htmlFor="logradouro">Endereço*:</label>
-                    <input id="logradouro" type="text" required></input>
+                    <input id="logradouro" type="text" maxLength="100" required></input>
                 </div>
 
                 <div id="divinterna">
                     <label htmlFor="numero">Número*:</label>
-                    <input id="numero" className="inputdivisivel" type="text" required></input>
+                    <input id="numero" className="inputdivisivel" type="number" min="1" required></input>
 
                     <label htmlFor="complemento">Complemento:</label>
                     <input id="complemento" className="inputdivisivel" type="text"></input>

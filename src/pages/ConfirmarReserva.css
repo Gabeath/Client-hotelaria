@@ -119,13 +119,27 @@ label {
     text-align: right;
 }
 
-.inputdivisivel {
+label.cpfNumPassaporte {
+    width: 7%;
+}
+
+label.grande {
+    width: 100%;
+    text-align: left;
+}
+
+input[type="text"].inputdivisivel, select.inputdivisivel {
     width: 30%;
 }
 
-input, select {
+input[type="text"], select {
     width: 85%;
     height: 25px;
+}
+
+input[type="radio"] {
+    width: 3%;
+    margin: none;
 }
 
 select {
