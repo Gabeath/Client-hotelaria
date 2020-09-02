@@ -14,7 +14,6 @@ function FormularioDeReserva(props) {
     };
 
     const [cepValue, setCep] = useState('')
-    const [cpfPassaporte, setCPF_Passaporte] = useState('')
     const [ufs, setUfs] = useState([])
     const [cidades, setCidades] = useState([])
     const [ufSelecionada, setUfSelecionada] = useState("")
