@@ -14,7 +14,7 @@ function Cabecalho() {
                     <Link to = "/"><img src={logoImg} alt="Logo Hotel XYZ" /></Link>
                 </div>
                 <section className="contato">
-                    <PhoneIcon  fontSize="large"/>
+                    <PhoneIcon  fontSize="large" id="phoneIcon"/>
                     <h1>(19) 7070 - 7070</h1>
                 </section>
             </div>

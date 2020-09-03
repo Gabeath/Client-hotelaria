@@ -82,12 +82,12 @@ function HomePage() {
 
                             <div className="input-bloco">
                                 <label htmlFor="date-in">Check-in</label>
-                                <input type="date" id="date-in" value={check_in} onChange={(e) => { setCheckIn(e.target.value) }} min={getDia()} />
+                                <input type="date"  placeholder="Date" id="date-in" value={check_in} onChange={(e) => { setCheckIn(e.target.value) }} min={getDia()} />
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="date-out">Check-out</label>
-                                <input type="date" id="date-out" value={check_out} onChange={(e) => { setCheckOut(e.target.value) }} min={getDia()} />
+                                <input type="date" placeholder="Date" id="date-out" value={check_out} onChange={(e) => { setCheckOut(e.target.value) }} min={getDia()} />
                             </div>
                             <button id="submit" type="button" onClick={enviarReserva}>RESERVAR</button>
                         </form>
@@ -142,21 +142,24 @@ function HomePage() {
                 <div className="conteudo">
 
                     <section className="contato">
+                    <div className="logo">
+                        <img src={logoImg} alt="Logo Hotel XYZ" />
+                    </div>
                         <div id="slogan"><h2>Somos um hotel focados em proporcionar a melhor experiência para os nossos clientes</h2></div>
                         <section>
                             <h3>Rua XYZ, 684, Jardim America</h3>
-                            <span className="material-icons">phone</span>
+                            <span className="material-icons" id="phoneIcon">phone</span>
                             <h3>(19) 7070 - 7070</h3>
-                            <span className="material-icons">email</span>
+                            <span className="material-icons" id="emailIcon">email</span>
                             <h3>xyz_hotel.com</h3>
                         </section>
+
+                        
 
                     </section>
 
 
-                    <div className="logo">
-                        <img src={logoImg} alt="Logo Hotel XYZ" />
-                    </div>
+                    
                 </div>
             </footer>
         </div>

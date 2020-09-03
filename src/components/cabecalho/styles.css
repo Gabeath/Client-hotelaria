@@ -7,7 +7,7 @@
 }
 
 .cabecalho .conteudo {
-    width: 100%;
+    width: 80vw;
     margin: 0 auto;
    
 
@@ -37,15 +37,21 @@
     margin-left: 10px;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 530px) {
 
     .cabecalho .conteudo {
         justify-content: center;
         align-items: center;
         display: flex;
+        margin: 0 auto;
+
+        font: 500 3vw Montserrat;
     }
-    .cabecalho .conteudo  img {
+    .cabecalho .conteudo  .logo {
         width: 40%;
+    }
+    .cabecalho .conteudo #phoneIcon {
+        font-size: medium;
     }
 
 }
