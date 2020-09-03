@@ -9,13 +9,17 @@ function DadosIniciaisDaReserva (props) {
         check_out: null
     };
 
+    function converterFormatoDeData (data) {
+        return data.substring(8, 10) + "/" + data.substring(5, 7) + "/" + data.substring(0, 4);
+    }
+
     useEffect(() => {
         if (props.props.props.history.location.state !== undefined) {
             dadosIniciaisDaReserva = props.props.props.history.location.state;
             document.getElementById("paragrafoAdultos").innerHTML += dadosIniciaisDaReserva.adultos;
             document.getElementById("paragrafoCriancas").innerHTML += dadosIniciaisDaReserva.criancas;
-            document.getElementById("paragrafoCheckIn").innerHTML += dadosIniciaisDaReserva.check_in;
-            document.getElementById("paragrafoCheckOut").innerHTML += dadosIniciaisDaReserva.check_out;
+            document.getElementById("paragrafoCheckIn").innerHTML += converterFormatoDeData(dadosIniciaisDaReserva.check_in);
+            document.getElementById("paragrafoCheckOut").innerHTML += converterFormatoDeData(dadosIniciaisDaReserva.check_out);
         }
     },);
 

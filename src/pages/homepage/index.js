@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import Cabecalho from '../../components/cabecalho';
 import './styles.css';
@@ -10,7 +10,24 @@ import luxoDuplo from '../../assets/images/room_example.jpg';
 import mapa from '../../assets/images/map_example.jpg';
 import logoImg from '../../assets/images/Logo.png'
 
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
+const getDia = () => {
+    let date = new Date()
+    let dia = date.getDate()
+    let mes = date.getMonth() + 1
+    let ano = date.getFullYear()
+
+    if (dia < 10) {
+        dia = '0' + dia
+    }
+    if (mes < 10) {
+        mes = '0' + mes
+    }
+    date = ano + '-' + mes + '-' + dia
+    return date
+
+};
 
 function HomePage() {
     const [adultos, setAdultos] = useState(1)
@@ -21,16 +38,33 @@ function HomePage() {
     const history = useHistory()
     const enviarReserva = () => {
 
-        history.push({pathname:'/confirmarreserva',
-        state: {adultos, criancas, check_in, check_out}})
+        if (check_out < check_in) {
+            alert("Selecione uma data válida. A data de check-out não pode ser inferior à data de check-in.")
+        }
+        else if (check_in === '' || check_out === '' || adultos === '' || isNaN(adultos) || criancas === '' || isNaN(criancas)) {
+            alert("Verifique se todos os dados estão preenchidos corretamente para fazer a reserva.")
+        }
+        else if ((adultos < 1 || adultos > 3) || (criancas < 0 || criancas > 2)) {
+            alert("É necessario ter no mínimo um adulto e a capacidade máxima por quarto é de 3 hóspedes")
+        }
+        else if ((adultos + criancas) > 3) {
+            alert("A capacidade máxima por quarto é de 3 hóspedes")
+        }
+        else {
+            history.push({
+                pathname: '/confirmarreserva',
+                state: { adultos, criancas, check_in, check_out }
+            })
+        }
     }
+
 
     return (
         <div id="page-home">
             <Cabecalho />
 
             <main id="conteudo">
-                
+
                 <section>
                     <div className="reserva">
                         <h1 id="reserva">Efetuar reserva</h1>
@@ -38,22 +72,22 @@ function HomePage() {
                         <form id="reserva-form">
                             <div className="input-bloco">
                                 <label htmlFor="adulto">Adultos</label>
-                                <input type="number" id="adulto" name="adulto" min="1" max="3" value={adultos} onChange={(e) => {setAdultos(e.target.value)} }/>
+                                <input type="number" id="adulto" name="adulto" min="1" max="3" value={adultos} onChange={(e) => { setAdultos(parseInt(e.target.value)) }} />
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="crianca">Crianças</label>
-                                <input type="number" id="crianca" name="crianca" min="0" max="2" value={criancas} onChange={(e) => {setCriancas(e.target.value)} }/>
+                                <input type="number" id="crianca" name="crianca" min="0" max="2" value={criancas} onChange={(e) => { setCriancas(parseInt(e.target.value)) }} />
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="date-in">Check-in</label>
-                                <input type="date" id="date-in"  value={check_in} onChange={(e) => {setCheckIn(e.target.value)} }/>
+                                <input type="date" id="date-in" value={check_in} onChange={(e) => { setCheckIn(e.target.value) }} min={getDia()} />
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="date-out">Check-out</label>
-                                <input type="date" id="date-out"  value={check_out} onChange={(e) => {setCheckOut(e.target.value)} }/>
+                                <input type="date" id="date-out" value={check_out} onChange={(e) => { setCheckOut(e.target.value) }} min={getDia()} />
                             </div>
                             <button id="submit" type="button" onClick={enviarReserva}>RESERVAR</button>
                         </form>
@@ -95,7 +129,7 @@ function HomePage() {
                     </div>
                 </section>
                 <section>
-                    <div class="vertical-menu">
+                    <div className="vertical-menu">
                         <a href="#reserva">Reserva</a>
                         <a href="#quartos">Quartos</a>
                         <a href="#localizacao">Localização</a>
@@ -111,9 +145,9 @@ function HomePage() {
                         <div id="slogan"><h2>Somos um hotel focados em proporcionar a melhor experiência para os nossos clientes</h2></div>
                         <section>
                             <h3>Rua XYZ, 684, Jardim America</h3>
-                            <span class="material-icons">phone</span>
+                            <span className="material-icons">phone</span>
                             <h3>(19) 7070 - 7070</h3>
-                            <span class="material-icons">email</span>
+                            <span className="material-icons">email</span>
                             <h3>xyz_hotel.com</h3>
                         </section>
 

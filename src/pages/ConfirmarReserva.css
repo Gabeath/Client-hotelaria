@@ -86,9 +86,16 @@
     font: 700 1.6rem Montserrat;
     transition: 0.5s;
     width: 50%;
-    display: block;
     margin-left: 25%;
     margin-right: 25%;
+}
+
+#carregando {
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+    display: block;
+    margin: 0 auto;
 }
 
 #botaobuscar {
@@ -112,12 +119,27 @@ label {
     text-align: right;
 }
 
-.inputdivisivel {
+label.cpfNumPassaporte {
+    width: 7%;
+}
+
+label.grande {
+    width: 100%;
+    text-align: left;
+}
+
+input[type="text"].inputdivisivel, select.inputdivisivel {
     width: 30%;
 }
 
-input {
+input[type="text"], select {
     width: 85%;
+    height: 25px;
+}
+
+input[type="radio"] {
+    width: 3%;
+    margin: none;
 }
 
 select {
