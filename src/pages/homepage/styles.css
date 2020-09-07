@@ -191,9 +191,9 @@ footer .conteudo .contato section {
     display: flex;
     justify-content: space-between;
    
-    align-items: start;
+    align-items: flex-start;
        
-        flex-direction: column;
+    flex-direction: column;
     
 }
 footer .conteudo #phoneIcon, #emailIcon{
@@ -270,7 +270,7 @@ footer .conteudo #phoneIcon, #emailIcon{
     } 
     footer .conteudo .contato section {
         justify-content: space-between;
-        align-items: start;
+        align-items: flex-start;
         display: flex;
         flex-direction: column;
         font: 700 0.1 Montserrat;

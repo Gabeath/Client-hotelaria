@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import iconeCalendario from '../assets/images/iconeCalendario.png';
 
-function DadosIniciaisDaReserva (props) {
+function DadosIniciaisDaReserva ({dados}) {
     var dadosIniciaisDaReserva = {
         adultos: null,
         criancas: null,
@@ -14,8 +14,8 @@ function DadosIniciaisDaReserva (props) {
     }
 
     useEffect(() => {
-        if (props.props.props.history.location.state !== undefined) {
-            dadosIniciaisDaReserva = props.props.props.history.location.state;
+        if (dados.history.location.state !== undefined) {
+            dadosIniciaisDaReserva = dados.history.location.state;
             document.getElementById("paragrafoAdultos").innerHTML += dadosIniciaisDaReserva.adultos;
             document.getElementById("paragrafoCriancas").innerHTML += dadosIniciaisDaReserva.criancas;
             document.getElementById("paragrafoCheckIn").innerHTML += converterFormatoDeData(dadosIniciaisDaReserva.check_in);

@@ -1,30 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import requisicao from '../functions/requisicao';
 import '../pages/ConfirmarReserva.css';
 import './Carregando.css';
-import { useHistory } from 'react-router-dom';
 import InputMask from "react-input-mask";
 
-function FormularioDeReserva(props) {
-    var dadosIniciaisDaReserva = {
-        adultos: null,
-        criancas: null,
-        check_in: null,
-        check_out: null
-    };
+import BotaoConfirmar from './BotaoConfirmar';
+
+function FormularioDeReserva({dados}) {
 
     const [cepValue, setCep] = useState('')
     const [ufs, setUfs] = useState([])
     const [cidades, setCidades] = useState([])
     const [ufSelecionada, setUfSelecionada] = useState("")
     const [cidadeSelecionada, setCidadeSelecionada] = useState("")
-    const history = useHistory();
-
-    useEffect(() => {
-        if (props.props.props.history.location.state !== undefined) {
-            dadosIniciaisDaReserva = props.props.props.history.location.state;
-        }
-    });
 
     useEffect(() => {
         async function buscarUFS(){
@@ -107,24 +94,8 @@ function FormularioDeReserva(props) {
         }
     };
 
-    const carregando = (verdadeiro) => {
-        if (verdadeiro) {
-            document.getElementById("botaoconfirmar").className = "nada";
-            document.getElementById("carregando").className = "carregando";
-        }
-        else {
-            document.getElementById("botaoconfirmar").className = "";
-            document.getElementById("carregando").className = "nada";
-        }
-    }
-
     function mascaraCep(valor) {
-        return valor.replace(/(\d{5})(\d{3})/g, "\$1\-\$2");
-    }
-
-    function retirarFormatacao(campoTexto) {
-        campoTexto = campoTexto.replace(/(\.|\/|\-)/g, "");
-        return campoTexto
+        return valor.replace(/(\d{5})(\d{3})/g, "$1-$2");
     }
 
     function mascararTelefone(e){
@@ -132,27 +103,27 @@ function FormularioDeReserva(props) {
 
         let digito = parseInt(e.key)
         
-        if(!digito && e.key != "0")
+        if(!digito && e.key !== "0")
             return
         
         let tel = document.getElementById("telefone")
 
-        if(tel.value.length == 0){
+        if(tel.value.length === 0){
             tel.value = "(" + e.key
             return
         }
 
-        if(tel.value.length == 3){
+        if(tel.value.length === 3){
             tel.value += ")" + e.key
             return
         }
 
-        if(tel.value.length == 8){
+        if(tel.value.length === 8){
             tel.value += "-" + e.key
             return
         }
 
-        if(tel.value.length == 13){
+        if(tel.value.length === 13){
             let substringinicio = tel.value.substring(0,8)
             let digito = tel.value.charAt(9)
             let substringFim = tel.value.substring(10)
@@ -181,152 +152,6 @@ function FormularioDeReserva(props) {
         document.getElementById("labelPassaporte").innerHTML = "Passaporte*:";
     }
 
-    const confirmarReserva = () => {
-        carregando(true);
-
-        if (document.getElementById("nome").value === "" || 
-            (document.getElementById("cpf").value === "" && document.getElementById("numPassaporte").value === "") ||
-            document.getElementById("cep").value === "" || document.getElementById("logradouro").value === "" ||
-            document.getElementById("numero").value === "" || cidadeSelecionada === "" ||
-            ufSelecionada === "" || document.getElementById("telefone").value === "") {
-            carregando(false);
-            alert("Preencha todos os campos obrigatórios, sinalizados com *");
-            return;
-        }
-
-        if (document.getElementById("botaoCPF").checked === false && document.getElementById("botaoNumPassaporte").checked === false) {
-            carregando(false);
-            alert("Selecione se deseja utilizar o CPF ou o número de passaporte");
-            return;
-        }
-
-        let regexNome = /^.{2,} (.{2,})+$/;
-        let nome = document.getElementById("nome").value.toString();
-
-        if (!regexNome.test(nome)) {
-            carregando(false);
-            alert("Preencha o seu nome completo");
-            return;
-        }
-
-        let regexTelefone = /^\(\d{2}\)\d{4,5}-\d{4}$/
-        let telefone = document.getElementById("telefone").value.toString()
-
-        if(!regexTelefone.test(telefone)){
-            carregando(false);
-            alert("Preencha o telefone corretamente: \n exemplo: (11)1111-1111 ou (11)11111-1111")
-            return
-        }
-
-        telefone = telefone.replace("-", "")
-        telefone = telefone.replace("(", "")
-        telefone = telefone.replace(")", "")
-
-        if(document.getElementById("complemento").value.length > 50){
-            carregando(false)
-            alert("O complemento deve ter no máximo 50 caracteres")
-            return
-        }
-
-        var cpf = null;
-        var numPassaporte = null;
-
-        if (document.getElementById("botaoCPF").checked === true) {
-            cpf = retirarFormatacao(document.getElementById("cpf").value);
-            if (cpf.length === 11 && !isNaN(cpf)) {
-                var Soma;
-                var Resto;
-                Soma = 0;
-                var i;
-                if (cpf === "00000000000") {
-                    carregando(false);
-                    alert("Digite um número de CPF válido")
-                    return;
-                }
-    
-                for (i = 1; i <= 9; i++) Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
-                Resto = (Soma * 10) % 11;
-    
-                if ((Resto === 10) || (Resto === 11)) Resto = 0;
-                if (Resto !== parseInt(cpf.substring(9, 10))) {
-                    carregando(false);
-                    alert("Digite um número de CPF válido")
-                    return;
-                }
-    
-                Soma = 0;
-                for (i = 1; i <= 10; i++) Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
-                Resto = (Soma * 10) % 11;
-    
-                if ((Resto === 10) || (Resto === 11)) Resto = 0;
-                if (Resto !== parseInt(cpf.substring(10, 11))) {
-                    carregando(false);
-                    alert("Digite um número de CPF válido")
-                    return;
-                }
-            }
-            else {
-                carregando(false);
-                alert("Digite um CPF ou número de passaporte válido");
-                return;
-            }
-
-        }
-        else {
-            numPassaporte = document.getElementById("numPassaporte").value;
-            if (numPassaporte.length === 8 && isNaN(numPassaporte[0]) && isNaN(numPassaporte[1]) && !isNaN(numPassaporte.substring(2, 8))) {
-                /* Falta verificar se o número de passaporte é válido */
-            }
-            else {
-                carregando(false);
-                alert("Digite um número de passaporte válido");
-                return;
-            }
-        }
-
-        let cep = cepValue;
-        cep = retirarFormatacao(cep);
-
-        let regexLogradouroQuantidade = /^.{2,} (.{2,})+$/;
-        let regexLogradouroTamanho = /^.{4,100}$/;
-        let logradouro = document.getElementById("logradouro").value.toString();
-
-        if (!regexLogradouroQuantidade.test(logradouro) || !regexLogradouroTamanho.test(logradouro)) {
-            carregando(false);
-            alert("Verifique seu endereço");
-            return;
-        }
-
-        requisicao.post("cadastroDeReserva", 'nome=' + document.getElementById("nome").value +
-            '&cpf=' + cpf +
-            '&numPassaporte=' + numPassaporte +
-            '&cep=' + cep +
-            '&logradouro=' + logradouro +
-            '&numero=' + document.getElementById("numero").value +
-            '&complemento=' + document.getElementById("complemento").value +
-            '&cidade=' + document.getElementById("cidade").value +
-            '&estado=' + document.getElementById("estado").value +
-            '&telefone=' + telefone +
-            '&quantAdultos=' + dadosIniciaisDaReserva.adultos +
-            '&quantCriancas=' + dadosIniciaisDaReserva.criancas +
-            '&dataInicio=' + dadosIniciaisDaReserva.check_in +
-            '&dataFim=' + dadosIniciaisDaReserva.check_out +
-            '&tipoDeQuarto=' + document.getElementById("tipoDeQuarto").value
-        ).then(res => {
-            carregando(false);
-            if (res.status === "Sucesso") {
-                console.log(res.dados);
-                alert("Reserva realizada com sucesso!\nO ID da reserva é: " + res.dados.id + "\nA senha da reserva é: " + res.dados.senha);
-                history.push('/');
-            }
-            else
-                alert("A reserva não pôde ser realizada!\nErro: " + res.dados);
-        }).catch(erro => {
-            carregando(false);
-            console.log(erro);
-        });
-    }
-
     return (
         <div>
             <form>
@@ -346,17 +171,17 @@ function FormularioDeReserva(props) {
                 </div>
 
                 <div id="divinterna">
-                    <label class="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
+                    <label className="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
                 </div>
 
                 <div id="divinterna">
                     <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => {trocarParaCPF()}}></input>
-                    <label id="labelCPF" htmlFor="cpf" class="cpfNumPassaporte">CPF:</label>
+                    <label id="labelCPF" htmlFor="cpf" className="cpfNumPassaporte">CPF:</label>
                     <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99"></InputMask>
                 </div>
                 <div id="divinterna">
-                    <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" class="cpfNumPassaporte" onChange={(e) => {trocarParaPassaporte()}}></input>
-                    <label id="labelPassaporte" htmlFor="numPassaporte" class="cpfNumPassaporte">Passaporte:</label>
+                    <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" className="cpfNumPassaporte" onChange={(e) => {trocarParaPassaporte()}}></input>
+                    <label id="labelPassaporte" htmlFor="numPassaporte" className="cpfNumPassaporte">Passaporte:</label>
                     <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999"></InputMask>
                 </div>
 
@@ -402,8 +227,7 @@ function FormularioDeReserva(props) {
                     <input id="telefone" onKeyPress = {mascararTelefone} className="inputdivisivel" type="text" required></input> {/*Implementar máscara do input depois*/}
                 </div>
 
-                <div id="carregando" className="nada"></div>
-                <button id="botaoconfirmar" className="" type="button" onClick={() => confirmarReserva()}>Confirmar reserva</button>
+                <BotaoConfirmar dados = {dados} cidadeSelecionada = {cidadeSelecionada} ufSelecionada = {ufSelecionada} cep = {cepValue} />
             </form>
         </div>
     );
