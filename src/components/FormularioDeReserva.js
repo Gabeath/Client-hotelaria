@@ -207,7 +207,7 @@ function FormularioDeReserva({dados}) {
 
                     <label htmlFor="estado">Estado*:</label>
                     <select id="estado" value = {ufSelecionada} onChange = {(event) => setUfSelecionada(event.target.value)} className="inputdivisivel" required>
-                        <option value = "">Selecione o Estado</option>
+                        <option value = "">Selecione o estado</option>
                         {
                             ufs.map(uf => <option key = {uf.sigla} value = {uf.sigla}>{uf.sigla}</option>)
                         }
