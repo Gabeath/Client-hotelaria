@@ -1,7 +1,7 @@
 import React from 'react';
 import DadosIniciaisDaReserva from './DadosIniciaisDaReserva';
 import FormularioDeReserva from './FormularioDeReserva';
-import '../pages/ConfirmarReserva.css'
+import '../pages/ConfirmarAlterarReserva.css'
 
 function CaixaDeFormularioDeReserva ({dados, nome}) {
     return (

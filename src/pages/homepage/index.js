@@ -11,23 +11,7 @@ import luxoDuplo from '../../assets/images/room_example.jpg';
 import mapa from '../../assets/images/map_example.jpg';
 
 import { useHistory } from 'react-router-dom';
-
-const getDia = () => {
-    let date = new Date()
-    let dia = date.getDate()
-    let mes = date.getMonth() + 1
-    let ano = date.getFullYear()
-
-    if (dia < 10) {
-        dia = '0' + dia
-    }
-    if (mes < 10) {
-        mes = '0' + mes
-    }
-    date = ano + '-' + mes + '-' + dia
-    return date
-
-};
+import validacao from '../../functions/validacao';
 
 function HomePage() {
     const [adultos, setAdultos] = useState(1)
@@ -82,12 +66,12 @@ function HomePage() {
 
                             <div className="input-bloco">
                                 <label htmlFor="date-in">Check-in</label>
-                                <input type="date"  placeholder="Date" id="date-in" value={check_in} onChange={(e) => { setCheckIn(e.target.value) }} min={getDia()} />
+                                <input type="date"  placeholder="Date" id="date-in" value={check_in} onChange={(e) => { setCheckIn(e.target.value) }} min={validacao.diaAtual()} />
                             </div>
 
                             <div className="input-bloco">
                                 <label htmlFor="date-out">Check-out</label>
-                                <input type="date" placeholder="Date" id="date-out" value={check_out} onChange={(e) => { setCheckOut(e.target.value) }} min={getDia()} />
+                                <input type="date" placeholder="Date" id="date-out" value={check_out} onChange={(e) => { setCheckOut(e.target.value) }} min={validacao.diaAtual()} />
                             </div>
                             <button id="submit" type="button" onClick={enviarReserva}>RESERVAR</button>
                         </form>

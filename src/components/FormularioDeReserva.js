@@ -1,17 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import '../pages/ConfirmarReserva.css';
+import '../pages/ConfirmarAlterarReserva.css';
 import './Carregando.css';
 import InputMask from "react-input-mask";
 
 import BotaoConfirmar from './BotaoConfirmar';
+import validacao from '../functions/validacao';
 
-function FormularioDeReserva({dados}) {
+function FormularioDeReserva({dados, nome}) {
 
     const [cepValue, setCep] = useState('')
     const [ufs, setUfs] = useState([])
     const [cidades, setCidades] = useState([])
     const [ufSelecionada, setUfSelecionada] = useState("")
     const [cidadeSelecionada, setCidadeSelecionada] = useState("")
+
+    useEffect(() => {
+        if (nome === "Alterar") {
+            document.getElementById("nome").setAttribute("value", dados.nome);
+            document.getElementById("tipoDeQuarto").setAttribute("value", dados.tipoDeQuarto);
+            document.getElementById("quantAdultos").setAttribute("value", dados.quantAdultos);
+            document.getElementById("quantCriancas").setAttribute("value", dados.quantCriancas);
+            document.getElementById("checkIn").setAttribute("value", dados.checkIn);
+            document.getElementById("checkOut").setAttribute("value", dados.checkOut);
+            /*document.getElementById("botaoCPF").setAttribute("value", dados.botaoCPF);*/
+            document.getElementById("cpf").setAttribute("value", dados.cpf);
+            document.getElementById("numPassaporte").setAttribute("value", dados.numPassaporte);
+            document.getElementById("cep").setAttribute("value", dados.cep);
+            document.getElementById("logradouro").setAttribute("value", dados.logradouro);
+            document.getElementById("numero").setAttribute("value", dados.numero);
+            document.getElementById("complemento").setAttribute("value", dados.complemento);
+            document.getElementById("estado").setAttribute("value", dados.estado);
+            document.getElementById("cidade").setAttribute("value", dados.cidade);
+            document.getElementById("telefone").setAttribute("value", dados.telefone);
+        }
+    },[])
 
     useEffect(() => {
         async function buscarUFS(){
@@ -155,12 +177,12 @@ function FormularioDeReserva({dados}) {
     return (
         <div>
             <form>
-                <div id="divinterna">
+                <div className="divinterna">
                     <label htmlFor="nome">Nome completo*:</label>
                     <input id="nome" type="text" required></input>
                 </div>
 
-                <div id="divinterna">
+                <div className="divinterna">
                     <label htmlFor="tipoDeQuarto">Tipo do quarto*:</label>
                     <select id="tipoDeQuarto" required>
                         <option value="Standard casal">Standard casal</option>
@@ -170,32 +192,57 @@ function FormularioDeReserva({dados}) {
                     </select>
                 </div>
 
-                <div id="divinterna">
+                {nome === "Alterar" ? 
+                    (<div>
+                        <div className="divinterna">
+                            <label htmlFor="quantAdultos">Quantidade de adultos*:</label>
+                            <input id="quantAdultos" type="number" className="inputdivisivel" min="1" max="3" required />
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="quantCriancas">Quantidade de crianças*:</label>
+                            <input id="quantCriancas" type="number" className="inputdivisivel" min="0" max="2" required />
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="checkIn">Check-in*:</label>
+                            <input id="checkIn" type="date" placeholder="Date" min={validacao.diaAtual()} required />
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="checkOut">Check-out*:</label>
+                            <input id="checkOut" type="date" placeholder="Date" min={validacao.diaAtual()} />
+                        </div>
+                    </div>)
+                    : null
+                }
+
+                <div className="divinterna">
                     <label className="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
                 </div>
 
-                <div id="divinterna">
+                <div className="divinterna">
                     <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => {trocarParaCPF()}}></input>
                     <label id="labelCPF" htmlFor="cpf" className="cpfNumPassaporte">CPF:</label>
                     <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99"></InputMask>
                 </div>
-                <div id="divinterna">
+                <div className="divinterna">
                     <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" className="cpfNumPassaporte" onChange={(e) => {trocarParaPassaporte()}}></input>
                     <label id="labelPassaporte" htmlFor="numPassaporte" className="cpfNumPassaporte">Passaporte:</label>
                     <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999"></InputMask>
                 </div>
 
-                <div id="divinterna">
+                <div className="divinterna">
                     <label htmlFor="cep">CEP*:</label>
                     <InputMask id="cep" className="inputdivisivel" type="text" mask="99999-999" value={cepValue} onChange={(e) => { handleChange(e.target.value, "cep") }} onBlur={() => pesquisacep()} required></InputMask>
                 </div>
 
-                <div id="divinterna">
+                <div className="divinterna">
                     <label htmlFor="logradouro">Endereço*:</label>
                     <input id="logradouro" type="text" maxLength="100" required></input>
                 </div>
 
-                <div id="divinterna">
+                <div className="divinterna">
                     <label htmlFor="numero">Número*:</label>
                     <input id="numero" className="inputdivisivel" type="number" min="1" required></input>
 
@@ -203,7 +250,7 @@ function FormularioDeReserva({dados}) {
                     <input id="complemento" className="inputdivisivel" type="text"></input>
                 </div>
 
-                <div id="divinterna">
+                <div className="divinterna">
 
                     <label htmlFor="estado">Estado*:</label>
                     <select id="estado" value = {ufSelecionada} onChange = {(event) => setUfSelecionada(event.target.value)} className="inputdivisivel" required>
@@ -222,7 +269,7 @@ function FormularioDeReserva({dados}) {
                     </select>
                 </div>
 
-                <div id="divinterna">
+                <div className="divinterna">
                     <label htmlFor="telefone">Telefone*:</label>
                     <input id="telefone" onKeyPress = {mascararTelefone} className="inputdivisivel" type="text" required></input> {/*Implementar máscara do input depois*/}
                 </div>
