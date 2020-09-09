@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import requisicao from '../functions/requisicao';
 import validacao from '../functions/validacao';
 
-function BotaoConfirmar ({dados, cidadeSelecionada, ufSelecionada, cep}) {
+function BotaoConfirmar ({dados, tipoDeQuarto, cpf, numPassaporte, cep, cidadeSelecionada, ufSelecionada}) {
     var dadosIniciaisDaReserva = {
         adultos: null,
         criancas: null,
@@ -25,7 +25,7 @@ function BotaoConfirmar ({dados, cidadeSelecionada, ufSelecionada, cep}) {
             document.getElementById("carregando").className = "carregando";
         }
         else {
-            document.getElementById("botaoconfirmar").className = "";
+            document.getElementById("botaoconfirmar").className = "botaoReserva";
             document.getElementById("carregando").className = "nada";
         }
     }
@@ -34,7 +34,7 @@ function BotaoConfirmar ({dados, cidadeSelecionada, ufSelecionada, cep}) {
         carregando(true);
 
         if (document.getElementById("nome").value === "" || 
-            (document.getElementById("cpf").value === "" && document.getElementById("numPassaporte").value === "") ||
+            (cpf === "" && numPassaporte === "") ||
             document.getElementById("cep").value === "" || document.getElementById("logradouro").value === "" ||
             document.getElementById("numero").value === "" || cidadeSelecionada === "" ||
             ufSelecionada === "" || document.getElementById("telefone").value === "") {
@@ -51,6 +51,7 @@ function BotaoConfirmar ({dados, cidadeSelecionada, ufSelecionada, cep}) {
 
         let nome = document.getElementById("nome").value.toString();
 
+        
         if (!validacao.validarNome(nome)) {
             carregando(false);
             alert("Preencha o seu nome completo");
@@ -67,6 +68,8 @@ function BotaoConfirmar ({dados, cidadeSelecionada, ufSelecionada, cep}) {
 
         telefone = validacao.limparFormatacao(telefone);
 
+        cep = validacao.limparFormatacao(cep.toString());
+
         let complemento = document.getElementById("complemento").value;
 
         if(!validacao.validarComplemento(complemento)) {
@@ -75,11 +78,8 @@ function BotaoConfirmar ({dados, cidadeSelecionada, ufSelecionada, cep}) {
             return;
         }
 
-        var cpf = null;
-        var numPassaporte = null;
-
         if (document.getElementById("botaoCPF").checked === true) {
-            cpf = validacao.limparFormatacao(document.getElementById("cpf").value);
+            cpf = validacao.limparFormatacao(cpf);
             if (!validacao.validarCPF(cpf)) {
                 carregando(false);
                 alert("Digite um CPF ou número de passaporte válido");
@@ -87,15 +87,12 @@ function BotaoConfirmar ({dados, cidadeSelecionada, ufSelecionada, cep}) {
             }
         }
         else {
-            numPassaporte = document.getElementById("numPassaporte").value;
             if (!validacao.validarPassaporte(numPassaporte)) {
                 carregando(false);
                 alert("Digite um número de passaporte válido");
                 return;
             }
         }
-
-        cep = validacao.limparFormatacao(cep);
 
         let logradouro = document.getElementById("logradouro").value.toString();
 
@@ -119,7 +116,7 @@ function BotaoConfirmar ({dados, cidadeSelecionada, ufSelecionada, cep}) {
             '&quantCriancas=' + dadosIniciaisDaReserva.criancas +
             '&dataInicio=' + dadosIniciaisDaReserva.check_in +
             '&dataFim=' + dadosIniciaisDaReserva.check_out +
-            '&tipoDeQuarto=' + document.getElementById("tipoDeQuarto").value
+            '&tipoDeQuarto=' + tipoDeQuarto
         ).then(res => {
             carregando(false);
             if (res.status === "Sucesso") {
@@ -137,7 +134,7 @@ function BotaoConfirmar ({dados, cidadeSelecionada, ufSelecionada, cep}) {
     return (
         <div>
             <div id="carregando" className="nada"></div>
-            <button id="botaoconfirmar" className="" type="button" onClick={() => confirmarReserva()}>Confirmar reserva</button>
+            <button id="botaoconfirmar" className="botaoReserva" type="button" onClick={() => confirmarReserva()}>Confirmar reserva</button>
         </div>
     );
 }

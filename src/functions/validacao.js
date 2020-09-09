@@ -57,8 +57,30 @@ const validacao = {
         return (regexLogradouroQuantidade.test(logradouro) && regexLogradouroTamanho.test(logradouro));
     },
 
+    validarDadosIniciaisDaReserva: (checkIn, checkOut, quantAdultos, quantCriancas) => {
+        quantAdultos = parseInt(quantAdultos);
+        quantCriancas = parseInt(quantCriancas);
+        if (checkOut < checkIn) {
+            alert("Selecione uma data válida. A data de check-out não pode ser inferior à data de check-in.")
+            return false;
+        }
+        if (checkIn === '' || checkOut === '' || quantAdultos === '' || isNaN(quantAdultos) || quantCriancas === '' || isNaN(quantCriancas)) {
+            alert("Verifique se todos os dados estão preenchidos corretamente para fazer a reserva.")
+            return false;
+        }
+        if ((quantAdultos < 1 || quantAdultos > 3) || (quantCriancas < 0 || quantCriancas > 2)) {
+            alert("É necessario ter no mínimo um adulto e a capacidade máxima por quarto é de 3 hóspedes")
+            return false;
+        }
+        if ((quantAdultos + quantCriancas) > 3) {
+            alert("A capacidade máxima por quarto é de 3 hóspedes")
+            return false;
+        }
+        return true;
+    },
+
     limparFormatacao: (dado) => {
-        return dado.replace(/(\(|\)|\.|\/|-)/g, "");
+        return dado.replace(/(\(|\)|\.|\/|\-)/g, "");
     },
 
     diaAtual: () => {

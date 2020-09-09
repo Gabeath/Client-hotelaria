@@ -26,7 +26,7 @@
     "numero complemento"
     "cidade estado"
     "telefone"
-    "botaoconfirmar";*/
+    "botaoReserva";*/
 }
 
 .reserva {
@@ -76,8 +76,8 @@
     grid-area: telefone;
 }
 
-#botaoconfirmar {
-    grid-area: botaoconfirmar;
+.botaoReserva {
+    grid-area: botaoReserva;
     background-color: var( --cor-primaria);
     color: var(--cor-de-fundo);
     border: none;

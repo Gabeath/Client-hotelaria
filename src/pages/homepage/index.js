@@ -23,19 +23,7 @@ function HomePage() {
     const history = useHistory()
     const enviarReserva = () => {
 
-        if (check_out < check_in) {
-            alert("Selecione uma data válida. A data de check-out não pode ser inferior à data de check-in.")
-        }
-        else if (check_in === '' || check_out === '' || adultos === '' || isNaN(adultos) || criancas === '' || isNaN(criancas)) {
-            alert("Verifique se todos os dados estão preenchidos corretamente para fazer a reserva.")
-        }
-        else if ((adultos < 1 || adultos > 3) || (criancas < 0 || criancas > 2)) {
-            alert("É necessario ter no mínimo um adulto e a capacidade máxima por quarto é de 3 hóspedes")
-        }
-        else if ((adultos + criancas) > 3) {
-            alert("A capacidade máxima por quarto é de 3 hóspedes")
-        }
-        else {
+        if (validacao.validarDadosIniciaisDaReserva(check_in, check_out, adultos, criancas)) {
             history.push({
                 pathname: '/confirmarreserva',
                 state: { adultos, criancas, check_in, check_out }

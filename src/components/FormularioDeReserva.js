@@ -4,10 +4,14 @@ import './Carregando.css';
 import InputMask from "react-input-mask";
 
 import BotaoConfirmar from './BotaoConfirmar';
+import BotaoAlterar from './BotaoAlterar';
 import validacao from '../functions/validacao';
 
 function FormularioDeReserva({dados, nome}) {
 
+    const [tipoDeQuarto, setTipoDeQuarto] = useState("Standard casal")
+    const [cpf, setCPF] = useState("")
+    const [numPassaporte, setNumPassaporte] = useState("")
     const [cepValue, setCep] = useState('')
     const [ufs, setUfs] = useState([])
     const [cidades, setCidades] = useState([])
@@ -16,24 +20,55 @@ function FormularioDeReserva({dados, nome}) {
 
     useEffect(() => {
         if (nome === "Alterar") {
-            document.getElementById("nome").setAttribute("value", dados.nome);
-            document.getElementById("tipoDeQuarto").setAttribute("value", dados.tipoDeQuarto);
+
+            /*var dados = {};
+            
+            dados.tipoDeQuarto = "Luxo casal";
+            dados.quantAdultos = "2";
+            dados.quantCriancas = "1";*/
+            //dados.cpf = "065.973.578-41"
+            //dados.cep = 13045903
+            //dados.numPassaporte = "AB111111"
+            //dados.numero = "123"
+            //dados.estado = "SP"
+            //dados.cidade = "Campinas";
+            //dados.checkIn = "2020-05-07";
+            //dados.checkOut = "2020-05-08";
+            //dados.telefone = "19999999990";
+
+            //document.getElementById("nome").setAttribute("value", dados.nome);
+            setTipoDeQuarto(dados.tipoDeQuarto);
             document.getElementById("quantAdultos").setAttribute("value", dados.quantAdultos);
             document.getElementById("quantCriancas").setAttribute("value", dados.quantCriancas);
             document.getElementById("checkIn").setAttribute("value", dados.checkIn);
             document.getElementById("checkOut").setAttribute("value", dados.checkOut);
-            /*document.getElementById("botaoCPF").setAttribute("value", dados.botaoCPF);*/
-            document.getElementById("cpf").setAttribute("value", dados.cpf);
-            document.getElementById("numPassaporte").setAttribute("value", dados.numPassaporte);
-            document.getElementById("cep").setAttribute("value", dados.cep);
+            /*document.getElementById("botaoCPF").setAttribute("disabled", true);
+            document.getElementById("botaoNumPassaporte").setAttribute("disabled", true);
+            document.getElementById("escolhaCPFNumPassaporte").setAttribute("hidden", true);
+            if (dados.cpf !== null) {
+                document.getElementById("botaoCPF").setAttribute("checked", true);
+                trocarParaCPF();
+                document.getElementById("cpf").setAttribute("disabled", true);
+                setCPF(dados.cpf);
+            }
+            else {
+                document.getElementById("botaoNumPassaporte").setAttribute("checked", true);
+                trocarParaPassaporte();
+                document.getElementById("numPassaporte").setAttribute("disabled", true);
+                setNumPassaporte(dados.numPassaporte);
+            }
+            setCep(dados.cep);
             document.getElementById("logradouro").setAttribute("value", dados.logradouro);
             document.getElementById("numero").setAttribute("value", dados.numero);
             document.getElementById("complemento").setAttribute("value", dados.complemento);
-            document.getElementById("estado").setAttribute("value", dados.estado);
-            document.getElementById("cidade").setAttribute("value", dados.cidade);
-            document.getElementById("telefone").setAttribute("value", dados.telefone);
+            setUfSelecionada(dados.estado);
+            setCidadeSelecionada(dados.cidade);
+
+            for (let i = 0; i < dados.telefone.length; i++) {
+                mascararTelefone({key: dados.telefone[i], preventDefault: () => {}});
+            }*/
         }
-    },[])
+    },[]);
 
     useEffect(() => {
         async function buscarUFS(){
@@ -42,7 +77,8 @@ function FormularioDeReserva({dados, nome}) {
             setUfs(ufs)
         }
 
-        buscarUFS()
+        if (nome === "Cadastrar")
+            buscarUFS()
         
     },[]);
 
@@ -62,7 +98,8 @@ function FormularioDeReserva({dados, nome}) {
                 comboboxCity.disabled = true
         }
 
-        buscarCidades()
+        if (nome === "Cadastrar")
+            buscarCidades()
         
     },[ufSelecionada]);
 
@@ -161,7 +198,7 @@ function FormularioDeReserva({dados, nome}) {
     const trocarParaCPF = () => {
         document.getElementById("cpf").disabled = false;
         document.getElementById("numPassaporte").disabled = true;
-        document.getElementById("numPassaporte").value = "";
+        setNumPassaporte("");
         document.getElementById("labelCPF").innerHTML = "CPF*:";
         document.getElementById("labelPassaporte").innerHTML = "Passaporte:";
     }
@@ -169,7 +206,7 @@ function FormularioDeReserva({dados, nome}) {
     const trocarParaPassaporte = () => {
         document.getElementById("cpf").disabled = true;
         document.getElementById("numPassaporte").disabled = false;
-        document.getElementById("cpf").value = "";
+        setCPF("");
         document.getElementById("labelCPF").innerHTML = "CPF:";
         document.getElementById("labelPassaporte").innerHTML = "Passaporte*:";
     }
@@ -178,13 +215,8 @@ function FormularioDeReserva({dados, nome}) {
         <div>
             <form>
                 <div className="divinterna">
-                    <label htmlFor="nome">Nome completo*:</label>
-                    <input id="nome" type="text" required></input>
-                </div>
-
-                <div className="divinterna">
                     <label htmlFor="tipoDeQuarto">Tipo do quarto*:</label>
-                    <select id="tipoDeQuarto" required>
+                    <select id="tipoDeQuarto" required value = {tipoDeQuarto} onChange = {(evento) => setTipoDeQuarto(evento.target.value)}>
                         <option value="Standard casal">Standard casal</option>
                         <option value="Standard duplo">Standard duplo</option>
                         <option value="Luxo casal">Luxo casal</option>
@@ -192,7 +224,71 @@ function FormularioDeReserva({dados, nome}) {
                     </select>
                 </div>
 
-                {nome === "Alterar" ? 
+                {nome === "Cadastrar" ? 
+                    (<div>
+                        <div className="divinterna">
+                            <label htmlFor="nome">Nome completo*:</label>
+                            <input id="nome" type="text" required></input>
+                        </div>
+
+                        <div className="divinterna">
+                            <label id="escolhaCPFNumPassaporte" className="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
+                        </div>
+
+                        <div className="divinterna">
+                            <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => {trocarParaCPF()}}></input>
+                            <label id="labelCPF" htmlFor="cpf" className="cpfNumPassaporte">CPF:</label>
+                            <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99" value={cpf} onChange={(evento) => setCPF(evento.target.value)}></InputMask>
+                        </div>
+                        <div className="divinterna">
+                            <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" className="cpfNumPassaporte" onChange={(e) => {trocarParaPassaporte()}}></input>
+                            <label id="labelPassaporte" htmlFor="numPassaporte" className="cpfNumPassaporte">Passaporte:</label>
+                            <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999" value={numPassaporte} onChange={(evento) => setNumPassaporte(evento.target.value)}></InputMask>
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="cep">CEP*:</label>
+                            <InputMask id="cep" className="inputdivisivel" type="text" mask="99999-999" value={cepValue} onChange={(e) => { handleChange(e.target.value, "cep") }} onBlur={() => pesquisacep()} required></InputMask>
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="logradouro">Endereço*:</label>
+                            <input id="logradouro" type="text" maxLength="100" required></input>
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="numero">Número*:</label>
+                            <input id="numero" className="inputdivisivel" type="number" min="1" required></input>
+
+                            <label htmlFor="complemento">Complemento:</label>
+                            <input id="complemento" className="inputdivisivel" type="text"></input>
+                        </div>
+
+                        <div className="divinterna">
+
+                            <label htmlFor="estado">Estado*:</label>
+                            <select id="estado" value = {ufSelecionada} onChange = {(event) => setUfSelecionada(event.target.value)} className="inputdivisivel" required>
+                                <option value = "">Selecione o estado</option>
+                                {
+                                    ufs.map(uf => <option key = {uf.sigla} value = {uf.sigla}>{uf.sigla}</option>)
+                                }
+                            </select>
+
+                            <label htmlFor="cidade">Cidade*:</label>
+                            <select id="cidade" value = {cidadeSelecionada} onChange = {(event) => setCidadeSelecionada(event.target.value)} className="inputdivisivel" required disabled>
+                                <option value="">Selecione a cidade</option>
+                                {
+                                    cidades.map(cidade => <option key = {cidade.nome} value = {cidade.nome}>{cidade.nome}</option>)
+                                }
+                            </select>
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="telefone">Telefone*:</label>
+                            <input id="telefone" onKeyPress = {mascararTelefone} className="inputdivisivel" type="text" required></input> {/*Implementar máscara do input depois*/}
+                        </div>
+                    </div>)
+                    :
                     (<div>
                         <div className="divinterna">
                             <label htmlFor="quantAdultos">Quantidade de adultos*:</label>
@@ -214,67 +310,12 @@ function FormularioDeReserva({dados, nome}) {
                             <input id="checkOut" type="date" placeholder="Date" min={validacao.diaAtual()} />
                         </div>
                     </div>)
-                    : null
                 }
 
-                <div className="divinterna">
-                    <label className="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
-                </div>
-
-                <div className="divinterna">
-                    <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => {trocarParaCPF()}}></input>
-                    <label id="labelCPF" htmlFor="cpf" className="cpfNumPassaporte">CPF:</label>
-                    <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99"></InputMask>
-                </div>
-                <div className="divinterna">
-                    <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" className="cpfNumPassaporte" onChange={(e) => {trocarParaPassaporte()}}></input>
-                    <label id="labelPassaporte" htmlFor="numPassaporte" className="cpfNumPassaporte">Passaporte:</label>
-                    <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999"></InputMask>
-                </div>
-
-                <div className="divinterna">
-                    <label htmlFor="cep">CEP*:</label>
-                    <InputMask id="cep" className="inputdivisivel" type="text" mask="99999-999" value={cepValue} onChange={(e) => { handleChange(e.target.value, "cep") }} onBlur={() => pesquisacep()} required></InputMask>
-                </div>
-
-                <div className="divinterna">
-                    <label htmlFor="logradouro">Endereço*:</label>
-                    <input id="logradouro" type="text" maxLength="100" required></input>
-                </div>
-
-                <div className="divinterna">
-                    <label htmlFor="numero">Número*:</label>
-                    <input id="numero" className="inputdivisivel" type="number" min="1" required></input>
-
-                    <label htmlFor="complemento">Complemento:</label>
-                    <input id="complemento" className="inputdivisivel" type="text"></input>
-                </div>
-
-                <div className="divinterna">
-
-                    <label htmlFor="estado">Estado*:</label>
-                    <select id="estado" value = {ufSelecionada} onChange = {(event) => setUfSelecionada(event.target.value)} className="inputdivisivel" required>
-                        <option value = "">Selecione o estado</option>
-                        {
-                            ufs.map(uf => <option key = {uf.sigla} value = {uf.sigla}>{uf.sigla}</option>)
-                        }
-                    </select>
-
-                    <label htmlFor="cidade">Cidade*:</label>
-                    <select id="cidade" value = {cidadeSelecionada} onChange = {(event) => setCidadeSelecionada(event.target.value)} className="inputdivisivel" required disabled>
-                        <option value="">Selecione a cidade</option>
-                        {
-                            cidades.map(cidade => <option key = {cidade.nome} value = {cidade.nome}>{cidade.nome}</option>)
-                        }
-                    </select>
-                </div>
-
-                <div className="divinterna">
-                    <label htmlFor="telefone">Telefone*:</label>
-                    <input id="telefone" onKeyPress = {mascararTelefone} className="inputdivisivel" type="text" required></input> {/*Implementar máscara do input depois*/}
-                </div>
-
-                <BotaoConfirmar dados = {dados} cidadeSelecionada = {cidadeSelecionada} ufSelecionada = {ufSelecionada} cep = {cepValue} />
+                {nome === "Cadastrar" ?
+                    <BotaoConfirmar dados = {dados} tipoDeQuarto = {tipoDeQuarto} cpf = {cpf} numPassaporte = {numPassaporte} cep = {cepValue} cidadeSelecionada = {cidadeSelecionada} ufSelecionada = {ufSelecionada} />
+                    : <BotaoAlterar dados = {dados} tipoDeQuarto = {tipoDeQuarto} />
+                }
             </form>
         </div>
     );
