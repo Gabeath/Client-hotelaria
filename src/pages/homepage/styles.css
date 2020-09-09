@@ -3,31 +3,25 @@
     height: 100vh;
 }
 
-#page-home #conteudo {
-    margin: 0 5%;
-}
+#page-home #conteudo {margin: 0 5%;}
 
-main {
-    display: flex;
-}
+main {display: flex;}
 .vertical-menu {
     width: 100%;
-  }
+}
   
-  .vertical-menu a {
+.vertical-menu a {
     background-color: var(--cor-texto-base);
     color: white; 
     display: block; 
     padding: 12px;
     text-decoration: none; 
-  }
+}
   
-  .vertical-menu a:hover {
+.vertical-menu a:hover {
     background-color: var(--cor-segundaria); 
-  }
+}
   
-
-
 #conteudo h1{
     font: 700 2.4rem Montserrat;
     color: var(--cor-texto-base);
@@ -46,6 +40,7 @@ main {
     border-radius: 4px;
 
     padding: 1.6rem;
+    margin-bottom: 1.6rem;
 
     display: grid;
     grid-template-columns: auto auto;
@@ -112,9 +107,7 @@ main {
     
 }
 
-.quartos {
-    width: 50%;
-}
+.quartos {width: 100%;}
 .quartos-board {
     display: grid;
     grid-template-columns: auto auto;
@@ -122,10 +115,7 @@ main {
     grid-gap: 2.6rem;
     
 }
-.quartos-board  img {
-    width: 40vw;
-    
-}
+.quartos-board  img {width: 44vw; }
 .quartos-board figure  figcaption {
     display: flex;
     align-items: center;
@@ -137,7 +127,6 @@ main {
     border-radius: 3px;
     padding: 0.6rem;
     transition: 700ms;
-    
 }
 
 .quartos-board figure:hover{
@@ -146,9 +135,7 @@ main {
     box-shadow: 0px 3px 16px 1px rgba(130,144,187,1);
 }
 
-.mapa img {
-    width: 82vw;
-}
+.mapa img { width: 100%;}
 
 .localizacao h2 {
     font: 500 1.5rem Roboto;
@@ -187,25 +174,39 @@ main {
         border-radius: 3px;
         border-width: 2px;
         display: flex;
-        text-align: center;
-        
+        text-align: center;    
+    }    
+}
+
+@media (max-width: 330px) {
+    .reserva #reserva-form{ width: 70vw;}
+    .reserva .input-bloco input { width: 50vw;}
+}
+
+@media (max-width: 380px) {
+    #standardCasal { grid-area: standardCasal;}
+    #standardDuplo { grid-area: standardDuplo; }
+    #luxoCasal { grid-area: luxoCasal; }
+    #date-out { grid-area: date-out; }
+    #luxoDuplo { grid-area: luxoDuplo;}
+    
+    .quartos-board {
+        grid-template-columns: 1fr;
+        grid-gap: 1.6rem;
+        grid-template-areas: 
+          "standardCasal"
+          "standardDuplo"
+          "luxoCasal"
+          "luxoDuplo";   
     }
+    
+    .quartos-board  img { width: 90vw; }
 }
 
 @media (max-width: 275px) {
-    .reserva .input-bloco input, button {
-        width: 30vw;
-    }
-    #submit {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        margin: 0 auto;
-    }
-    #conteudo h1{
-        font: 700 8vw Montserrat;
-    }
-    .localizacao h2 {
-        font: 400 7vw Roboto;
+    #submit { word-wrap: break-word; overflow-wrap: break-word;margin: 0 auto; }
 
-    }
+    #conteudo h1{ font: 700 8vw Montserrat; }
+
+    .localizacao h2 { font: 400 7vw Roboto;}
 }

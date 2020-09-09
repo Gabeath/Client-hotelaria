@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Cabecalho from '../../components/cabecalho';
-import Rodape from '../../components/Rodape';
+import Rodape from '../../components/rodape/Rodape';
 import './styles.css';
 
 import standardCasal from '../../assets/images/room_example.jpg';
@@ -12,6 +12,7 @@ import mapa from '../../assets/images/map_example.jpg';
 
 import { useHistory } from 'react-router-dom';
 import validacao from '../../functions/validacao';
+
 
 function HomePage() {
     const [adultos, setAdultos] = useState(1)
@@ -112,17 +113,17 @@ function HomePage() {
                         </section>
                     </div>
                 </section>
-                <section>
+                {/* <section>
                     <div className="vertical-menu">
                         <a href="#reserva">Reserva</a>
                         <a href="#quartos">Quartos</a>
                         <a href="#localizacao">Localização</a>
                     </div>
-                </section>
-
+                </section> */}
             </main>
             <Rodape />
         </div>
+
     )
 }
 
