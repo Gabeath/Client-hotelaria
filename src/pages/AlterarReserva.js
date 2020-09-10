@@ -10,7 +10,7 @@ function AlterarReserva (dados) {
 
     useEffect(() => {
         if (dados.history.location.state === undefined) 
-            history.push('/');
+            history.push('/alterarreserva');
     }, []);
 
     return (

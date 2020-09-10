@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Cabecalho from '../../components/cabecalho';
 import Rodape from '../../components/rodape/Rodape';
+import Menu from '../../components/Menu'
 import './styles.css';
 
 import standardCasal from '../../assets/images/room_example.jpg';
@@ -12,6 +13,8 @@ import mapa from '../../assets/images/map_example.jpg';
 
 import { useHistory } from 'react-router-dom';
 import validacao from '../../functions/validacao';
+
+import logo from '../../assets/images/menu-24px.svg';
 
 
 function HomePage() {
@@ -31,11 +34,44 @@ function HomePage() {
         }
     }
 
+    const navLinks = [
+		{
+			text: 'Reservar',
+			path: '#reserva',
+			icon: 'login'
+		},
+		{
+			text: 'Quartos',
+			path: '#quartos',
+			icon: 'hotel'
+		},
+		{
+			text: 'Localização',
+			path: '#localizacao',
+			icon: 'location_on'
+		},
+		{
+			text: 'Alterar Reserva',
+			path: 'alterarreserva',
+			icon: 'settings'
+		},
+		{
+			text: 'Contato',
+			path: '#rodape',
+			icon: 'contacts'
+		}
+	]
 
     return (
         <div id="page-home">
             <Cabecalho />
-
+            <Menu
+				navLinks={ navLinks }
+				logo={ logo }
+				background="#fff"
+				hoverBackground="#ddd"
+				linkColor="#777"
+			/>
             <main id="conteudo">
 
                 <section>
@@ -101,15 +137,9 @@ function HomePage() {
                         </section>
                     </div>
                 </section>
-                {/* <section>
-                    <div className="vertical-menu">
-                        <a href="#reserva">Reserva</a>
-                        <a href="#quartos">Quartos</a>
-                        <a href="#localizacao">Localização</a>
-                    </div>
-                </section> */}
+              
             </main>
-            <Rodape />
+            <footer id="rodape"><Rodape /></footer>
         </div>
 
     )
