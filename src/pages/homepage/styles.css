@@ -50,6 +50,31 @@ main {display: flex;}
       "date-in date-out"
       "submit submit";
 }
+
+.reserva #consultar-reserva-form{
+    width: 50vw;
+    background-color: var(--cor-de-fundo);
+    color: var(--cor-texto-base);
+    font: 400 1.4rem Roboto;
+    line-height: 3.2rem;
+    
+    border: solid gray;
+    border-width: 1px;
+    border-radius: 4px;
+
+    padding: 1.6rem;
+    margin-bottom: 1.6rem;
+
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 1.6rem;
+    grid-template-areas: 
+      "cpf"
+      "numPassaporte"
+      "senha"
+      "consultar";
+}
+
 #adulto {
     grid-area: adulto;
 }
@@ -65,6 +90,21 @@ main {display: flex;}
 #submit {
     grid-area: submit;
 }
+#escolhaCPFNumPassaporte {
+    grid-area: escolha;
+}
+#divCPF {
+    grid-area: cpf;
+}
+#divNumPassaporte {
+    grid-area: numPassaporte;
+}
+#senha {
+    grid-area: senha;
+}
+#consultar {
+    grid-area: consultar;
+}
 
 .reserva .input-bloco {
     display: flex;
@@ -74,7 +114,20 @@ main {display: flex;}
     justify-content: space-between;
 }
 
+.reserva .input-bloco-consultar {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .reserva .input-bloco label{
+    width: 100%;
+    display: flex;
+    text-align: center;
+}
+
+.reserva .input-bloco-consultar label{
     width: 100%;
     display: flex;
     text-align: center;
@@ -89,10 +142,20 @@ main {display: flex;}
     text-align: center;
     
 }
-.reserva .input-bloco input:hover {
+
+.reserva .input-bloco-consultar input[type="password"], .reserva .input-bloco-consultar input[type="text"] {
+    width: 30vw;
+    border-bottom:  var( --cor-primaria);
+    border-radius: 3px;
+    border-width: 2px;
+    display: flex;
+    text-align: center;
+}
+
+.reserva .input-bloco input:hover, .reserva .input-bloco-consultar input:hover {
     border-bottom:  solid var( --cor-primaria);
 }
-.reserva #reserva-form button {
+.reserva #reserva-form button, .reserva #consultar-reserva-form button {
     background-color: var( --cor-primaria);
     color: var(--cor-de-fundo);
     border: none;
@@ -102,7 +165,7 @@ main {display: flex;}
     transition: 0.5s;
 }
 
-.reserva #reserva-form button:hover {
+.reserva #reserva-form button:hover, .reserva #consultar-reserva-form button:hover {
     background-color: var( --cor-primaria-escura);
     
 }
@@ -162,13 +225,13 @@ main {display: flex;}
           "date-out"
           "submit";
     }
-    .reserva .input-bloco label{
+    .reserva .input-bloco label, .reserva .input-bloco-consultar label{
         width: 100%;
         display: flex;
         text-align: center;
     }
     
-    .reserva .input-bloco input {
+    .reserva .input-bloco input, .reserva .input-bloco-consultar input {
         width: 35vw;
         border-bottom:  var( --cor-primaria);
         border-radius: 3px;
@@ -180,7 +243,7 @@ main {display: flex;}
 
 @media (max-width: 330px) {
     .reserva #reserva-form{ width: 70vw;}
-    .reserva .input-bloco input { width: 50vw;}
+    .reserva .input-bloco input, .reserva .input-bloco-consultar input { width: 50vw;}
 }
 
 @media (max-width: 380px) {
@@ -204,7 +267,7 @@ main {display: flex;}
 }
 
 @media (max-width: 275px) {
-    #submit { word-wrap: break-word; overflow-wrap: break-word;margin: 0 auto; }
+    #submit, #consultar { word-wrap: break-word; overflow-wrap: break-word;margin: 0 auto; }
 
     #conteudo h1{ font: 700 8vw Montserrat; }
 

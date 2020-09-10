@@ -97,6 +97,10 @@ const validacao = {
         
         data = ano + '-' + mes + '-' + dia;
         return data;
+    },
+
+    formatarDataSemHorario: (data) => {
+        return data.substring(0, 10);
     }
 }
 

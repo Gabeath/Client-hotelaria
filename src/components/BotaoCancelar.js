@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import requisicao from '../functions/requisicao';
-import validacao from '../functions/validacao';
 
 function BotaoCancelar ({dados}) {
     var dadosIniciaisDaReserva = {

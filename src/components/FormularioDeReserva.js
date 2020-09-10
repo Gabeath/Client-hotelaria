@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import '../pages/ConfirmarAlterarReserva.css';
 import './Carregando.css';
 import InputMask from "react-input-mask";
@@ -19,8 +20,27 @@ function FormularioDeReserva({dados, nome}) {
     const [ufSelecionada, setUfSelecionada] = useState("")
     const [cidadeSelecionada, setCidadeSelecionada] = useState("")
 
+    var dadosIniciaisDaReserva = {
+        id: null,
+        senha: null,
+        quantAdultos: null,
+        quantCriancas: null,
+        checkIn: null,
+        checkOut: null,
+        tipoDeQuarto: null,
+    };
+
+    const history = useHistory();
+    
+    useEffect(() => {
+        if (dados.history.location.state !== undefined) {
+            dadosIniciaisDaReserva = dados.history.location.state;
+        }
+    });
+
     useEffect(() => {
         if (nome === "Alterar") {
+            console.log(dadosIniciaisDaReserva)
 
             /*var dados = {};
             
@@ -38,11 +58,11 @@ function FormularioDeReserva({dados, nome}) {
             //dados.telefone = "19999999990";
 
             //document.getElementById("nome").setAttribute("value", dados.nome);
-            setTipoDeQuarto(dados.tipoDeQuarto);
-            document.getElementById("quantAdultos").setAttribute("value", dados.quantAdultos);
-            document.getElementById("quantCriancas").setAttribute("value", dados.quantCriancas);
-            document.getElementById("checkIn").setAttribute("value", dados.checkIn);
-            document.getElementById("checkOut").setAttribute("value", dados.checkOut);
+            setTipoDeQuarto(dadosIniciaisDaReserva.tipoDeQuarto);
+            document.getElementById("quantAdultos").setAttribute("value", dadosIniciaisDaReserva.quantAdultos);
+            document.getElementById("quantCriancas").setAttribute("value", dadosIniciaisDaReserva.quantCriancas);
+            document.getElementById("checkIn").setAttribute("value", validacao.formatarDataSemHorario(dadosIniciaisDaReserva.checkIn));
+            document.getElementById("checkOut").setAttribute("value", validacao.formatarDataSemHorario(dadosIniciaisDaReserva.checkOut));
             /*document.getElementById("botaoCPF").setAttribute("disabled", true);
             document.getElementById("botaoNumPassaporte").setAttribute("disabled", true);
             document.getElementById("escolhaCPFNumPassaporte").setAttribute("hidden", true);

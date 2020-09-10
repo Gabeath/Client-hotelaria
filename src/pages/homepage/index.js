@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import InputMask from "react-input-mask";
 
 import Cabecalho from '../../components/cabecalho';
 import Rodape from '../../components/rodape/Rodape';
@@ -13,6 +14,7 @@ import mapa from '../../assets/images/map_example.jpg';
 
 import { useHistory } from 'react-router-dom';
 import validacao from '../../functions/validacao';
+import requisicao from '../../functions/requisicao';
 
 import logo from '../../assets/images/menu-24px.svg';
 
@@ -22,6 +24,9 @@ function HomePage() {
     const [criancas, setCriancas] = useState(0)
     const [check_in, setCheckIn] = useState('')
     const [check_out, setCheckOut] = useState('')
+    const [cpf, setCPF] = useState('')
+    const [numPassaporte, setNumPassaporte] = useState('')
+    const [senha, setSenha] = useState('')
 
     const history = useHistory()
     const enviarReserva = () => {
@@ -34,11 +39,76 @@ function HomePage() {
         }
     }
 
+    const consultarReserva = () => {
+        if ((cpf === "" && numPassaporte === "") || senha === "") {
+            alert("Preencha o CPF ou número de passaporte e a senha para consultar a reserva");
+            return;
+        }
+
+        if (document.getElementById("botaoCPF").checked === false && document.getElementById("botaoNumPassaporte").checked === false) {
+            alert("Selecione se deseja utilizar o CPF ou o número de passaporte");
+            return;
+        }
+
+        let novoCPF = null;
+        if (document.getElementById("botaoCPF").checked === true) {
+            novoCPF = validacao.limparFormatacao(cpf.toString())
+            if (!validacao.validarCPF(novoCPF)) {
+                alert("Digite um CPF ou número de passaporte válido");
+                return;
+            }
+        }
+        else {
+            if (!validacao.validarPassaporte(numPassaporte)) {
+                alert("Digite um número de passaporte válido");
+                return;
+            }
+        }
+        
+        requisicao.get('consultarReserva?cpf=' + novoCPF
+            + '&numPassaporte=' + numPassaporte
+            + '&senha=' + senha
+        ).then(res => {
+            if (res.status === "Sucesso") {
+                console.log(res.dados);
+                history.push({
+                    pathname: '/alterarreserva',
+                    state: { id: res.dados.id, senha, tipoDeQuarto: res.dados.quarto.tipo_de_quarto.nome, quantAdultos: res.dados.quant_adultos, quantCriancas: res.dados.quant_criancas, checkIn: res.dados.data_inicio, checkOut: res.dados.data_fim }
+                });
+            }
+            else
+                alert("A reserva não pôde ser consultada!\nErro: " + res.dados);
+        }).catch(erro => {
+            console.log(erro);
+        });
+    }
+
+    const trocarParaCPF = () => {
+        document.getElementById("cpf").disabled = false;
+        document.getElementById("numPassaporte").disabled = true;
+        setNumPassaporte("");
+        document.getElementById("labelCPF").innerHTML = "CPF*:";
+        document.getElementById("labelPassaporte").innerHTML = "Passaporte:";
+    }
+
+    const trocarParaPassaporte = () => {
+        document.getElementById("cpf").disabled = true;
+        document.getElementById("numPassaporte").disabled = false;
+        setCPF("");
+        document.getElementById("labelCPF").innerHTML = "CPF:";
+        document.getElementById("labelPassaporte").innerHTML = "Passaporte*:";
+    }
+
     const navLinks = [
 		{
 			text: 'Reservar',
 			path: '#reserva',
 			icon: 'login'
+		},
+		{
+			text: 'Consultar Reserva',
+			path: '#consultarreserva',
+			icon: 'settings'
 		},
 		{
 			text: 'Quartos',
@@ -49,11 +119,6 @@ function HomePage() {
 			text: 'Localização',
 			path: '#localizacao',
 			icon: 'location_on'
-		},
-		{
-			text: 'Consultar Reserva',
-			path: 'alterarreserva',
-			icon: 'settings'
 		},
 		{
 			text: 'Contato',
@@ -101,6 +166,35 @@ function HomePage() {
                             <button id="submit" type="button" onClick={enviarReserva}>RESERVAR</button>
                         </form>
                     </div>
+
+                    <div className="reserva">
+                        <h1 id="consultarreserva">Consultar reserva</h1>
+                        <div className="input-bloco">
+                            <label id="escolhaCPFNumPassaporte" className="">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
+                        </div>
+
+                        <form id="consultar-reserva-form">
+
+                            <div id="divCPF" className="input-bloco-consultar">
+                                <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => {trocarParaCPF()}}></input>
+                                <label id="labelCPF" htmlFor="cpf" className="cpfNumPassaporte">CPF:</label>
+                                <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99" value={cpf} onChange={(evento) => setCPF(evento.target.value)}></InputMask>
+                            </div>
+                            <div id="divNumPassaporte" className="input-bloco-consultar">
+                                <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" className="cpfNumPassaporte" onChange={(e) => {trocarParaPassaporte()}}></input>
+                                <label id="labelPassaporte" htmlFor="numPassaporte" className="cpfNumPassaporte">Passaporte:</label>
+                                <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999" value={numPassaporte} onChange={(evento) => setNumPassaporte(evento.target.value)}></InputMask>
+                            </div>
+
+                            <div className="input-bloco-consultar">
+                                <label htmlFor="senha">Senha</label>
+                                <input type="password" id="senha" name="senha" value={senha} onChange={(e) => { setSenha(e.target.value) }} />
+                            </div>
+
+                            <button id="consultar" type="button" onClick={consultarReserva}>CONSULTAR</button>
+                        </form>
+                    </div>
+
 
                     <div className="quartos">
                         <h1 id="quartos">Quartos</h1>
