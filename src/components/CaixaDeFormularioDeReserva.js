@@ -1,17 +1,17 @@
 import React from 'react';
 import DadosIniciaisDaReserva from './DadosIniciaisDaReserva';
 import FormularioDeReserva from './FormularioDeReserva';
-import '../pages/ConfirmarReserva.css'
+import '../pages/ConfirmarAlterarReserva.css'
 
-function CaixaDeFormularioDeReserva (props) {
+function CaixaDeFormularioDeReserva ({dados, nome}) {
     return (
         <div className = "reserva">
             <p>
-                Confirmar Reserva
+                {nome === "Cadastrar" ? "Confirmar Reserva" : "Alterar Reserva"}
             </p>
             <div className = "formulario-de-reserva">
-                <DadosIniciaisDaReserva props = {props} />
-                <FormularioDeReserva props = {props} />
+                {nome === "Cadastrar" ? <DadosIniciaisDaReserva dados = {dados} /> : null}
+                <FormularioDeReserva dados = {dados} nome = {nome} />
             </div>
         </div>
     );

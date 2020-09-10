@@ -1,30 +1,95 @@
 import React, { useEffect, useState } from 'react';
-import requisicao from '../functions/requisicao';
-import '../pages/ConfirmarReserva.css';
-import './Carregando.css';
 import { useHistory } from 'react-router-dom';
+import '../pages/ConfirmarAlterarReserva.css';
+import './Carregando.css';
 import InputMask from "react-input-mask";
 
-function FormularioDeReserva(props) {
-    var dadosIniciaisDaReserva = {
-        adultos: null,
-        criancas: null,
-        check_in: null,
-        check_out: null
-    };
+import BotaoConfirmar from './BotaoConfirmar';
+import BotaoAlterar from './BotaoAlterar';
+import BotaoCancelar from './BotaoCancelar';
+import validacao from '../functions/validacao';
 
+function FormularioDeReserva({dados, nome}) {
+
+    const [tipoDeQuarto, setTipoDeQuarto] = useState("Standard casal")
+    const [cpf, setCPF] = useState("")
+    const [numPassaporte, setNumPassaporte] = useState("")
     const [cepValue, setCep] = useState('')
     const [ufs, setUfs] = useState([])
     const [cidades, setCidades] = useState([])
     const [ufSelecionada, setUfSelecionada] = useState("")
     const [cidadeSelecionada, setCidadeSelecionada] = useState("")
-    const history = useHistory();
 
+    var dadosIniciaisDaReserva = {
+        id: null,
+        senha: null,
+        quantAdultos: null,
+        quantCriancas: null,
+        checkIn: null,
+        checkOut: null,
+        tipoDeQuarto: null,
+    };
+
+    const history = useHistory();
+    
     useEffect(() => {
-        if (props.props.props.history.location.state !== undefined) {
-            dadosIniciaisDaReserva = props.props.props.history.location.state;
+        if (dados.history.location.state !== undefined) {
+            dadosIniciaisDaReserva = dados.history.location.state;
         }
     });
+
+    useEffect(() => {
+        if (nome === "Alterar") {
+            console.log(dadosIniciaisDaReserva)
+
+            /*var dados = {};
+            
+            dados.tipoDeQuarto = "Luxo casal";
+            dados.quantAdultos = "2";
+            dados.quantCriancas = "1";*/
+            //dados.cpf = "065.973.578-41"
+            //dados.cep = 13045903
+            //dados.numPassaporte = "AB111111"
+            //dados.numero = "123"
+            //dados.estado = "SP"
+            //dados.cidade = "Campinas";
+            //dados.checkIn = "2020-05-07";
+            //dados.checkOut = "2020-05-08";
+            //dados.telefone = "19999999990";
+
+            //document.getElementById("nome").setAttribute("value", dados.nome);
+            setTipoDeQuarto(dadosIniciaisDaReserva.tipoDeQuarto);
+            document.getElementById("quantAdultos").setAttribute("value", dadosIniciaisDaReserva.quantAdultos);
+            document.getElementById("quantCriancas").setAttribute("value", dadosIniciaisDaReserva.quantCriancas);
+            document.getElementById("checkIn").setAttribute("value", validacao.formatarDataSemHorario(dadosIniciaisDaReserva.checkIn));
+            document.getElementById("checkOut").setAttribute("value", validacao.formatarDataSemHorario(dadosIniciaisDaReserva.checkOut));
+            /*document.getElementById("botaoCPF").setAttribute("disabled", true);
+            document.getElementById("botaoNumPassaporte").setAttribute("disabled", true);
+            document.getElementById("escolhaCPFNumPassaporte").setAttribute("hidden", true);
+            if (dados.cpf !== null) {
+                document.getElementById("botaoCPF").setAttribute("checked", true);
+                trocarParaCPF();
+                document.getElementById("cpf").setAttribute("disabled", true);
+                setCPF(dados.cpf);
+            }
+            else {
+                document.getElementById("botaoNumPassaporte").setAttribute("checked", true);
+                trocarParaPassaporte();
+                document.getElementById("numPassaporte").setAttribute("disabled", true);
+                setNumPassaporte(dados.numPassaporte);
+            }
+            setCep(dados.cep);
+            document.getElementById("logradouro").setAttribute("value", dados.logradouro);
+            document.getElementById("numero").setAttribute("value", dados.numero);
+            document.getElementById("complemento").setAttribute("value", dados.complemento);
+            setUfSelecionada(dados.estado);
+            setCidadeSelecionada(dados.cidade);
+
+            for (let i = 0; i < dados.telefone.length; i++) {
+                mascararTelefone({key: dados.telefone[i], preventDefault: () => {}});
+            }*/
+        }
+    },[]);
 
     useEffect(() => {
         async function buscarUFS(){
@@ -33,7 +98,8 @@ function FormularioDeReserva(props) {
             setUfs(ufs)
         }
 
-        buscarUFS()
+        if (nome === "Cadastrar")
+            buscarUFS()
         
     },[]);
 
@@ -53,7 +119,8 @@ function FormularioDeReserva(props) {
                 comboboxCity.disabled = true
         }
 
-        buscarCidades()
+        if (nome === "Cadastrar")
+            buscarCidades()
         
     },[ufSelecionada]);
 
@@ -107,24 +174,8 @@ function FormularioDeReserva(props) {
         }
     };
 
-    const carregando = (verdadeiro) => {
-        if (verdadeiro) {
-            document.getElementById("botaoconfirmar").className = "nada";
-            document.getElementById("carregando").className = "carregando";
-        }
-        else {
-            document.getElementById("botaoconfirmar").className = "";
-            document.getElementById("carregando").className = "nada";
-        }
-    }
-
     function mascaraCep(valor) {
-        return valor.replace(/(\d{5})(\d{3})/g, "\$1\-\$2");
-    }
-
-    function retirarFormatacao(campoTexto) {
-        campoTexto = campoTexto.replace(/(\.|\/|\-)/g, "");
-        return campoTexto
+        return valor.replace(/(\d{5})(\d{3})/g, "$1-$2");
     }
 
     function mascararTelefone(e){
@@ -132,27 +183,27 @@ function FormularioDeReserva(props) {
 
         let digito = parseInt(e.key)
         
-        if(!digito && e.key != "0")
+        if(!digito && e.key !== "0")
             return
         
         let tel = document.getElementById("telefone")
 
-        if(tel.value.length == 0){
+        if(tel.value.length === 0){
             tel.value = "(" + e.key
             return
         }
 
-        if(tel.value.length == 3){
+        if(tel.value.length === 3){
             tel.value += ")" + e.key
             return
         }
 
-        if(tel.value.length == 8){
+        if(tel.value.length === 8){
             tel.value += "-" + e.key
             return
         }
 
-        if(tel.value.length == 13){
+        if(tel.value.length === 13){
             let substringinicio = tel.value.substring(0,8)
             let digito = tel.value.charAt(9)
             let substringFim = tel.value.substring(10)
@@ -168,7 +219,7 @@ function FormularioDeReserva(props) {
     const trocarParaCPF = () => {
         document.getElementById("cpf").disabled = false;
         document.getElementById("numPassaporte").disabled = true;
-        document.getElementById("numPassaporte").value = "";
+        setNumPassaporte("");
         document.getElementById("labelCPF").innerHTML = "CPF*:";
         document.getElementById("labelPassaporte").innerHTML = "Passaporte:";
     }
@@ -176,168 +227,17 @@ function FormularioDeReserva(props) {
     const trocarParaPassaporte = () => {
         document.getElementById("cpf").disabled = true;
         document.getElementById("numPassaporte").disabled = false;
-        document.getElementById("cpf").value = "";
+        setCPF("");
         document.getElementById("labelCPF").innerHTML = "CPF:";
         document.getElementById("labelPassaporte").innerHTML = "Passaporte*:";
-    }
-
-    const confirmarReserva = () => {
-        carregando(true);
-
-        if (document.getElementById("nome").value === "" || 
-            (document.getElementById("cpf").value === "" && document.getElementById("numPassaporte").value === "") ||
-            document.getElementById("cep").value === "" || document.getElementById("logradouro").value === "" ||
-            document.getElementById("numero").value === "" || cidadeSelecionada === "" ||
-            ufSelecionada === "" || document.getElementById("telefone").value === "") {
-            carregando(false);
-            alert("Preencha todos os campos obrigatórios, sinalizados com *");
-            return;
-        }
-
-        if (document.getElementById("botaoCPF").checked === false && document.getElementById("botaoNumPassaporte").checked === false) {
-            carregando(false);
-            alert("Selecione se deseja utilizar o CPF ou o número de passaporte");
-            return;
-        }
-
-        let regexNome = /^.{2,} (.{2,})+$/;
-        let nome = document.getElementById("nome").value.toString();
-
-        if (!regexNome.test(nome)) {
-            carregando(false);
-            alert("Preencha o seu nome completo");
-            return;
-        }
-
-        let regexTelefone = /^\(\d{2}\)\d{4,5}-\d{4}$/
-        let telefone = document.getElementById("telefone").value.toString()
-
-        if(!regexTelefone.test(telefone)){
-            carregando(false);
-            alert("Preencha o telefone corretamente: \n exemplo: (11)1111-1111 ou (11)11111-1111")
-            return
-        }
-
-        telefone = telefone.replace("-", "")
-        telefone = telefone.replace("(", "")
-        telefone = telefone.replace(")", "")
-
-        if(document.getElementById("complemento").value.length > 50){
-            carregando(false)
-            alert("O complemento deve ter no máximo 50 caracteres")
-            return
-        }
-
-        var cpf = null;
-        var numPassaporte = null;
-
-        if (document.getElementById("botaoCPF").checked === true) {
-            cpf = retirarFormatacao(document.getElementById("cpf").value);
-            if (cpf.length === 11 && !isNaN(cpf)) {
-                var Soma;
-                var Resto;
-                Soma = 0;
-                var i;
-                if (cpf === "00000000000") {
-                    carregando(false);
-                    alert("Digite um número de CPF válido")
-                    return;
-                }
-    
-                for (i = 1; i <= 9; i++) Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
-                Resto = (Soma * 10) % 11;
-    
-                if ((Resto === 10) || (Resto === 11)) Resto = 0;
-                if (Resto !== parseInt(cpf.substring(9, 10))) {
-                    carregando(false);
-                    alert("Digite um número de CPF válido")
-                    return;
-                }
-    
-                Soma = 0;
-                for (i = 1; i <= 10; i++) Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
-                Resto = (Soma * 10) % 11;
-    
-                if ((Resto === 10) || (Resto === 11)) Resto = 0;
-                if (Resto !== parseInt(cpf.substring(10, 11))) {
-                    carregando(false);
-                    alert("Digite um número de CPF válido")
-                    return;
-                }
-            }
-            else {
-                carregando(false);
-                alert("Digite um CPF ou número de passaporte válido");
-                return;
-            }
-
-        }
-        else {
-            numPassaporte = document.getElementById("numPassaporte").value;
-            if (numPassaporte.length === 8 && isNaN(numPassaporte[0]) && isNaN(numPassaporte[1]) && !isNaN(numPassaporte.substring(2, 8))) {
-                /* Falta verificar se o número de passaporte é válido */
-            }
-            else {
-                carregando(false);
-                alert("Digite um número de passaporte válido");
-                return;
-            }
-        }
-
-        let cep = cepValue;
-        cep = retirarFormatacao(cep);
-
-        let regexLogradouroQuantidade = /^.{2,} (.{2,})+$/;
-        let regexLogradouroTamanho = /^.{4,100}$/;
-        let logradouro = document.getElementById("logradouro").value.toString();
-
-        if (!regexLogradouroQuantidade.test(logradouro) || !regexLogradouroTamanho.test(logradouro)) {
-            carregando(false);
-            alert("Verifique seu endereço");
-            return;
-        }
-
-        requisicao.post("cadastroDeReserva", 'nome=' + document.getElementById("nome").value +
-            '&cpf=' + cpf +
-            '&numPassaporte=' + numPassaporte +
-            '&cep=' + cep +
-            '&logradouro=' + logradouro +
-            '&numero=' + document.getElementById("numero").value +
-            '&complemento=' + document.getElementById("complemento").value +
-            '&cidade=' + document.getElementById("cidade").value +
-            '&estado=' + document.getElementById("estado").value +
-            '&telefone=' + telefone +
-            '&quantAdultos=' + dadosIniciaisDaReserva.adultos +
-            '&quantCriancas=' + dadosIniciaisDaReserva.criancas +
-            '&dataInicio=' + dadosIniciaisDaReserva.check_in +
-            '&dataFim=' + dadosIniciaisDaReserva.check_out +
-            '&tipoDeQuarto=' + document.getElementById("tipoDeQuarto").value
-        ).then(res => {
-            carregando(false);
-            if (res.status === "Sucesso") {
-                console.log(res.dados);
-                alert("Reserva realizada com sucesso!\nO ID da reserva é: " + res.dados.id + "\nA senha da reserva é: " + res.dados.senha);
-                history.push('/');
-            }
-            else
-                alert("A reserva não pôde ser realizada!\nErro: " + res.dados);
-        }).catch(erro => {
-            carregando(false);
-            console.log(erro);
-        });
     }
 
     return (
         <div>
             <form>
-                <div id="divinterna">
-                    <label htmlFor="nome">Nome completo*:</label>
-                    <input id="nome" type="text" required></input>
-                </div>
-
-                <div id="divinterna">
+                <div className="divinterna">
                     <label htmlFor="tipoDeQuarto">Tipo do quarto*:</label>
-                    <select id="tipoDeQuarto" required>
+                    <select id="tipoDeQuarto" required value = {tipoDeQuarto} onChange = {(evento) => setTipoDeQuarto(evento.target.value)}>
                         <option value="Standard casal">Standard casal</option>
                         <option value="Standard duplo">Standard duplo</option>
                         <option value="Luxo casal">Luxo casal</option>
@@ -345,65 +245,102 @@ function FormularioDeReserva(props) {
                     </select>
                 </div>
 
-                <div id="divinterna">
-                    <label class="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
-                </div>
+                {nome === "Cadastrar" ? 
+                    (<div>
+                        <div className="divinterna">
+                            <label htmlFor="nome">Nome completo*:</label>
+                            <input id="nome" type="text" required></input>
+                        </div>
 
-                <div id="divinterna">
-                    <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => {trocarParaCPF()}}></input>
-                    <label id="labelCPF" htmlFor="cpf" class="cpfNumPassaporte">CPF:</label>
-                    <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99"></InputMask>
-                </div>
-                <div id="divinterna">
-                    <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" class="cpfNumPassaporte" onChange={(e) => {trocarParaPassaporte()}}></input>
-                    <label id="labelPassaporte" htmlFor="numPassaporte" class="cpfNumPassaporte">Passaporte:</label>
-                    <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999"></InputMask>
-                </div>
+                        <div className="divinterna">
+                            <label id="escolhaCPFNumPassaporte" className="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
+                        </div>
 
-                <div id="divinterna">
-                    <label htmlFor="cep">CEP*:</label>
-                    <InputMask id="cep" className="inputdivisivel" type="text" mask="99999-999" value={cepValue} onChange={(e) => { handleChange(e.target.value, "cep") }} onBlur={() => pesquisacep()} required></InputMask>
-                </div>
+                        <div className="divinterna">
+                            <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => {trocarParaCPF()}}></input>
+                            <label id="labelCPF" htmlFor="cpf" className="cpfNumPassaporte">CPF:</label>
+                            <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99" value={cpf} onChange={(evento) => setCPF(evento.target.value)}></InputMask>
+                        </div>
+                        <div className="divinterna">
+                            <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" className="cpfNumPassaporte" onChange={(e) => {trocarParaPassaporte()}}></input>
+                            <label id="labelPassaporte" htmlFor="numPassaporte" className="cpfNumPassaporte">Passaporte:</label>
+                            <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999" value={numPassaporte} onChange={(evento) => setNumPassaporte(evento.target.value)}></InputMask>
+                        </div>
 
-                <div id="divinterna">
-                    <label htmlFor="logradouro">Endereço*:</label>
-                    <input id="logradouro" type="text" maxLength="100" required></input>
-                </div>
+                        <div className="divinterna">
+                            <label htmlFor="cep">CEP*:</label>
+                            <InputMask id="cep" className="inputdivisivel" type="text" mask="99999-999" value={cepValue} onChange={(e) => { handleChange(e.target.value, "cep") }} onBlur={() => pesquisacep()} required></InputMask>
+                        </div>
 
-                <div id="divinterna">
-                    <label htmlFor="numero">Número*:</label>
-                    <input id="numero" className="inputdivisivel" type="number" min="1" required></input>
+                        <div className="divinterna">
+                            <label htmlFor="logradouro">Endereço*:</label>
+                            <input id="logradouro" type="text" maxLength="100" required></input>
+                        </div>
 
-                    <label htmlFor="complemento">Complemento:</label>
-                    <input id="complemento" className="inputdivisivel" type="text"></input>
-                </div>
+                        <div className="divinterna">
+                            <label htmlFor="numero">Número*:</label>
+                            <input id="numero" className="inputdivisivel" type="number" min="1" required></input>
 
-                <div id="divinterna">
+                            <label htmlFor="complemento">Complemento:</label>
+                            <input id="complemento" className="inputdivisivel" type="text"></input>
+                        </div>
 
-                    <label htmlFor="estado">Estado*:</label>
-                    <select id="estado" value = {ufSelecionada} onChange = {(event) => setUfSelecionada(event.target.value)} className="inputdivisivel" required>
-                        <option value = "">Selecione o Estado</option>
-                        {
-                            ufs.map(uf => <option key = {uf.sigla} value = {uf.sigla}>{uf.sigla}</option>)
-                        }
-                    </select>
+                        <div className="divinterna">
 
-                    <label htmlFor="cidade">Cidade*:</label>
-                    <select id="cidade" value = {cidadeSelecionada} onChange = {(event) => setCidadeSelecionada(event.target.value)} className="inputdivisivel" required disabled>
-                        <option value="">Selecione a cidade</option>
-                        {
-                            cidades.map(cidade => <option key = {cidade.nome} value = {cidade.nome}>{cidade.nome}</option>)
-                        }
-                    </select>
-                </div>
+                            <label htmlFor="estado">Estado*:</label>
+                            <select id="estado" value = {ufSelecionada} onChange = {(event) => setUfSelecionada(event.target.value)} className="inputdivisivel" required>
+                                <option value = "">Selecione o estado</option>
+                                {
+                                    ufs.map(uf => <option key = {uf.sigla} value = {uf.sigla}>{uf.sigla}</option>)
+                                }
+                            </select>
 
-                <div id="divinterna">
-                    <label htmlFor="telefone">Telefone*:</label>
-                    <input id="telefone" onKeyPress = {mascararTelefone} className="inputdivisivel" type="text" required></input> {/*Implementar máscara do input depois*/}
-                </div>
+                            <label htmlFor="cidade">Cidade*:</label>
+                            <select id="cidade" value = {cidadeSelecionada} onChange = {(event) => setCidadeSelecionada(event.target.value)} className="inputdivisivel" required disabled>
+                                <option value="">Selecione a cidade</option>
+                                {
+                                    cidades.map(cidade => <option key = {cidade.nome} value = {cidade.nome}>{cidade.nome}</option>)
+                                }
+                            </select>
+                        </div>
 
-                <div id="carregando" className="nada"></div>
-                <button id="botaoconfirmar" className="" type="button" onClick={() => confirmarReserva()}>Confirmar reserva</button>
+                        <div className="divinterna">
+                            <label htmlFor="telefone">Telefone*:</label>
+                            <input id="telefone" onKeyPress = {mascararTelefone} className="inputdivisivel" type="text" required></input> {/*Implementar máscara do input depois*/}
+                        </div>
+                    </div>)
+                    :
+                    (<div>
+                        <div className="divinterna">
+                            <label htmlFor="quantAdultos">Quantidade de adultos*:</label>
+                            <input id="quantAdultos" type="number" className="inputdivisivel" min="1" max="3" required />
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="quantCriancas">Quantidade de crianças*:</label>
+                            <input id="quantCriancas" type="number" className="inputdivisivel" min="0" max="2" required />
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="checkIn">Check-in*:</label>
+                            <input id="checkIn" type="date" placeholder="Date" min={validacao.diaAtual()} required />
+                        </div>
+
+                        <div className="divinterna">
+                            <label htmlFor="checkOut">Check-out*:</label>
+                            <input id="checkOut" type="date" placeholder="Date" min={validacao.diaAtual()} />
+                        </div>
+                    </div>)
+                }
+
+                {nome === "Cadastrar" ?
+                    <BotaoConfirmar dados = {dados} tipoDeQuarto = {tipoDeQuarto} cpf = {cpf} numPassaporte = {numPassaporte} cep = {cepValue} cidadeSelecionada = {cidadeSelecionada} ufSelecionada = {ufSelecionada} />
+                    : 
+                    <div>
+                        <BotaoAlterar dados = {dados} tipoDeQuarto = {tipoDeQuarto} />
+                        <BotaoCancelar dados = {dados} />
+                    </div>
+                }
             </form>
         </div>
     );

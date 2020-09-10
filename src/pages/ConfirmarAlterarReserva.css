@@ -26,7 +26,7 @@
     "numero complemento"
     "cidade estado"
     "telefone"
-    "botaoconfirmar";*/
+    "botaoReserva";*/
 }
 
 .reserva {
@@ -76,8 +76,8 @@
     grid-area: telefone;
 }
 
-#botaoconfirmar {
-    grid-area: botaoconfirmar;
+.botaoReserva {
+    grid-area: botaoReserva;
     background-color: var( --cor-primaria);
     color: var(--cor-de-fundo);
     border: none;
@@ -88,6 +88,10 @@
     width: 50%;
     margin-left: 25%;
     margin-right: 25%;
+}
+
+#botaocancelar {
+    background-color: darkred;
 }
 
 #carregando {
@@ -102,7 +106,7 @@
     grid-area: botaobuscar;
 }
 
-#divinterna {
+.divinterna {
     align-items: center;
     justify-content: space-around;
     padding: 0.6rem;
@@ -114,13 +118,13 @@
 }
 
 label {
-    width: 10%;
+    width: 15%;
     display: inline-block;
     text-align: right;
 }
 
 label.cpfNumPassaporte {
-    width: 7%;
+    width: 12%;
 }
 
 label.grande {
@@ -128,17 +132,16 @@ label.grande {
     text-align: left;
 }
 
-input[type="text"].inputdivisivel, select.inputdivisivel {
+input[type="text"].inputdivisivel, input[type="number"].inputdivisivel, select.inputdivisivel {
     width: 30%;
 }
 
 input[type="text"], select {
-    width: 85%;
+    width: 80%;
     height: 25px;
 }
 
 input[type="radio"] {
-    width: 3%;
     margin: none;
 }
 
@@ -148,4 +151,42 @@ select {
 
 p {
     font-size: 1.6em;
+}
+
+@media screen and (max-width: 970px) {
+    label {
+        text-align: left;
+        width: 100%;
+    }
+
+    label.cpfNumPassaporte {
+        width: 30%;
+    }
+
+    input[type="text"], select {
+        width: 100%;
+    }
+
+    input[type="text"].inputdivisivel, input[type="number"].inputdivisivel, select.inputdivisivel {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    label.cpfNumPassaporte {
+        text-align: left;
+        width: 50%;
+    }
+
+    input[type="text"], select {
+        width: 100%;
+    }
+
+    input[type="text"].inputdivisivel, input[type="number"].inputdivisivel, select.inputdivisivel {
+        width: 100%;
+    }
+
+    .divinterna {
+        padding: 0;
+    }
 }

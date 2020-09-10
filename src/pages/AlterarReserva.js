@@ -4,22 +4,22 @@ import Rodape from '../components/rodape/Rodape';
 import CaixaDeFormularioDeReserva from '../components/CaixaDeFormularioDeReserva';
 import { useHistory } from 'react-router-dom';
 
-function ConfirmarReserva (dados) {
+function AlterarReserva (dados) {
     
     const history = useHistory();
 
     useEffect(() => {
         if (dados.history.location.state === undefined) 
-            history.push('/');
+            history.push('/alterarreserva');
     }, []);
 
     return (
         <div>
             <Cabecalho />
-            <CaixaDeFormularioDeReserva dados = {dados} nome = {"Cadastrar"} />
+            <CaixaDeFormularioDeReserva dados = {dados} nome = {"Alterar"} />
             <Rodape />
         </div>
     );
 }
 
-export default ConfirmarReserva;
+export default AlterarReserva;
