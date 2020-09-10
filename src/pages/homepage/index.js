@@ -51,7 +51,7 @@ function HomePage() {
 			icon: 'location_on'
 		},
 		{
-			text: 'Alterar Reserva',
+			text: 'Consultar Reserva',
 			path: 'alterarreserva',
 			icon: 'settings'
 		},

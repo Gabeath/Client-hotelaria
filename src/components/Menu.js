@@ -13,9 +13,9 @@ function Menu({ background, hoverBackground, linkColor, navLinks, logo }) {
                 style={{ background: background }}
                 className={ navOpen ? 'active' : '' }
             >
-                <figure className="image-logo" onClick={ () => { setNavOpen(!navOpen) } }>
+                {/* <figure className="image-logo" onClick={ () => { setNavOpen(!navOpen) } }>
                     <img src={ logo } height="40px" width="40px" alt="toolbar-logo" />
-                </figure>
+                </figure> */}
                 { navLinks.map((link, index) => 
                     <li
                         key={ index }

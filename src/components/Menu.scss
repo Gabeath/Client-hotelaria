@@ -1,5 +1,3 @@
-@import url('https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css');
-
 figure {
 	margin-block-start: 0;
 	margin-block-end: 0;
@@ -11,6 +9,8 @@ nav.responsive-toolbar {
     background: #333333;
     height: 60px;
     width: 100%;
+    display: flex;
+    justify-content: center;
     // position: fixed;
     box-shadow: 2px 0px 2px #ccc;
 
@@ -60,40 +60,40 @@ nav.responsive-toolbar {
     }
 }
 
-@media screen and (max-width: 759px) {
-    nav.responsive-toolbar {
-        ul {
-            height: 100%;
-            width: 300px;
-            left: -240px;
-            position: fixed;
-            top: 60px;
-            flex-direction: column;
-            transition: 300ms ease all;
+// @media screen and (max-width: 759px) {
+//     nav.responsive-toolbar {
+//         ul {
+//             height: 100%;
+//             width: 300px;
+//             left: -240px;
+//             position: fixed;
+//             top: 60px;
+//             flex-direction: column;
+//             transition: 300ms ease all;
 
-            &.active {
-                left: 0px;
-            }
+//             &.active {
+//                 left: 0px;
+//             }
 
-            figure {
-                margin-inline-start: 2px;
-                position: fixed;
-                left: 9px;
-                top: 10px;
-            }
+//             figure {
+//                 margin-inline-start: 2px;
+//                 position: fixed;
+//                 left: 9px;
+//                 top: 10px;
+//             }
 
-            li {
-                width: 100%;
-                padding-left: 0;
-                padding-right: 0;
-            }
+//             li {
+//                 width: 100%;
+//                 padding-left: 0;
+//                 padding-right: 0;
+//             }
 
-            a {
-                flex-direction: row;
-                justify-content: space-between;
-                margin-left: 20px;
-                margin-right: 16px;
-            }
-        }
-    }
-}
+//             a {
+//                 flex-direction: row;
+//                 justify-content: space-between;
+//                 margin-left: 20px;
+//                 margin-right: 16px;
+//             }
+//         }
+//     }
+// }
