@@ -5,6 +5,7 @@ import InputMask from "react-input-mask";
 
 import BotaoConfirmar from './BotaoConfirmar';
 import BotaoAlterar from './BotaoAlterar';
+import BotaoCancelar from './BotaoCancelar';
 import validacao from '../functions/validacao';
 
 function FormularioDeReserva({dados, nome}) {
@@ -314,7 +315,11 @@ function FormularioDeReserva({dados, nome}) {
 
                 {nome === "Cadastrar" ?
                     <BotaoConfirmar dados = {dados} tipoDeQuarto = {tipoDeQuarto} cpf = {cpf} numPassaporte = {numPassaporte} cep = {cepValue} cidadeSelecionada = {cidadeSelecionada} ufSelecionada = {ufSelecionada} />
-                    : <BotaoAlterar dados = {dados} tipoDeQuarto = {tipoDeQuarto} />
+                    : 
+                    <div>
+                        <BotaoAlterar dados = {dados} tipoDeQuarto = {tipoDeQuarto} />
+                        <BotaoCancelar dados = {dados} />
+                    </div>
                 }
             </form>
         </div>

@@ -90,6 +90,10 @@
     margin-right: 25%;
 }
 
+#botaocancelar {
+    background-color: darkred;
+}
+
 #carregando {
     padding: 0.6rem;
     font: 700 1.6rem Montserrat;
