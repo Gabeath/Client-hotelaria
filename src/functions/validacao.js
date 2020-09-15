@@ -10,7 +10,11 @@ const validacao = {
     },
 
     validarComplemento: (complemento) => {
-        return complemento.length <= 50;
+        return (complemento.length >= 3 && complemento.length <= 50);
+    },
+
+    validarSenha: (senha) => {
+        return (senha.length >=6 && senha.length<= 50);
     },
 
     validarCPF: (cpf) => {

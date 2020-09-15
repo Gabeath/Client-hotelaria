@@ -72,11 +72,12 @@ function BotaoConfirmar ({dados, tipoDeQuarto, cpf, numPassaporte, cep, cidadeSe
 
         let complemento = document.getElementById("complemento").value;
 
-        if(!validacao.validarComplemento(complemento)) {
-            carregando(false);
-            alert("O complemento deve ter no máximo 50 caracteres");
-            return;
-        }
+        if(complemento)
+            if(!validacao.validarComplemento(complemento)) {
+                carregando(false);
+                alert("O complemento deve ter entre 3 e 50 caracteres");
+                return;
+            }
 
         if (document.getElementById("botaoCPF").checked === true) {
             cpf = validacao.limparFormatacao(cpf);
@@ -120,7 +121,7 @@ function BotaoConfirmar ({dados, tipoDeQuarto, cpf, numPassaporte, cep, cidadeSe
             '&dataFim=' + dadosIniciaisDaReserva.check_out +
             '&tipoDeQuarto=' + tipoDeQuarto
         ).then(res => {
-            carregando(false);
+            carregando(true);
             if (res.status === "Sucesso") {
                 alert("Reserva realizada com sucesso!\nO ID da reserva é: " + res.dados.id + "\nA senha da reserva é: " + res.dados.senha);
                 history.push('/');

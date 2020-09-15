@@ -6,7 +6,7 @@
     height: 120px;
     animation: girar 2s linear infinite;
 }
-  
+
 @keyframes girar {
     0% {
         transform: rotate(0deg);
