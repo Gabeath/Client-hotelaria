@@ -80,6 +80,7 @@ function BotaoConfirmar ({dados, tipoDeQuarto, cpf, numPassaporte, cep, cidadeSe
 
         if (document.getElementById("botaoCPF").checked === true) {
             cpf = validacao.limparFormatacao(cpf);
+            numPassaporte = null;
             if (!validacao.validarCPF(cpf)) {
                 carregando(false);
                 alert("Digite um CPF ou número de passaporte válido");
@@ -87,6 +88,7 @@ function BotaoConfirmar ({dados, tipoDeQuarto, cpf, numPassaporte, cep, cidadeSe
             }
         }
         else {
+            cpf = null;
             if (!validacao.validarPassaporte(numPassaporte)) {
                 carregando(false);
                 alert("Digite um número de passaporte válido");
