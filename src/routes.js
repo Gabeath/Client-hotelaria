@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import HomePage from './pages/homepage';
 import ConfirmarReserva from './pages/ConfirmarReserva';
 import AlterarReserva from './pages/AlterarReserva';
+import CadastrarFuncionarios from './pages/cadastrarfuncionarios';
 
 import './App.css';
 
@@ -13,6 +14,7 @@ function Routes() {
             <Route path="/"  component={HomePage} exact/>
             <Route path = '/confirmarreserva' component = {ConfirmarReserva} exact/>
             <Route path = '/alterarreserva' component = {AlterarReserva} exact/>
+            <Route path = '/cadastrarfuncionarios' component = {CadastrarFuncionarios} exact/>
         </BrowserRouter>
     )
 }

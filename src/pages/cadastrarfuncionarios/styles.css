@@ -1,0 +1,121 @@
+#cadastrarFuncionarios{
+    width: 80vw;
+    background-color: var(--cor-de-fundo);
+    color: var(--cor-texto-base);
+    font: 400 1.4rem Roboto;
+    line-height: 3.2rem;
+    display: block;
+    
+    border: solid gray;
+    border-width: 1px;
+    border-radius: 4px;
+
+    padding: 1.6rem;
+    margin: 20px auto 1.6rem auto;
+}
+
+#cadastrarFuncionarios .divinterna {
+    align-items: center;
+    justify-content: space-around;
+    padding: 0.6rem;
+    max-width: 100%;
+}
+
+#cadastrarFuncionarios #nome {
+    grid-area: nome;
+}
+
+#cadastrarFuncionarios #cep {
+    grid-area: cep;
+}
+
+#cadastrarFuncionarios #logradouro {
+    grid-area: logradouro;
+}
+
+#cadastrarFuncionarios #numero {
+    grid-area: numero;
+}
+
+#cadastrarFuncionarios #complemento {
+    grid-area: complemento;
+}
+
+#cadastrarFuncionarios #cidade {
+    grid-area: cidade;
+}
+
+#cadastrarFuncionarios #estado {
+    grid-area: estado;
+}
+
+#cadastrarFuncionarios #celular {
+    grid-area: telefone;
+}
+
+#cadastrarFuncionarios label {
+    width: 15%;
+    display: inline-block;
+    text-align: right;
+}
+
+#cadastrarFuncionarios input[type="text"].inputdivisivel, input[type="number"].inputdivisivel, select.inputdivisivel, input[type="password"] {
+    width: 30%;
+}
+
+#cadastrarFuncionarios input[type="text"], select {
+    width: 80%;
+    height: 25px;
+}
+
+#cadastrarFuncionarios #carregando {
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+    display: block;
+    margin: 0 auto;
+}
+
+.btnCadastrarFuncionario{
+    grid-area: botaoReserva;
+    background-color: var( --cor-primaria);
+    color: var(--cor-de-fundo);
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+
+@media screen and (max-width: 970px) {
+    #cadastrarFuncionarios label {
+        text-align: left;
+        width: 100%;
+    }
+
+    #cadastrarFuncionarios input[type="text"], select {
+        width: 100%;
+    }
+
+    #cadastrarFuncionarios input[type="text"].inputdivisivel, input[type="number"].inputdivisivel, select.inputdivisivel, input[type="password"] {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    #cadastrarFuncionario input[type="text"], select {
+        width: 100%;
+    }
+
+    #cadastrarFuncionario input[type="text"].inputdivisivel, input[type="number"].inputdivisivel, select.inputdivisivel, input[type="password"] {
+        width: 100%;
+    }
+
+    #cadastrarFuncionario .divinterna {
+        padding: 0;
+    }
+}

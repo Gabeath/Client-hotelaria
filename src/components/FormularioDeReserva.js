@@ -165,18 +165,12 @@ function FormularioDeReserva({dados, nome}) {
                             limpa_formulário_cep();
                         }
                     })
-                cep = mascaraCep(cep)
-                setCep(cep)
             }
             else {
                 alert("Formato de CEP inválido.");
             }
         }
     };
-
-    function mascaraCep(valor) {
-        return valor.replace(/(\d{5})(\d{3})/g, "$1-$2");
-    }
 
     function mascararTelefone(e){
         e.preventDefault()
