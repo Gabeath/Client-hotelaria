@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import requisicao from '../../functions/requisicao'
 import './styles.css'
 import '../../components/Carregando.css'
@@ -40,50 +40,57 @@ const Checkin = () => {
         document.getElementById("labelPassaporte").innerHTML = "Passaporte*:";
     }
 
-    async function consultarReservas() {
-        await carregando(true)
+    const  consultarReservas = () => {
+         carregando(true)
 
+        if (document.getElementById("botaoCPF").checked === false && document.getElementById("botaoNumPassaporte").checked === false) {
+            carregando(false)
+            alert("Selecione se deseja utilizar o CPF ou o número de passaporte");
+            return;
+        }
+
+        if ((cpf === "" && numPassaporte === "")) {
+            carregando(false)
+            alert("Preencha o CPF ou número de passaporte para consultar as reservas");
+            return;
+        }
+
+        let novoCPF = null;
         if (document.getElementById("botaoCPF").checked === true) {
-            // let cpfSemFormatacao = 
-            setCPF( validacao.limparFormatacao(cpf));
-            setNumPassaporte(null);
-            if (!validacao.validarCPF(cpf)) {
-                carregando(false);
+
+            novoCPF = validacao.limparFormatacao(cpf.toString())
+            console.log(cpf)
+            console.log(novoCPF)
+
+            if (!validacao.validarCPF(novoCPF)) {
+                carregando(false)
                 alert("Digite um CPF ou número de passaporte válido");
                 return;
             }
         }
         else {
-            setCPF(null);
             if (!validacao.validarPassaporte(numPassaporte)) {
-                carregando(false);
+                carregando(false)
                 alert("Digite um número de passaporte válido");
                 return;
             }
         }
 
-        try {
-            const res = await requisicao.post("consultarReservas", 'cpf=' + cpf +
-                "&numPassaporte=" + numPassaporte)
-
-            if (res.status === "Sucesso") {
-                await carregando(false);
-                alert(`Consulta realizada com sucesso \n`);
-            }
-            else {
-                alert("Não foi possível realizar a consulta!\nErro: " + res.dados);
-                await carregando(false);
-            }
-
-
-        } catch (err) {
-            await carregando(false);
-            console.log(err);
-        }
-
+        requisicao.get("consultarReservas?cpf=" + novoCPF +
+            "&numPassaporte=" + numPassaporte
+            ).then(res => {
+                carregando(false);
+                if (res.status === "Sucesso") {
+                    alert("Consulta realizada com sucesso!");
+                }
+                else
+                    alert("Não foi possível realizar a consulta!\n\nErro: " + res.dados);
+            }).catch(erro => {
+                carregando(false);
+                console.log(erro);
+            });
+            carregando(false)
     }
-
-
 
 return (
     <div>
@@ -108,7 +115,6 @@ return (
 
             <div id="carregando" className="nada"></div>
             <button type="button" className="btnConsultarReservas" id="btnConsultarReservas" onClick={() => consultarReservas()}>Consultar Reservas</button>
-
 
         </form>
         <Rodape />
