@@ -12,6 +12,7 @@ const Checkin = () => {
 
     const [cpf, setCPF] = useState("")
     const [numPassaporte, setNumPassaporte] = useState("")
+    const [reservas, setReservas] = useState("")
 
     const carregando = async (verdadeiro) => {
         if (verdadeiro) {
@@ -40,8 +41,8 @@ const Checkin = () => {
         document.getElementById("labelPassaporte").innerHTML = "Passaporte*:";
     }
 
-    const  consultarReservas = () => {
-         carregando(true)
+    const consultarReservas = () => {
+        carregando(true)
 
         if (document.getElementById("botaoCPF").checked === false && document.getElementById("botaoNumPassaporte").checked === false) {
             carregando(false)
@@ -59,8 +60,6 @@ const Checkin = () => {
         if (document.getElementById("botaoCPF").checked === true) {
 
             novoCPF = validacao.limparFormatacao(cpf.toString())
-            console.log(cpf)
-            console.log(novoCPF)
 
             if (!validacao.validarCPF(novoCPF)) {
                 carregando(false)
@@ -78,48 +77,104 @@ const Checkin = () => {
 
         requisicao.get("consultarReservas?cpf=" + novoCPF +
             "&numPassaporte=" + numPassaporte
+        ).then(res => {
+            carregando(false);
+            if (res.status === "Sucesso") {
+                alert("Consulta realizada com sucesso!");
+                setReservas(res.dados)
+            }
+            else
+                alert("Não foi possível realizar a consulta!\n\nErro: " + res.dados);
+
+        }).catch(erro => {
+            carregando(false);
+            console.log(erro);
+        });
+
+        carregando(false)
+    }
+
+    var lista = reservas
+    const listaDeReservas = Object.keys(lista).map(reserva => {
+        return <div key={reserva}>
+            <input type="radio" id={reserva} name="radio"></input>
+            <label htmlFor={reserva} className="listaDeReservas">
+                <p><span>ID: </span>{lista[reserva].id}</p>
+                <section id="dados_ datas">
+                    <p><span>Data inicío: </span>{lista[reserva].data_inicio.substring(8, 10) + "/" + lista[reserva].data_inicio.substring(5, 7) + "/" + lista[reserva].data_inicio.substring(0, 4)}</p>
+                    <p><span>Data fim: </span>{lista[reserva].data_fim.substring(8, 10) + "/" + lista[reserva].data_fim.substring(5, 7) + "/" + lista[reserva].data_fim.substring(0, 4)}</p>
+                </section>
+                <section id="dados_hospedes">
+                    <p><span>Adultos: </span>{lista[reserva].quant_adultos}</p>
+                    <p><span>Crianças: </span>{lista[reserva].quant_criancas}</p>
+                </section>
+                <section id="dados_quartos">
+                    <p><span>Numero do quarto: </span>{lista[reserva].quarto.num_quarto}</p>
+                    <p><span>Tipo quarto: </span>{lista[reserva].quarto.tipo_de_quarto.nome}</p>
+                </section>
+            </label>
+        </div>
+    });
+
+    const realizarCheckIn = () => {
+        var radios = document.getElementsByName("radio");
+
+        let indice = 0
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                indice = i
+            }
+
+            requisicao.post("realizarCheckInReserva", 'num_quarto=' + lista[indice].quarto.num_quarto
             ).then(res => {
                 carregando(false);
                 if (res.status === "Sucesso") {
-                    alert("Consulta realizada com sucesso!");
+                    alert("Check-In realizado com sucesso!");
                 }
                 else
-                    alert("Não foi possível realizar a consulta!\n\nErro: " + res.dados);
+                    alert("O check-In não pode ser realizado!\nErro: " + res.dados);
             }).catch(erro => {
                 carregando(false);
                 console.log(erro);
             });
-            carregando(false)
+        }
+
     }
 
-return (
-    <div>
-        <Cabecalho />
-        <form id="Checkin">
+    return (
+        <div>
+            <Cabecalho />
+            <form id="consultarReservas">
 
-            <div className="divinterna">
-                <label id="escolhaCPFNumPassaporte" className="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
-            </div>
+                <div className="divinterna">
+                    <label id="escolhaCPFNumPassaporte" className="grande">Selecione se deseja utilizar CPF ou número de passaporte*:</label>
+                </div>
 
-            <div className="divinterna">
-                <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => { trocarParaCPF() }}></input>
-                <label id="labelCPF" htmlFor="cpf" className="cpfNumPassaporte">CPF:</label>
-                <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99" value={cpf} onChange={(evento) => setCPF(evento.target.value)}></InputMask>
-            </div>
+                <div className="divinterna">
+                    <input type="radio" id="botaoCPF" name="cpfNumPassaporte" onChange={(e) => { trocarParaCPF() }}></input>
+                    <label id="labelCPF" htmlFor="cpf" className="cpfNumPassaporte">CPF:</label>
+                    <InputMask id="cpf" type="text" className="inputdivisivel" mask="999.999.999-99" value={cpf} onChange={(evento) => setCPF(evento.target.value)}></InputMask>
+                </div>
 
-            <div className="divinterna">
-                <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" className="cpfNumPassaporte" onChange={(e) => { trocarParaPassaporte() }}></input>
-                <label id="labelPassaporte" htmlFor="numPassaporte" className="cpfNumPassaporte">Passaporte:</label>
-                <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999" value={numPassaporte} onChange={(evento) => setNumPassaporte(evento.target.value)}></InputMask>
-            </div>
+                <div className="divinterna">
+                    <input type="radio" id="botaoNumPassaporte" name="cpfNumPassaporte" className="cpfNumPassaporte" onChange={(e) => { trocarParaPassaporte() }}></input>
+                    <label id="labelPassaporte" htmlFor="numPassaporte" className="cpfNumPassaporte">Passaporte:</label>
+                    <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999" value={numPassaporte} onChange={(evento) => setNumPassaporte(evento.target.value)}></InputMask>
+                </div>
 
-            <div id="carregando" className="nada"></div>
-            <button type="button" className="btnConsultarReservas" id="btnConsultarReservas" onClick={() => consultarReservas()}>Consultar Reservas</button>
+                <div id="carregando" className="nada"></div>
+                <button type="button" className="btnConsultarReservas" id="btnConsultarReservas" onClick={() => consultarReservas()}>Consultar Reservas</button>
+            </form>
+            <section id="reservas">
+                <ul>
+                    {listaDeReservas}
+                </ul>
+            </section>
+            <button type="button" className="btnRealizarCheckIn" id="btnRealizarCheckIn" onClick={() => realizarCheckIn()}> Realizar Check-In</button>
 
-        </form>
-        <Rodape />
-    </div>
-)
+            <Rodape />
+        </div>
+    )
 }
 
 export default Checkin
