@@ -58,6 +58,14 @@
 
 #numero {
     grid-area: numero;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    
+}
+
+#numero::-webkit-inner-spin-button { 
+    -webkit-appearance: none;
+    
 }
 
 #complemento {

@@ -33,8 +33,17 @@
     grid-area: logradouro;
 }
 
+
 #cadastrarFuncionarios #numero {
     grid-area: numero;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    
+}
+
+#cadastrarFuncionarios #numero::-webkit-inner-spin-button { 
+    -webkit-appearance: none;
+    
 }
 
 #cadastrarFuncionarios #complemento {
