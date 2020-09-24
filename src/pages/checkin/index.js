@@ -109,8 +109,8 @@ const Checkin = () => {
                     <p><span>Crianças: </span>{lista[reserva].quant_criancas}</p>
                 </section>
                 <section id="dados_quartos">
-                    <p><span>Numero do quarto: </span>{lista[reserva].quarto.num_quarto}</p>
-                    <p><span>Tipo quarto: </span>{lista[reserva].quarto.tipo_de_quarto.nome}</p>
+                    <p><span>Número do quarto: </span>{lista[reserva].quarto.num_quarto}</p>
+                    <p><span>Tipo de quarto: </span>{lista[reserva].quarto.tipo_de_quarto.nome}</p>
                 </section>
             </label>
         </div>
