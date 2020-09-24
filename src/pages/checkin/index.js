@@ -142,7 +142,7 @@ const Checkin = () => {
     }
 
     return (
-        <div>
+        <div id = "page">
             <Cabecalho />
             <form id="consultarReservas">
 
@@ -163,15 +163,17 @@ const Checkin = () => {
                 </div>
 
                 <div id="carregando" className="nada"></div>
-                <button type="button" className="btnConsultarReservas" id="btnConsultarReservas" onClick={() => consultarReservas()}>Consultar Reservas</button>
+                <div className = "botoes">
+                    <button type="button" className="btnConsultarReservas" id="btnConsultarReservas" onClick={() => consultarReservas()}>Consultar Reservas</button>
+                    <button type="button" className="btnRealizarCheckIn" id="btnRealizarCheckIn" onClick={() => realizarCheckIn()}> Realizar Check-In</button>
+                </div>
             </form>
             <section id="reservas">
                 <ul>
                     {listaDeReservas}
                 </ul>
             </section>
-            <button type="button" className="btnRealizarCheckIn" id="btnRealizarCheckIn" onClick={() => realizarCheckIn()}> Realizar Check-In</button>
-
+           
             <Rodape />
         </div>
     )

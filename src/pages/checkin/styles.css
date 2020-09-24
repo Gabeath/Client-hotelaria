@@ -2,12 +2,47 @@
     display: flex;
     
     text-align: start;
+    justify-content: center;
     
 }
 
 #reservas ul {
     list-style-type: none;
 }
+
+#consultarReservas{
+    max-width: max-content;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+#consultarReservas .divinterna{
+    display: flex;
+}
+
+#consultarReservas .botoes{
+    display: flex;
+    flex-direction: column;
+}
+
+#consultarReservas .botoes button{
+    display: block;
+    margin-top: 5px;
+    background-color: var( --cor-primaria);
+    color: var(--cor-de-fundo);
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    cursor: pointer;
+}
+
+
+
 
 .listaDeReservas {
     width: 80vw;
