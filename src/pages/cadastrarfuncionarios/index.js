@@ -148,8 +148,6 @@ const CadastrarFuncionarios = () => {
             if (res.status === "Sucesso") {
                 await carregando(false);
                 alert(`Funcionário cadastrado com sucesso \n Matricula: ${res.dados.funcionario.id}`);
-
-                history.push('/');
             }
             else{
                 alert("A reserva não pôde ser realizada!\nErro: " + res.dados);

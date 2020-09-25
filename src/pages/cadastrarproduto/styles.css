@@ -1,0 +1,40 @@
+#pageCadastrarProduto form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    align-items: space-between;
+
+    margin-top: 100px;
+    padding: 20px;
+    background-color: var(--cor-de-fundo);
+
+    border: solid gray;
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+#pageCadastrarProduto form div{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#pageCadastrarProduto form div input{
+    width: 70%
+}
+
+#pageCadastrarProduto form button{
+    display: block;
+    background-color: var( --cor-primaria);
+    color: var(--cor-de-fundo);
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+    margin: 0 auto;
+    cursor: pointer;
+    padding: 10px;
+}
