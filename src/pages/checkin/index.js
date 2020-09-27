@@ -125,7 +125,7 @@ const Checkin = () => {
                 indice = i
             }
 
-            requisicao.post("realizarCheckInReserva", 'num_quarto=' + lista[indice].quarto.num_quarto
+            requisicao.post("realizarCheckInReserva", 'id_reserva=' + lista[indice].id
             ).then(res => {
                 carregando(false);
                 if (res.status === "Sucesso") {
