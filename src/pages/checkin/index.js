@@ -80,8 +80,8 @@ const Checkin = () => {
         ).then(res => {
             carregando(false);
             if (res.status === "Sucesso") {
-                alert("Consulta realizada com sucesso!");
                 setReservas(res.dados)
+                document.getElementById("btnRealizarCheckIn").className = "btnRealizarCheckIn"
             }
             else
                 alert("Não foi possível realizar a consulta!\n\nErro: " + res.dados);
@@ -96,24 +96,29 @@ const Checkin = () => {
 
     var lista = reservas
     const listaDeReservas = Object.keys(lista).map(reserva => {
-        return <div key={reserva}>
+        return <div id={lista[reserva].id} className="dadosReserva">
             <input type="radio" id={reserva} name="radio"></input>
             <label htmlFor={reserva} className="listaDeReservas">
-                <p><span>ID: </span>{lista[reserva].id}</p>
-                <section id="dados_ datas">
-                    <p><span>Data inicío: </span>{lista[reserva].data_inicio.substring(8, 10) + "/" + lista[reserva].data_inicio.substring(5, 7) + "/" + lista[reserva].data_inicio.substring(0, 4)}</p>
-                    <p><span>Data fim: </span>{lista[reserva].data_fim.substring(8, 10) + "/" + lista[reserva].data_fim.substring(5, 7) + "/" + lista[reserva].data_fim.substring(0, 4)}</p>
-                </section>
-                <section id="dados_hospedes">
-                    <p><span>Adultos: </span>{lista[reserva].quant_adultos}</p>
-                    <p><span>Crianças: </span>{lista[reserva].quant_criancas}</p>
-                </section>
-                <section id="dados_quartos">
-                    <p><span>Número do quarto: </span>{lista[reserva].quarto.num_quarto}</p>
-                    <p><span>Tipo de quarto: </span>{lista[reserva].quarto.tipo_de_quarto.nome}</p>
-                </section>
+                
+                <div key={reserva} className="reservas">
+                    <p><span>ID: </span>{lista[reserva].id}</p>
+                    <section id="dados_ datas">
+                        <p><span>Data inicío: </span>{lista[reserva].data_inicio.substring(8, 10) + "/" + lista[reserva].data_inicio.substring(5, 7) + "/" + lista[reserva].data_inicio.substring(0, 4)}</p>
+                        <p><span>Data fim: </span>{lista[reserva].data_fim.substring(8, 10) + "/" + lista[reserva].data_fim.substring(5, 7) + "/" + lista[reserva].data_fim.substring(0, 4)}</p>
+                    </section>
+                    <section id="dados_hospedes">
+                        <p><span>Adultos: </span>{lista[reserva].quant_adultos}</p>
+                        <p><span>Crianças: </span>{lista[reserva].quant_criancas}</p>
+                    </section>
+                    <section id="dados_quartos">
+                        <p><span>Número do quarto: </span>{lista[reserva].quarto.num_quarto}</p>
+                        <p><span>Tipo de quarto: </span>{lista[reserva].quarto.tipo_de_quarto.nome}</p>
+                    </section>
+                </div>
             </label>
         </div>
+
+
     });
 
     const realizarCheckIn = () => {
@@ -130,6 +135,7 @@ const Checkin = () => {
                 carregando(false);
                 if (res.status === "Sucesso") {
                     alert("Check-In realizado com sucesso!");
+                    document.getElementById(lista[indice].id).remove()
                 }
                 else
                     alert("O check-In não pode ser realizado!\nErro: " + res.dados);
@@ -142,7 +148,7 @@ const Checkin = () => {
     }
 
     return (
-        <div id = "page">
+        <div id="page">
             <Cabecalho />
             <form id="consultarReservas">
 
@@ -162,18 +168,24 @@ const Checkin = () => {
                     <InputMask id="numPassaporte" type="text" className="inputdivisivel" mask="aa999999" value={numPassaporte} onChange={(evento) => setNumPassaporte(evento.target.value)}></InputMask>
                 </div>
 
-                <div id="carregando" className="nada"></div>
-                <div className = "botoes">
-                    <button type="button" className="btnConsultarReservas" id="btnConsultarReservas" onClick={() => consultarReservas()}>Consultar Reservas</button>
-                    <button type="button" className="btnRealizarCheckIn" id="btnRealizarCheckIn" onClick={() => realizarCheckIn()}> Realizar Check-In</button>
-                </div>
+                
+                
             </form>
-            <section id="reservas">
+            <div id="carregando" className="nada"></div>
+            <div className="botoes">
+                    <button type="button" className="btnConsultarReservas" id="btnConsultarReservas" onClick={() => consultarReservas()}>Consultar Reservas</button>
+                </div>
+                <section id="reservas">
                 <ul>
                     {listaDeReservas}
                 </ul>
             </section>
-           
+                <div className="botoes">
+                    <button type="button" className="btnRealizarCheckIn nada" id="btnRealizarCheckIn" onClick={() => realizarCheckIn()} > Realizar Check-In</button>
+                </div>
+          
+            
+
             <Rodape />
         </div>
     )
