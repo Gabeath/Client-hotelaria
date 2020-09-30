@@ -30,7 +30,7 @@ const CadastrarProdutos = () => {
         }
 
         if(custo.length === 0 || custo.includes("_")){
-            alert("Preencha o custo corretamente, com os 4 digitos")
+            alert("Preencha o custo corretamente, com os 4 dígitos")
             return
         }
 
