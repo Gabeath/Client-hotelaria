@@ -17,6 +17,6 @@
 }
 
 .nada {
-    display: none;
+    display: none !important;
     border: none;
 }

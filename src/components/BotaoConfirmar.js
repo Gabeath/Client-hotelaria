@@ -121,7 +121,7 @@ function BotaoConfirmar ({dados, tipoDeQuarto, cpf, numPassaporte, cep, cidadeSe
             '&dataFim=' + dadosIniciaisDaReserva.check_out +
             '&tipoDeQuarto=' + tipoDeQuarto
         ).then(res => {
-            carregando(true);
+            carregando(false);
             if (res.status === "Sucesso") {
                 alert("Reserva realizada com sucesso!\nO ID da reserva é: " + res.dados.id + "\nA senha da reserva é: " + res.dados.senha);
                 history.push('/');
