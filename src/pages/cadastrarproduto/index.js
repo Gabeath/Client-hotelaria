@@ -38,11 +38,13 @@ const CadastrarProdutos = () => {
             await carregando(true);
             
             const res = await requisicao.post("cadastroDeProduto", 'nome=' + nome +
-            '&custo=' + custo)
+            '&custo=' + custo.replace(",", "."))
 
             if (res.status === "Sucesso") {
                 await carregando(false);
                 alert("Produto cadastrado com sucesso!");
+                setNome("");
+                setCusto("");
             }
             else{
                 alert("Erro ao cadastrar produto!\nErro: " + res.dados);
@@ -70,7 +72,7 @@ const CadastrarProdutos = () => {
                 </div>
                 <div>
                     <p>Custo: R$</p>
-                    <InputMask name = "custo" id = "custo" mask = "99.99" value = {custo} onChange = {e => setCusto(e.target.value)}/>
+                    <InputMask name = "custo" id = "custo" mask = "99,99" value = {custo} onChange = {e => setCusto(e.target.value)}/>
                 </div>
                 <div id="carregando" className="nada"></div>
                 <button id="btnCadastrarProduto" type = "button" onClick = {cadastrarProduto}>Cadastrar Produto</button>
