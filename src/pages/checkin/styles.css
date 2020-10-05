@@ -10,13 +10,13 @@
     list-style-type: none;
 }
 
-form{
+#consultarReservas {
     max-width: max-content;
     margin: 0 auto;
     margin-top: 20px;
 }
 
-form .divinterna{
+#consultarReservas .divinterna {
     display: flex;
 }
 
