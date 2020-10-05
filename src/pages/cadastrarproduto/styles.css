@@ -6,7 +6,7 @@
 
     align-items: space-between;
 
-    margin-top: 100px;
+    margin-top: 15px;
     padding: 20px;
     background-color: var(--cor-de-fundo);
 
@@ -15,7 +15,8 @@
     border-radius: 4px;
 }
 
-#pageCadastrarProduto svg.hidden{
+#pageCadastrarProduto .produtos .produto svg.hidden,
+#pageCadastrarProduto .produtos .produto div.hidden{
     display: none;
 }
 
@@ -41,4 +42,59 @@
     margin: 0 auto;
     cursor: pointer;
     padding: 10px;
+}
+
+#pageCadastrarProduto .produtos{
+    max-width: 60vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--cor-de-fundo);
+    color: var(--cor-texto-base);
+    font: 400 1.2rem Roboto;
+    line-height: 3.2rem;
+
+    word-break: break-all;
+    
+    border: solid gray;
+    border-width: 2px;
+    border-radius: 4px;
+
+    padding: 1.6rem;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#pageCadastrarProduto .produtos .produto{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#pageCadastrarProduto .produtos .produto .carregando{
+    max-width: 40px;
+    max-height: 40px;
+    border: 5px solid #f3f3f3; /* Cinza claro */
+    border-top: 5px solid #3498db; /* Azul */
+    background: none;
+}
+
+#pageCadastrarProduto .produtos .produto input{
+    width: 450px;
+    height: 60px;
+    margin-right: 10px;
+    padding-left: 10px;
+}
+
+#pageCadastrarProduto .produtos h1{
+    margin-bottom: 15px;
+    font: 700 2rem Montserrat;
+}
+
+
+#pageCadastrarProduto .produtos .produto svg{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
