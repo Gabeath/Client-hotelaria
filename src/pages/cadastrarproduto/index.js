@@ -178,12 +178,11 @@ const CadastrarProdutos = () => {
             '&custo=' + custo).then(res => {
                 carregando.classList.add("hidden")
                 if (res.status === "Sucesso") {
-                    custoProduto.setAttribute("value", `${custoProduto}`)
-                    nomeProduto.setAttribute("value", `${nomeProduto}`)
                     custoProduto.disabled = true
                     nomeProduto.disabled = true
                     editar.classList.remove("hidden")
                     excluir.classList.remove("hidden")
+                    setProduto(res.dados)
                 }
                 else {
                     confirmar.classList.remove("hidden")
