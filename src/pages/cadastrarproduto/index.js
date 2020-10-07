@@ -123,8 +123,6 @@ const CadastrarProdutos = () => {
 
         custoProduto.disabled = true
         nomeProduto.disabled = true
-
-
     }
 
     function preencherValores(id, nome, custo) {
@@ -193,8 +191,6 @@ const CadastrarProdutos = () => {
                 carregando.classList.add("hidden")
                 console.log(erro);
             });
-
-
     }
 
     function excluirProduto(id, nome) {
@@ -210,8 +206,6 @@ const CadastrarProdutos = () => {
             editar.classList.add("hidden")
             excluir.classList.add("hidden")
             carregando.classList.remove("hidden")
-
-
 
            requisicao.delete(`excluirProduto/${id}`).then(res => {
             carregando.classList.add("hidden")

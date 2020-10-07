@@ -45,7 +45,7 @@
 }
 
 #pageCadastrarProduto .produtos{
-    max-width: 60vw;
+    max-width: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
