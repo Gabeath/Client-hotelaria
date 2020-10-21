@@ -7,30 +7,28 @@ import { MdEdit, MdDelete, MdDone, MdCancel } from 'react-icons/md'
 
 import "./styles.css"
 
-const CadastrarProdutos = () => {
+const CadastrarServicos = () => {
 
     const [nome, setNome] = useState("")
     const [custo, setCusto] = useState("")
-    const [produtos, setProduto] = useState([])
-
+    const [servicos, setServico] = useState([])
 
     useEffect(() => {
-        requisicao.get('consultarProduto').then(produtos => setProduto(produtos.dados))
+        requisicao.get('consultarServico').then(servicos => setServico(servicos.dados))
     }, [])
 
     const carregando = async (verdadeiro) => {
         if (verdadeiro) {
-            document.getElementById("btnCadastrarProduto").className = "nada";
+            document.getElementById("btnCadastrarServico").className = "nada";
             document.getElementById("carregando").className = "carregando";
         }
         else {
-            document.getElementById("btnCadastrarProduto").className = "";
+            document.getElementById("btnCadastrarServico").className = "";
             document.getElementById("carregando").className = "nada";
         }
     }
 
-    async function cadastrarProduto() {
-
+    async function cadastrarServico() {
         if (nome.length === 0) {
             alert("Preencha o nome corretamente")
             return
@@ -44,19 +42,19 @@ const CadastrarProdutos = () => {
         try {
             await carregando(true);
 
-            const res = await requisicao.post("cadastroDeProduto", 'nome=' + nome +
+            const res = await requisicao.post("cadastroDeServico", 'nome=' + nome +
                 '&custo=' + custo.replace(",", "."))
 
             if (res.status === "Sucesso") {
                 await carregando(false);
-                alert("Produto cadastrado com sucesso!");
+                alert("Serviço cadastrado com sucesso!");
                 console.log(res)
-                setProduto(res.dados)
+                setServico(res.dados)
                 setNome("");
                 setCusto("");
             }
             else {
-                alert("Erro ao cadastrar produto!\nErro: " + res.dados);
+                alert("Erro ao cadastrar serviço!\nErro: " + res.dados);
                 await carregando(false);
             }
 
@@ -64,7 +62,6 @@ const CadastrarProdutos = () => {
             await carregando(false);
             console.log(err);
         }
-
     }
 
     function formataCusto(custo) {
@@ -104,16 +101,16 @@ const CadastrarProdutos = () => {
     }
 
     function cancelar(id, nome, custo) {
-        var custoProduto = document.getElementById(`custo${id}`)
-        var nomeProduto = document.getElementById(`nome${id}`)
+        var custoServico = document.getElementById(`custo${id}`)
+        var nomeServico = document.getElementById(`nome${id}`)
 
         var editar = document.getElementById(`editar${id}`)
         var excluir = document.getElementById(`excluir${id}`)
         var confirmar = document.getElementById(`confirmar${id}`)
         var cancelar = document.getElementById(`cancelar${id}`)
 
-        custoProduto.value = formataCusto(custo.toString())
-        nomeProduto.value = nome
+        custoServico.value = formataCusto(custo.toString())
+        nomeServico.value = nome
 
         confirmar.classList.add("hidden")
         cancelar.classList.add("hidden")
@@ -121,26 +118,27 @@ const CadastrarProdutos = () => {
         editar.classList.remove("hidden")
         excluir.classList.remove("hidden")
 
-        custoProduto.disabled = true
-        nomeProduto.disabled = true
+        custoServico.disabled = true
+        nomeServico.disabled = true
     }
 
     function preencherValores(id, nome, custo) {
-        var custoProduto = document.getElementById(`custo${id}`)
-        var nomeProduto = document.getElementById(`nome${id}`)
+        var custoServico = document.getElementById(`custo${id}`)
+        var nomeServico = document.getElementById(`nome${id}`)
 
-        nomeProduto.value = nome
-        custoProduto.value = custo
+        nomeServico.value = nome
+        custoServico.value = custo
     }
 
-    if (produtos.length > 0)
+    if (servicos.length > 0) {
         setTimeout(() => {
-            produtos.forEach(produto => {
-                preencherValores(produto.id, produto.nome, formataCusto(produto.custo.toString()))
+            servicos.forEach(servico => {
+                preencherValores(servico.id, servico.nome, formataCusto(servico.custo.toString()))
             });
         }, 100);
+    }
 
-    function alterarProduto(id) {
+    function alterarServico(id) {
 
         var editar = document.getElementById(`editar${id}`)
         var excluir = document.getElementById(`excluir${id}`)
@@ -150,20 +148,20 @@ const CadastrarProdutos = () => {
 
         let regexCusto = /^\d{2},\d{2}$/
 
-        var custoProduto = document.getElementById(`custo${id}`)
-        var nomeProduto = document.getElementById(`nome${id}`)
+        var custoServico = document.getElementById(`custo${id}`)
+        var nomeServico = document.getElementById(`nome${id}`)
 
-        if (!regexCusto.test(custoProduto.value)) {
+        if (!regexCusto.test(custoServico.value)) {
             alert("Preencha o custo corretamente. \n Exemplo: 10,50")
             return
         }
 
-        if (nomeProduto.value.trim() === "") {
+        if (nomeServico.value.trim() === "") {
             alert("O nome não pode ser vazio")
             return
         }
 
-        var custo = custoProduto.value.replace(",", ".")
+        var custo = custoServico.value.replace(",", ".")
 
         editar.classList.add("hidden")
         excluir.classList.add("hidden")
@@ -171,16 +169,16 @@ const CadastrarProdutos = () => {
         cancelar.classList.add("hidden")
         carregando.classList.remove("hidden")
 
-        requisicao.post('alterarProduto', 'id=' + id +
-            '&nome=' + nomeProduto.value +
+        requisicao.post('alterarServico', 'id=' + id +
+            '&nome=' + nomeServico.value +
             '&custo=' + custo).then(res => {
                 carregando.classList.add("hidden")
                 if (res.status === "Sucesso") {
-                    custoProduto.disabled = true
-                    nomeProduto.disabled = true
+                    custoServico.disabled = true
+                    nomeServico.disabled = true
                     editar.classList.remove("hidden")
                     excluir.classList.remove("hidden")
-                    setProduto(res.dados)
+                    setServico(res.dados)
                 }
                 else {
                     confirmar.classList.remove("hidden")
@@ -193,24 +191,24 @@ const CadastrarProdutos = () => {
             });
     }
 
-    function excluirProduto(id, nome) {
+    function excluirServico(id, nome) {
 
         var editar = document.getElementById(`editar${id}`)
         var excluir = document.getElementById(`excluir${id}`)
         var carregando = document.getElementById(`load${id}`)
 
 
-        var r = window.confirm(`Tem certeza que deseja excluir o produto ${nome}`);
+        var r = window.confirm(`Tem certeza que deseja excluir o serviço ${nome}`);
         if (r == true) {
 
             editar.classList.add("hidden")
             excluir.classList.add("hidden")
             carregando.classList.remove("hidden")
 
-           requisicao.delete(`excluirProduto/${id}`).then(res => {
+           requisicao.delete(`excluirServico/${id}`).then(res => {
             carregando.classList.add("hidden")
             if (res.status === "Sucesso") {
-                setProduto(res.dados)
+                setServico(res.dados)
             }
             else {
                 editar.classList.remove("hidden")
@@ -224,8 +222,8 @@ const CadastrarProdutos = () => {
         }
     }
 
-    return (
-        <div id="pageCadastrarProduto">
+    return(
+        <div id="pageCadastrarServico">
             <Cabecalho />
             <form>
                 <div>
@@ -237,23 +235,23 @@ const CadastrarProdutos = () => {
                     <InputMask name="custo" id="custo" mask="99,99" value={custo} onChange={e => setCusto(e.target.value)} />
                 </div>
                 <div id="carregando" className="nada"></div>
-                <button id="btnCadastrarProduto" type="button" onClick={cadastrarProduto}>Cadastrar Produto</button>
+                <button id="btnCadastrarServico" type="button" onClick={cadastrarServico}>Cadastrar Serviço</button>
             </form>
-            <div className = "produtos">
-                <h1>Produtos cadastrados</h1>
-            {produtos.map(produto =>
-                <div key={produto.id} className="produto">
-                    <input type="text" name={`nome${produto.id}`} id={`nome${produto.id}`} disabled />
-                    <input type="text" disabled name={`custo${produto.id}`} id={`custo${produto.id}`} maxLength="5" />
-                    <MdEdit title="Editar" id={`editar${produto.id}`} onClick={() => liberarCampo(produto.id)} />
-                    <MdDelete title="Excluir" id={`excluir${produto.id}`} onClick={() => excluirProduto(produto.id, produto.nome)} />
-                    <MdDone style = {{color: 'green'}}className="hidden" title="Confirmar" id={`confirmar${produto.id}`} onClick={() => alterarProduto(produto.id)} />
-                    <MdCancel style = {{color: 'red'}} className="hidden" title="Cancelar" onClick={() => cancelar(produto.id, produto.nome, produto.custo)} id={`cancelar${produto.id}`} />
-                    <div className="carregando hidden" id={`load${produto.id}`}></div>
+            <div className = "servicos">
+                <h1>Serviços cadastrados</h1>
+            {servicos.map(servico =>
+                <div key={servico.id} className="servico">
+                    <input type="text" name={`nome${servico.id}`} id={`nome${servico.id}`} disabled />
+                    <input type="text" disabled name={`custo${servico.id}`} id={`custo${servico.id}`} maxLength="5" />
+                    <MdEdit title="Editar" id={`editar${servico.id}`} onClick={() => liberarCampo(servico.id)} />
+                    <MdDelete title="Excluir" id={`excluir${servico.id}`} onClick={() => excluirServico(servico.id, servico.nome)} />
+                    <MdDone style = {{color: 'green'}}className="hidden" title="Confirmar" id={`confirmar${servico.id}`} onClick={() => alterarServico(servico.id)} />
+                    <MdCancel style = {{color: 'red'}} className="hidden" title="Cancelar" onClick={() => cancelar(servico.id, servico.nome, servico.custo)} id={`cancelar${servico.id}`} />
+                    <div className="carregando hidden" id={`load${servico.id}`}></div>
                 </div>)}
             </div>
         </div>
     )
 }
 
-export default CadastrarProdutos
+export default CadastrarServicos
