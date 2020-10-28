@@ -146,7 +146,7 @@ input[type="text"].inputdivisivel, input[type="number"].inputdivisivel, select.i
 
 input[type="text"], select {
     width: 80%;
-    height: 25px;
+    height: 30px;
 }
 
 input[type="radio"] {
