@@ -1,0 +1,17 @@
+.barra{
+    background-color: #f0f0f5;
+    padding: 5px 20px;
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    justify-content: center;
+}
+
+.barra button{
+    border: none;
+    cursor: pointer;
+    padding: 3px 10px;
+}
+
+.barra .nome{
+    text-align: center;
+}
