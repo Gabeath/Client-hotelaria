@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
 import './Menu.scss'
 
 function Menu({ background, hoverBackground, linkColor, navLinks, logo }) {

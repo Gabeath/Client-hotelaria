@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import requisicao from '../../functions/requisicao'
 import './styles.css'
 import '../../components/Carregando.css'
@@ -19,8 +18,6 @@ const CadastrarFuncionarios = () => {
     const [cidades, setCidades] = useState([])
     const [ufSelecionada, setUfSelecionada] = useState("")
     const [cidadeSelecionada, setCidadeSelecionada] = useState("")
-
-    const history = useHistory()
 
     useEffect(() => {
         async function buscarUFS() {

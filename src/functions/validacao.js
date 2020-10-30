@@ -84,7 +84,7 @@ const validacao = {
     },
 
     limparFormatacao: (dado) => {
-        return dado.replace(/(\(|\)|\.|\/|\-)/g, "");
+        return dado.replace(/(\(|\)|\.|\/|-)/g, "");
     },
 
     diaAtual: () => {
