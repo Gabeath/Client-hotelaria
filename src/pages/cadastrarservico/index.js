@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Cabecalho from '../../components/cabecalho'
-import InputMask from "react-input-mask";
 import CurrencyInput from 'react-currency-masked-input'
 import requisicao from '../../functions/requisicao'
 import '../../components/Carregando.css'
@@ -10,8 +9,6 @@ import "./styles.css"
 
 const CadastrarServicos = () => {
 
-    const [nome, setNome] = useState("")
-    const [custo, setCusto] = useState("0.00")
     const [servicos, setServico] = useState([])
 
     useEffect(() => {
@@ -55,8 +52,8 @@ const CadastrarServicos = () => {
                 alert("Serviço cadastrado com sucesso!");
                 console.log(res)
                 setServico(res.dados)
-                setNome("");
-                setCusto("");
+                document.getElementById('nome').value = "";
+                document.getElementById('custo').value = "0,00";
             }
             else {
                 alert("Erro ao cadastrar serviço!\nErro: " + res.dados);
@@ -220,12 +217,7 @@ const CadastrarServicos = () => {
             console.log(erro);
         });
         }
-    }
-
-    const mascara2 = [/^\d+,\d{2}$/]
-    
-    const mascara = [/[0-9]/, ",", /[0-9][0-9]/]
-   
+    }   
 
     return(
         <div id="pageCadastrarServico">
