@@ -1,0 +1,81 @@
+#page-quartos .quartos{
+    max-width: 80vw;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 15px;
+    padding: 20px;
+    background-color: var(--cor-de-fundo);
+
+    border: solid gray;
+    border-width: 1px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+
+#page-quartos .quartos .quarto {
+    display: flex;
+    /* justify-content: space-between; */
+    flex-direction: column;
+    margin-bottom: 10px;
+    border-bottom: 5px solid gray;
+    border-bottom-style: dotted;
+    padding: 20px 0 ;
+
+    color: var(--cor-texto-base);
+    font: 400 1.2rem Roboto;
+    line-height: 3.2rem;
+
+    word-break: break-word;
+    
+
+}
+
+#page-quartos .quartos .quarto .descricao {
+    display: flex;
+    flex-direction: row;
+    font: 700 1.2rem Montserrat;
+}
+
+#page-quartos .quartos .quarto .descricao p, #page-quartos .quartos .quarto .descricao select {
+    margin-right: 2.6vw;
+}
+
+#page-quartos .quartos .quarto .descricao label{
+    margin-right: 5px;
+    font: 400 1.2rem Roboto;
+}
+
+#page-quartos .quartos .quarto .descricao button{
+    display: block;
+    width: 50%;
+    background-color: gray;
+    opacity: 50%;
+    color: var(--cor-de-fundo);
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+#page-quartos .quartos .quarto .descricao button.false{
+    cursor: pointer;
+    background-color: var( --cor-primaria);
+    opacity: 100%;
+}
+
+#page-quartos .quartos .quarto .descricao .comboboxQuant {
+    width: 10%;
+}
+
+
+@media screen and (max-width: 970px) {
+    label.quantidade {
+        text-align: right;
+    }
+}
