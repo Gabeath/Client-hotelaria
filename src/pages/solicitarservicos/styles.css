@@ -1,0 +1,7 @@
+#pageSolicitarServicos .container{
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    width: 100%;
+    max-width: 100%;
+    padding: 15px;
+}
