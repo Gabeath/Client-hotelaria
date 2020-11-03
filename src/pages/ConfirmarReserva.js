@@ -14,7 +14,7 @@ function ConfirmarReserva (dados) {
     }, []);
 
     return (
-        <div>
+        <div class="confirmarAlterarReserva">
             <Cabecalho />
             <CaixaDeFormularioDeReserva dados = {dados} nome = {"Cadastrar"} />
             <Rodape />
