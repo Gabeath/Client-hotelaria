@@ -4,11 +4,12 @@ import {useHistory} from 'react-router-dom'
 import Cabecalho from '../../components/cabecalho'
 import BarraLogout from '../../components/barraLogout'
 import requisicao from '../../functions/requisicao'
+import '../../components/Carregando.css'
 import "./styles.css"
 
 const Servicos = () => {
 
-    const {logged} = useLoginHospede()
+    const {logged, token} = useLoginHospede()
 
     const history = useHistory()
 
@@ -51,7 +52,10 @@ const Servicos = () => {
         setCarrinho(novoArray)
     }
 
-    function solicitarServicos(){
+    async function solicitarServicos(){
+
+        carregando(true)
+
         let servicosSolicitados = []
         let qtdd;
         let continua = true
@@ -61,6 +65,7 @@ const Servicos = () => {
 
             if(qtdd === "" || parseInt(qtdd) <= 0)
             {
+                carregando(false)
                 alert("Preencha as quantidades corretamente")
                 continua = false
                 return
@@ -68,10 +73,42 @@ const Servicos = () => {
             servicosSolicitados.push({id: item.id, quantidade: qtdd})
         });
 
-        if(!continua)
+        if(!continua){
+            carregando(false)
             return
+        }
+           
 
-        console.log("executou")
+        const dados = {
+            token, 
+            servicos: servicosSolicitados 
+        }
+
+        const resposta = await requisicao.postJSON('solicitarServico', dados)
+        
+        carregando(false)
+        if(resposta.status === "Sucesso"){
+            carregando(false)
+            alert("Serviços solicitados com sucesso. \n Em alguns minutos, uma camareira estará no seu quarto")
+            setCarrinho([])
+            setTotal("")
+        }
+        else{
+            carregando(false)
+            alert(resposta.dados)
+        }
+           
+    }
+
+    const carregando = async (verdadeiro) => {
+        if (verdadeiro) {
+            document.getElementById("btnSolicitarServicos").className = "nada";
+            document.getElementById("carregando").className = "carregando";
+        }
+        else {
+            document.getElementById("btnSolicitarServicos").className = "";
+            document.getElementById("carregando").className = "nada";
+        }
     }
 
 
@@ -104,7 +141,9 @@ const Servicos = () => {
                                 <button title = "Remover do carrinho" onClick = {() => removeToCart(item)}>X</button>
                             </div>)}
                             {carrinho.length > 0 && <div><strong>Total: </strong>R$ {total}</div>}
-                            {carrinho.length > 0 && <button onClick = {solicitarServicos}>Solicitar Serviços</button>}
+                            {carrinho.length > 0 && <button id = "btnSolicitarServicos" onClick = {solicitarServicos}>Solicitar Serviços</button>}
+                            {carrinho.length > 0 && <div className="carregando nada" id = "carregando"></div>}
+                           
                         </div>
                     }
                     

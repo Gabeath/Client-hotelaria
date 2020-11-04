@@ -14,7 +14,7 @@ const LoginHospede = ({children}) => {
 
         if(tokenHospede){
             setLogged(true)
-            setToken(token)
+            setToken(tokenHospede)
             setNome(nomeHospede)
         }
     }, [])
