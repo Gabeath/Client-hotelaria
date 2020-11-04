@@ -5,3 +5,102 @@
     max-width: 100%;
     padding: 15px;
 }
+
+#pageSolicitarServicos .container .servicos,
+#pageSolicitarServicos .container .carrinho{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#pageSolicitarServicos .container .servicos .content{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 20px;
+}
+
+#pageSolicitarServicos .container .servicos .content .servico{
+    background-color: var(--cor-de-fundo);
+    padding: 10px;
+    margin-right: 10px;
+    flex: 1 0 200px;
+    position: relative;
+    margin-bottom: 10px;;
+}
+
+#pageSolicitarServicos .container .servicos .content .servico button{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    cursor: pointer;
+    padding: 0px 3px;
+    background-color: var( --cor-primaria);
+    color: white;
+    border-radius: 4px;
+    outline: none;
+}
+
+#pageSolicitarServicos .container .carrinho p {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+#pageSolicitarServicos .container .carrinho .itens{
+    background-color: var(--cor-de-fundo);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    
+}
+
+#pageSolicitarServicos .container .carrinho .itens .item{
+    margin-bottom: 10px;
+    border-bottom: 2px solid white;
+}
+
+#pageSolicitarServicos .container .carrinho .itens .item{
+    margin-bottom: 10px;
+    border-bottom: 2px solid white;
+}
+
+
+#pageSolicitarServicos .container .carrinho .itens .item label{
+    display: block;
+    margin-top: 5px;
+}
+
+#pageSolicitarServicos .container .carrinho .itens .item input{
+    margin-bottom: 10px;
+    margin-top: 5px;
+    border: none;
+    outline: none;
+}
+
+#pageSolicitarServicos .container .carrinho .itens .item button{
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 0px 3px;
+    cursor: pointer;
+}
+
+#pageSolicitarServicos .container .carrinho .itens button{
+    background-color: var( --cor-primaria);
+    color: var(--cor-de-fundo);
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+@media(max-width: 650px){
+    #pageSolicitarServicos .container{
+        grid-template-columns: 1fr;
+    }
+}
