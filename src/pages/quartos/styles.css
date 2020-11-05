@@ -91,7 +91,7 @@
 #page-quartos .quartos .quarto .descricao div button.false{
     cursor: pointer;
     background-color: var( --cor-primaria);
-    opacity: 100%;
+    opacity: 1.0;
 }
 
 #page-quartos .quartos .quarto .descricao .comboboxQuant {
