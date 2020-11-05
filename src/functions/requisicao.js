@@ -23,7 +23,7 @@ const requisicao = {
         const requisicao = await fetch(URL + rota, {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'}, // this line is important, if this content-type is not set it wont work
-                body: JSON.parse(dados)
+                body: dados
         })
         const resposta = await requisicao.json();
         return resposta;
