@@ -8,6 +8,10 @@ import CadastrarFuncionarios from './pages/cadastrarfuncionarios';
 import CadastrarProdutos from './pages/cadastrarproduto';
 import CadastrarServicos from './pages/cadastrarservico';
 import CheckIn from './pages/checkin';
+import LoginHospede from './pages/loginHospede';
+import SolicitarServico from './pages/solicitarservicos';
+
+import Quartos from './pages/quartos';
 
 import './App.css';
 
@@ -22,6 +26,9 @@ function Routes() {
             <Route path = '/cadastrarproduto' component = {CadastrarProdutos} exact/>
             <Route path = '/cadastrarservico' component = {CadastrarServicos} exact/>
             <Route path = '/checkin' component = {CheckIn} exact/>
+            <Route path = '/loginHospede' component = {LoginHospede} exact/>
+            <Route path = '/solicitarservico' component = {SolicitarServico} exact/>
+            <Route path = '/quartos' component = {Quartos} exact/>
         </BrowserRouter>
     )
 }

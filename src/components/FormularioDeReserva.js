@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import '../pages/ConfirmarAlterarReserva.css';
 import './Carregando.css';
 import InputMask from "react-input-mask";
@@ -29,8 +28,6 @@ function FormularioDeReserva({dados, nome}) {
         checkOut: null,
         tipoDeQuarto: null,
     };
-
-    const history = useHistory();
     
     useEffect(() => {
         if (dados.history.location.state !== undefined) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Cabecalho from '../../components/cabecalho'
-import InputMask from "react-input-mask";
+import CurrencyInput from 'react-currency-masked-input'
 import requisicao from '../../functions/requisicao'
 import '../../components/Carregando.css'
 import { MdEdit, MdDelete, MdDone, MdCancel } from 'react-icons/md'
@@ -9,8 +9,6 @@ import "./styles.css"
 
 const CadastrarServicos = () => {
 
-    const [nome, setNome] = useState("")
-    const [custo, setCusto] = useState("")
     const [servicos, setServico] = useState([])
 
     useEffect(() => {
@@ -29,8 +27,12 @@ const CadastrarServicos = () => {
     }
 
     async function cadastrarServico() {
-        if (nome.length === 0) {
-            alert("Preencha o nome corretamente")
+
+        let descricao = document.getElementById("nome").value
+        let custo = document.getElementById("custo").value
+        
+        if (descricao.length === 0) {
+            alert("Preencha a descrição corretamente")
             return
         }
 
@@ -42,7 +44,7 @@ const CadastrarServicos = () => {
         try {
             await carregando(true);
 
-            const res = await requisicao.post("cadastroDeServico", 'nome=' + nome +
+            const res = await requisicao.post("cadastroDeServico", 'nome=' + descricao +
                 '&custo=' + custo.replace(",", "."))
 
             if (res.status === "Sucesso") {
@@ -50,8 +52,8 @@ const CadastrarServicos = () => {
                 alert("Serviço cadastrado com sucesso!");
                 console.log(res)
                 setServico(res.dados)
-                setNome("");
-                setCusto("");
+                document.getElementById('nome').value = "";
+                document.getElementById('custo').value = "0,00";
             }
             else {
                 alert("Erro ao cadastrar serviço!\nErro: " + res.dados);
@@ -66,11 +68,6 @@ const CadastrarServicos = () => {
 
     function formataCusto(custo) {
         const arrays = custo.split('.')
-
-
-        if (arrays[0].length === 1) {
-            arrays[0] = `0${arrays[0]}`
-        }
 
         if (!arrays[1])
             arrays.push("00")
@@ -146,13 +143,13 @@ const CadastrarServicos = () => {
         var cancelar = document.getElementById(`cancelar${id}`)
         var carregando = document.getElementById(`load${id}`)
 
-        let regexCusto = /^\d{2},\d{2}$/
+        let regexCusto = /^\d+,\d{2}$/
 
         var custoServico = document.getElementById(`custo${id}`)
         var nomeServico = document.getElementById(`nome${id}`)
 
         if (!regexCusto.test(custoServico.value)) {
-            alert("Preencha o custo corretamente. \n Exemplo: 10,50")
+            alert("Preencha o custo corretamente. \n Exemplo: 100,50")
             return
         }
 
@@ -220,19 +217,19 @@ const CadastrarServicos = () => {
             console.log(erro);
         });
         }
-    }
+    }   
 
     return(
         <div id="pageCadastrarServico">
             <Cabecalho />
             <form>
                 <div>
-                    <p>Nome: </p>
-                    <input name="nome" id="nome" value={nome} onChange={e => setNome(e.target.value)} />
+                    <p>Descrição: </p>
+                    <input type="text" name="nome" id="nome"/>
                 </div>
                 <div>
                     <p>Custo: R$</p>
-                    <InputMask name="custo" id="custo" mask="99,99" value={custo} onChange={e => setCusto(e.target.value)} />
+                    <CurrencyInput type="text" defaultValue="0,00" separator="," placeholder="0,00" name="custo" id="custo" maxLength="6" formNoValidate="true"  className="mask" />
                 </div>
                 <div id="carregando" className="nada"></div>
                 <button id="btnCadastrarServico" type="button" onClick={cadastrarServico}>Cadastrar Serviço</button>
@@ -242,7 +239,7 @@ const CadastrarServicos = () => {
             {servicos.map(servico =>
                 <div key={servico.id} className="servico">
                     <input type="text" name={`nome${servico.id}`} id={`nome${servico.id}`} disabled />
-                    <input type="text" disabled name={`custo${servico.id}`} id={`custo${servico.id}`} maxLength="5" />
+                    <CurrencyInput type="text" separator="," placeholder="0,00" disabled name={`custo${servico.id}`} id={`custo${servico.id}`} maxLength="6" className="mask"/>
                     <MdEdit title="Editar" id={`editar${servico.id}`} onClick={() => liberarCampo(servico.id)} />
                     <MdDelete title="Excluir" id={`excluir${servico.id}`} onClick={() => excluirServico(servico.id, servico.nome)} />
                     <MdDone style = {{color: 'green'}}className="hidden" title="Confirmar" id={`confirmar${servico.id}`} onClick={() => alterarServico(servico.id)} />

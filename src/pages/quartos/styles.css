@@ -1,0 +1,133 @@
+#page-quartos .quartos{
+    max-width: 80vw;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 15px;
+    padding: 20px;
+    background-color: var(--cor-de-fundo);
+
+    border: solid gray;
+    border-width: 1px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+
+#page-quartos .quartos .quarto {
+    display: flex;
+    /* justify-content: space-between; */
+    flex-direction: column;
+    margin-bottom: 10px;
+    border-bottom: 5px solid gray;
+    border-bottom-style: dotted;
+    padding: 20px 0 ;
+
+    color: var(--cor-texto-base);
+    font: 400 1.2rem Roboto;
+    line-height: 3.2rem; 
+}
+
+#page-quartos .quartos .quarto .descricao {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font: 700 1.2rem Montserrat;
+}
+
+#page-quartos .quartos .quarto .descricao p, #page-quartos .quartos .quarto .descricao select {
+    margin-right: 2.6vw;
+}
+
+#page-quartos .quartos .quarto .descricao label{
+    width: 50%;
+    margin-right: 5px;
+    font: 400 1.2rem Roboto;
+}
+
+#page-quartos .quartos .quarto .descricao .divCarregando {
+    width: 50%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+
+#page-quartos .quartos .quarto .descricao .divOpcoes {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#page-quartos .quartos .quarto .descricao div .hidden {
+    display: none;
+}
+
+#page-quartos .quartos .quarto .descricao div .carregando {
+    max-width: 50px;
+    max-height: 50px;
+    border: 5px solid #f3f3f3; /* Cinza claro */
+    border-top: 5px solid #3498db; /* Azul */
+    background: none;
+}
+
+#page-quartos .quartos .quarto .descricao div button{
+    display: block;
+    width: 100%;
+    background-color: gray;
+    opacity: 50%;
+    color: var(--cor-de-fundo);
+    border: none;
+    border-radius: 3px;
+    padding: 0.6rem;
+    font: 700 1.6rem Montserrat;
+    transition: 0.5s;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+#page-quartos .quartos .quarto .descricao div button.false{
+    cursor: pointer;
+    background-color: var( --cor-primaria);
+    opacity: 100%;
+}
+
+#page-quartos .quartos .quarto .descricao .comboboxQuant {
+    width: 50px;
+}
+
+@media screen and (max-width: 550px) {
+    #page-quartos .quartos .quarto .descricao {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #page-quartos .quartos .quarto .descricao .divCarregando {
+        width: 100%;
+    }
+
+    #page-quartos .quartos .quarto .descricao label {
+        margin: 0px;
+        text-align: center;
+    }
+
+    #page-quartos .quartos .quarto .descricao .comboboxProdutos {
+        margin: 0px;
+    }
+
+    #page-quartos .quartos .quarto .descricao .divOpcoes {
+        margin: 8px 0px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    #page-quartos .quartos .quarto .descricao p, #page-quartos .quartos .quarto .descricao label, #page-quartos .quartos .quarto .descricao input, #page-quartos .quartos .quarto .descricao button {
+        font-size: small;
+    }
+    #page-quartos .quartos .quarto .descricao .divOpcoes {
+        flex-direction: column;
+        align-items: center;
+    }
+}

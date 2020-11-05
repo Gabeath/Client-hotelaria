@@ -107,6 +107,9 @@
     cursor: pointer;
 }
 
+input:invalid {
+    box-shadow: none;
+}
 
 @media (max-width: 900px) {
     #pageCadastrarServico .servicos .servico svg{

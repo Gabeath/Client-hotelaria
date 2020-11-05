@@ -28,6 +28,18 @@ const requisicao = {
         const resposta = await requisicao.json();
         return resposta;
     },
+
+    postJSON: async(rota, dados) => {
+        const request = await fetch(URL + rota, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dados)
+        })
+        const resposta = await request.json();
+        return resposta;
+    },
     /**
     * Efetua uma requisição do tipo Delete e retorna a resposta em formato json
     * @param rota rota em que será feita a requisição
