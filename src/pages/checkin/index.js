@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import requisicao from '../../functions/requisicao'
 import './styles.css'
 import '../../components/Carregando.css'
@@ -13,6 +13,34 @@ const Checkin = () => {
     const [cpf, setCPF] = useState("")
     const [numPassaporte, setNumPassaporte] = useState("")
     const [reservas, setReservas] = useState("")
+    const [listaDeReservas, setListaDeReservas] = useState([])
+
+    useEffect(() => {
+        setListaDeReservas( Object.keys(reservas).map(reserva => {
+            return <div id={reservas[reserva].id} key={reserva} className="dadosReserva">
+                <input type="radio" id={reserva} name="radio"></input>
+                <label htmlFor={reserva} className="listaDeReservas">
+                    <div className="reservas">
+                        <p><span>ID: </span>{reservas[reserva].id}</p>
+                        <section>
+                            <p><span>Data inicío: </span>{reservas[reserva].data_inicio.substring(8, 10) + "/" + reservas[reserva].data_inicio.substring(5, 7) + "/" + reservas[reserva].data_inicio.substring(0, 4)}</p>
+                            <p><span>Data fim: </span>{reservas[reserva].data_fim.substring(8, 10) + "/" + reservas[reserva].data_fim.substring(5, 7) + "/" + reservas[reserva].data_fim.substring(0, 4)}</p>
+                        </section>
+                        <section>
+                            <p><span>Adultos: </span>{reservas[reserva].quant_adultos}</p>
+                            <p><span>Crianças: </span>{reservas[reserva].quant_criancas}</p>
+                        </section>
+                        <section id="dados_quartos">
+                            <p><span>Número do quarto: </span>{reservas[reserva].quarto.num_quarto}</p>
+                            <p><span>Tipo de quarto: </span>{reservas[reserva].quarto.tipo_de_quarto.nome}</p>
+                        </section>
+                    </div>
+                </label>
+            </div>
+
+        }));
+    }, [reservas]);
+    
 
     const carregando = async (verdadeiro) => {
         if (verdadeiro) {
@@ -94,48 +122,29 @@ const Checkin = () => {
         carregando(false)
     }
 
-    var lista = reservas
-    const listaDeReservas = Object.keys(lista).map(reserva => {
-        return <div id={lista[reserva].id} className="dadosReserva">
-            <input type="radio" id={reserva} name="radio"></input>
-            <label htmlFor={reserva} className="listaDeReservas">
-                
-                <div key={reserva} className="reservas">
-                    <p><span>ID: </span>{lista[reserva].id}</p>
-                    <section id="dados_ datas">
-                        <p><span>Data inicío: </span>{lista[reserva].data_inicio.substring(8, 10) + "/" + lista[reserva].data_inicio.substring(5, 7) + "/" + lista[reserva].data_inicio.substring(0, 4)}</p>
-                        <p><span>Data fim: </span>{lista[reserva].data_fim.substring(8, 10) + "/" + lista[reserva].data_fim.substring(5, 7) + "/" + lista[reserva].data_fim.substring(0, 4)}</p>
-                    </section>
-                    <section id="dados_hospedes">
-                        <p><span>Adultos: </span>{lista[reserva].quant_adultos}</p>
-                        <p><span>Crianças: </span>{lista[reserva].quant_criancas}</p>
-                    </section>
-                    <section id="dados_quartos">
-                        <p><span>Número do quarto: </span>{lista[reserva].quarto.num_quarto}</p>
-                        <p><span>Tipo de quarto: </span>{lista[reserva].quarto.tipo_de_quarto.nome}</p>
-                    </section>
-                </div>
-            </label>
-        </div>
-
-
-    });
-
     const realizarCheckIn = () => {
         var radios = document.getElementsByName("radio");
 
-        let indice = 0
+        let indice = null;
         for (var i = 0; i < radios.length; i++) {
             if (radios[i].checked) {
                 indice = i
+                break;
             }
+        }
 
-            requisicao.post("realizarCheckInReserva", 'id_reserva=' + lista[indice].id
+        if (indice !== null){
+            requisicao.post("realizarCheckInReserva", 'id_reserva=' + reservas[indice].id
             ).then(res => {
                 carregando(false);
                 if (res.status === "Sucesso") {
                     alert("Check-In realizado com sucesso!");
-                    document.getElementById(lista[indice].id).remove()
+                    document.getElementById(reservas[indice].id).remove()
+                    reservas.splice(indice,1);
+
+                    if (reservas.length === 0){
+                        document.getElementById("btnRealizarCheckIn").className = "btnRealizarCheckIn nada"
+                    }
                 }
                 else
                     alert("O check-In não pode ser realizado!\nErro: " + res.dados);
@@ -144,7 +153,9 @@ const Checkin = () => {
                 console.log(erro);
             });
         }
-
+        else{
+            alert("Selecione a reserva que deseja realizar o Check-in!");
+        }
     }
 
     return (
