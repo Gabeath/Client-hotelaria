@@ -11,6 +11,7 @@ import CheckIn from './pages/checkin';
 import CheckOut from './pages/checkout';
 import LoginHospede from './pages/loginHospede';
 import SolicitarServico from './pages/solicitarservicos';
+import Servicos from './pages/servicos';
 
 import Quartos from './pages/quartos';
 
@@ -31,6 +32,7 @@ function Routes() {
             <Route path = '/loginHospede' component = {LoginHospede} exact/>
             <Route path = '/solicitarservico' component = {SolicitarServico} exact/>
             <Route path = '/quartos' component = {Quartos} exact/>
+            <Route path = '/servicos' component = {Servicos} exact/>
         </BrowserRouter>
     )
 }
