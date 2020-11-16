@@ -94,11 +94,7 @@
     opacity: 1.0;
 }
 
-#page-servicos .servicos .servico .descricao .comboboxQuant {
-    width: 50px;
-}
-
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 735px) {
     #page-servicos .servicos .servico .descricao {
         display: flex;
         flex-direction: column;
@@ -111,10 +107,6 @@
     #page-servicos .servicos .servico .descricao label {
         margin: 0px;
         text-align: center;
-    }
-
-    #page-servicos .servicos .servico .descricao .comboboxProdutos {
-        margin: 0px;
     }
 
     #page-servicos .servicos .servico .descricao .divOpcoes {
