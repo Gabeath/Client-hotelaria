@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom';
 import requisicao from '../../functions/requisicao'
 import './styles.css'
 import '../../components/Carregando.css'
@@ -8,12 +9,14 @@ import Rodape from '../../components/rodape/Rodape'
 import InputMask from "react-input-mask";
 import validacao from '../../functions/validacao';
 
-const Checkin = () => {
+const Checkout = () => {
 
     const [cpf, setCPF] = useState("")
     const [numPassaporte, setNumPassaporte] = useState("")
     const [reservas, setReservas] = useState("")
     const [listaDeReservas, setListaDeReservas] = useState([])
+
+    const history = useHistory()
 
     useEffect(() => {
         setListaDeReservas( Object.keys(reservas).map(reserva => {
@@ -103,7 +106,7 @@ const Checkin = () => {
             }
         }
 
-        requisicao.get("consultarReservas?cpf=" + novoCPF +
+        requisicao.get("consultarReservasCheckout?cpf=" + novoCPF +
             "&numPassaporte=" + numPassaporte
         ).then(res => {
             carregando(false);
@@ -122,7 +125,7 @@ const Checkin = () => {
         carregando(false)
     }
 
-    const realizarCheckIn = () => {
+    const realizarCheckOut = () => {
         var radios = document.getElementsByName("radio");
 
         let indice = null;
@@ -133,28 +136,14 @@ const Checkin = () => {
             }
         }
 
-        if (indice !== null){
-            requisicao.post("realizarCheckInReserva", 'id_reserva=' + reservas[indice].id
-            ).then(res => {
-                carregando(false);
-                if (res.status === "Sucesso") {
-                    alert("Check-In realizado com sucesso!");
-                    let novasReservas = reservas.filter(reserva => reservas[indice].id != reserva.id)
-                    setReservas(novasReservas);
-
-                    if (novasReservas.length === 0){
-                        document.getElementById("btnRealizarCheckIn").className = "btnRealizarCheckIn nada"
-                    }
-                }
-                else
-                    alert("O check-In não pode ser realizado!\nErro: " + res.dados);
-            }).catch(erro => {
-                carregando(false);
-                console.log(erro);
-            });
+        if (indice !== null) {
+            history.push({
+                pathname: '/finalizarcheckout',
+                state: { idReserva: reservas[indice].id }
+            })
         }
         else{
-            alert("Selecione a reserva que deseja realizar o Check-in!");
+            alert("Selecione a reserva que deseja realizar o check-out!");
         }
     }
 
@@ -192,7 +181,7 @@ const Checkin = () => {
                 </ul>
             </section>
                 <div className="botoes">
-                    <button type="button" className="btnRealizarCheckIn nada" id="btnRealizarCheckIn" onClick={() => realizarCheckIn()} > Realizar Check-In</button>
+                    <button type="button" className="btnRealizarCheckIn nada" id="btnRealizarCheckIn" onClick={() => realizarCheckOut()} > Realizar Check-Out</button>
                 </div>
           
             
@@ -202,4 +191,4 @@ const Checkin = () => {
     )
 }
 
-export default Checkin
+export default Checkout
