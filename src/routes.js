@@ -14,9 +14,9 @@ import SolicitarServico from './pages/solicitarservicos';
 import Servicos from './pages/servicos';
 
 import Quartos from './pages/quartos';
+import FinalizarCheckout from './pages/finalizarcheckout/index';
 
 import './App.css';
-
 
 function Routes() {
     return (
@@ -33,6 +33,7 @@ function Routes() {
             <Route path = '/solicitarservico' component = {SolicitarServico} exact/>
             <Route path = '/quartos' component = {Quartos} exact/>
             <Route path = '/servicos' component = {Servicos} exact/>
+            <Route path = '/finalizarcheckout' component = {FinalizarCheckout} exact/>
         </BrowserRouter>
     )
 }
