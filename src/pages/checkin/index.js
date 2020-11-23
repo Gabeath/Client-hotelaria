@@ -4,7 +4,6 @@ import './styles.css'
 import '../../components/Carregando.css'
 
 import Cabecalho from '../../components/cabecalho'
-import Rodape from '../../components/rodape/Rodape'
 import InputMask from "react-input-mask";
 import validacao from '../../functions/validacao';
 
@@ -194,10 +193,6 @@ const Checkin = () => {
                 <div className="botoes">
                     <button type="button" className="btnRealizarCheckIn nada" id="btnRealizarCheckIn" onClick={() => realizarCheckIn()} > Realizar Check-In</button>
                 </div>
-          
-            
-
-            <Rodape />
         </div>
     )
 }
